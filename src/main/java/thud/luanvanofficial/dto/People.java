@@ -8,5 +8,4 @@ public class People {
     private String address;
     private Date birthday;
     private Boolean sex;
-    private
 }
