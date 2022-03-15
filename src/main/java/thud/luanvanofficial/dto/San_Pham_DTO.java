@@ -1,5 +1,6 @@
 package thud.luanvanofficial.dto;
 
+
 import java.util.List;
 
 public class San_Pham_DTO {
@@ -13,6 +14,15 @@ public class San_Pham_DTO {
     private String brand;
     private Boolean tra_gop;
     private Doanh_Muc_DTO san_pham_doanh_muc;
+    private Khuyen_Mai_DTO san_pham_km;
+
+    public Khuyen_Mai_DTO getSan_pham_km() {
+        return san_pham_km;
+    }
+
+    public void setSan_pham_km(Khuyen_Mai_DTO san_pham_km) {
+        this.san_pham_km = san_pham_km;
+    }
 
     public Doanh_Muc_DTO getSan_pham_doanh_muc() {
         return san_pham_doanh_muc;

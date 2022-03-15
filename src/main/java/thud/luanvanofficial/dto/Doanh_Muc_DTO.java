@@ -3,15 +3,15 @@ package thud.luanvanofficial.dto;
 import java.util.List;
 
 public class Doanh_Muc_DTO {
-    private Long doanh_muc_id;
+    private long doanh_muc_id;
     private String name;
     private List<San_Pham_DTO> doanh_muc_sanphams;
 
-    public Long getDoanh_muc_id() {
+    public long getDoanh_muc_id() {
         return doanh_muc_id;
     }
 
-    public void setDoanh_muc_id(Long doanh_muc_id) {
+    public void setDoanh_muc_id(long doanh_muc_id) {
         this.doanh_muc_id = doanh_muc_id;
     }
 

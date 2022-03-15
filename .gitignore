@@ -1,4 +1,4 @@
-HELP.md
+My_Note.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

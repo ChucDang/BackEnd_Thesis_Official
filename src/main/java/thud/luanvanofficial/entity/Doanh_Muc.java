@@ -1,15 +1,19 @@
 package thud.luanvanofficial.entity;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import thud.luanvanofficial.dto.San_Pham_DTO;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "doanh_muc")
 public class Doanh_Muc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private String doanh_muc_id;
     @Column(nullable = false, unique = true, length = 25)
     private String name;
+    @OneToMany(mappedBy = "catergory")
+    private List<San_Pham> doanh_muc_sanphams= new ArrayList<>();
 }

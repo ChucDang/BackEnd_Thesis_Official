@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class User_DTO {
-    private Long people_id;
+    private long user_id;
     private String name;
     private String address;
     private Date birthday;
@@ -15,12 +15,12 @@ public class User_DTO {
     private Gio_Hang_DTO user_gio_hang;
     private List<Don_Hang_DTO> user_don_hangs;
 
-    public Long getPeople_id() {
-        return people_id;
+    public long getUser_id() {
+        return user_id;
     }
 
-    public void setPeople_id(Long people_id) {
-        this.people_id = people_id;
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
     }
 
     public String getName() {
