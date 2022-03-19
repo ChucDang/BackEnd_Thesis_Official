@@ -1,8 +1,5 @@
 package thud.luanvanofficial.entity;
 
-import thud.luanvanofficial.dto.Don_Hang_DTO;
-import thud.luanvanofficial.dto.Gio_Hang_DTO;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +21,6 @@ public class User {
     @Column(length = 25, columnDefinition = "varchar(25)")
     private String email;
     @OneToOne
-
     private Gio_Hang user_gio_hang;
-    private List<Don_Hang> user_don_hangs;
+    private List<Hoa_Don> user_Hoa_don_s;
 }

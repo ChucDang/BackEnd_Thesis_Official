@@ -1,7 +1,5 @@
 package thud.luanvanofficial.entity;
 
-import thud.luanvanofficial.dto.San_Pham_DTO;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

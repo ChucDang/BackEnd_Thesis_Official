@@ -1,7 +1,8 @@
-package thud.luanvanofficial.dto;
+package thud.luanvanofficial.dto.relative_user;
+
+import thud.luanvanofficial.dto.enums.Role_Enum;
 
 import java.util.Date;
-import java.util.List;
 
 public class User_DTO {
     private long user_id;
@@ -12,8 +13,7 @@ public class User_DTO {
     private String avatar_url;
     private String phone;
     private String email;
-    private Gio_Hang_DTO user_gio_hang;
-    private List<Don_Hang_DTO> user_don_hangs;
+    private Role_Enum role;
 
     public long getUser_id() {
         return user_id;
@@ -79,19 +79,11 @@ public class User_DTO {
         this.email = email;
     }
 
-    public Gio_Hang_DTO getUser_gio_hang() {
-        return user_gio_hang;
+    public Role_Enum getRole() {
+        return role;
     }
 
-    public void setUser_gio_hang(Gio_Hang_DTO user_gio_hang) {
-        this.user_gio_hang = user_gio_hang;
-    }
-
-    public List<Don_Hang_DTO> getUser_don_hangs() {
-        return user_don_hangs;
-    }
-
-    public void setUser_don_hangs(List<Don_Hang_DTO> user_don_hangs) {
-        this.user_don_hangs = user_don_hangs;
+    public void setRole(Role_Enum role) {
+        this.role = role;
     }
 }

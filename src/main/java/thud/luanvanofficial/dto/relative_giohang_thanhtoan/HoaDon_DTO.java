@@ -1,8 +1,10 @@
-package thud.luanvanofficial.dto;
+package thud.luanvanofficial.dto.relative_giohang_thanhtoan;
+
+import thud.luanvanofficial.dto.relative_product.San_Pham_DTO;
 
 import java.util.List;
 
-public class Don_Hang_DTO {
+public class HoaDon_DTO {
     private Gio_Hang_DTO don_hang_gio_hang;
     private List<San_Pham_DTO> don_hang_sanphams;
 

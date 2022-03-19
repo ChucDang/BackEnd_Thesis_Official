@@ -1,6 +1,5 @@
 package thud.luanvanofficial.entity;
-import thud.luanvanofficial.dto.Doanh_Muc_DTO;
-import thud.luanvanofficial.dto.Khuyen_Mai_DTO;
+import thud.luanvanofficial.dto.relative_product.Khuyen_Mai_DTO;
 
 import javax.persistence.*;
 import java.util.List;

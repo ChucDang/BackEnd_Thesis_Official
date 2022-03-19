@@ -1,4 +1,4 @@
-package thud.luanvanofficial.dto;
+package thud.luanvanofficial.dto.relative_product;
 
 
 import java.util.List;

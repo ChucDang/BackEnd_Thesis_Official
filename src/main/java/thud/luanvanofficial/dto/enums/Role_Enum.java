@@ -1,4 +1,4 @@
-package thud.luanvanofficial.dto;
+package thud.luanvanofficial.dto.enums;
 
 public enum Role_Enum {
     Admin,
