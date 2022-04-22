@@ -1,11 +1,9 @@
-package thud.luanvanofficial.dto.relative_product;
+package thud.luanvanofficial.dto;
 
-
-import thud.luanvanofficial.dto.relative_user.Admin_DTO;
 
 import java.util.List;
 
-public class San_Pham_DTO {
+public class San_Pham_DTO extends AbstractDTO<San_Pham_DTO>{
     private long id;
     private String name;
     private float original_price;
@@ -15,7 +13,6 @@ public class San_Pham_DTO {
     private List<String> image_urls;
     private String brand;
     private Boolean tra_gop;
-    private Doanh_Muc_DTO san_pham_doanh_muc;
-    private Khuyen_Mai_DTO san_pham_km;
-    private Admin_DTO created_by;
+    private String san_pham_doanh_muc;
+    private String san_pham_km;
 }

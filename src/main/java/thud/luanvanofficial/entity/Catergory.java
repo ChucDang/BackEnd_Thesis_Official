@@ -6,12 +6,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "doanh_muc")
-public class Doanh_Muc {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String doanh_muc_id;
+public class Doanh_Muc extends BaseEntity {
+    @Column(columnDefinition = "nvarchar(10) not null")
+    private String code;
     @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
     @OneToMany(mappedBy = "catergory")
-    private List<San_Pham> doanh_muc_sanphams= new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 }
