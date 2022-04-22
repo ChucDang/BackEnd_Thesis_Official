@@ -1,15 +1,9 @@
 package thud.luanvanofficial.entity;
-
-import thud.luanvanofficial.dto.enums.Role_Enum;
-
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@Table(name = "User")
+public class User extends BaseEntity{
     @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
     @Column(columnDefinition = "nvarchar(50) not null")
@@ -22,7 +16,10 @@ public class User {
     @Column(columnDefinition = "varchar(10) not null")
     private String phone;
     private String email;
-    @Column(columnDefinition = "int(1)")
-    private Role_Enum role;
-
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 }

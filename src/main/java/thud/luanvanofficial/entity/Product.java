@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "san_pham")
-public class San_Pham {
+@Table(name = "Product")
+public class Product extends BaseEntity {
     @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
     @Column(columnDefinition = "decimal(15) not null")
@@ -14,22 +14,22 @@ public class San_Pham {
     @Column(columnDefinition = "decimal(15) not null")
     private float new_price;
     @Column(columnDefinition = "text")
-    private String discription;
+    private String description;
     @Column(columnDefinition = "decimal(1,2)")
     private float rate;
     private List<String> image_urls;
     @ManyToOne
     @JoinColumn(name = "brand_id")
-    private BrandEntity brand;
+    private Brand brand;
     @Column(columnDefinition = "Boolean")
-    private Boolean tra_gop;
+    private Boolean amortization;
     @ManyToOne
-    @JoinColumn( name = "doanh_muc_id")
-    private Doanh_Muc catergory;
+    @JoinColumn( name = "category_id")
+    private Catergory category;
     @ManyToOne
-    @JoinColumn(name = "khuyen_mai_id")
-    private Khuyen_Mai khuyen_mai;
+    @JoinColumn(name = "sale_id")
+    private Sale sale;
     @ManyToMany
     @JoinTable(name = "cart_item")
-    private List<Gio_Hang> gio_hangs = new ArrayList<>();
+    private List<Cart> carts = new ArrayList<>();
 }

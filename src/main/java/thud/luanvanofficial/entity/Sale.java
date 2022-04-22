@@ -6,15 +6,15 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "khuyen_mai")
-public class Khuyen_Mai {
+@Table(name = "Sale")
+public class Sale extends BaseEntity{
     @Column(columnDefinition = "DATE")
-    private Date start_km;
+    private Date start;
     @Column(columnDefinition = "DATE")
-    private Date end_km;
+    private Date end;
     @Column(columnDefinition = "text")
-    private String km_description;
-    @OneToMany(mappedBy = "khuyen_mai")
-    private List<San_Pham> san_phams = new ArrayList<San_Pham>();
+    private String description;
+    @OneToMany(mappedBy = "sale")
+    private List<Product> products = new ArrayList<Product>();
 
 }

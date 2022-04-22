@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "doanh_muc")
-public class Doanh_Muc extends BaseEntity {
+@Table(name = "Catergory")
+public class Catergory extends BaseEntity {
     @Column(columnDefinition = "nvarchar(10) not null")
     private String code;
     @Column(columnDefinition = "nvarchar(25) not null")
