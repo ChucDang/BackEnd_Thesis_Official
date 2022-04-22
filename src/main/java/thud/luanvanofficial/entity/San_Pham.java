@@ -23,11 +23,12 @@ public class San_Pham {
     private List<String> image_urls;
     @Column(columnDefinition = "varchar(20)")
     private String brand;
+    @Column(columnDefinition = "Boolean")
     private Boolean tra_gop;
     @ManyToOne
     @JoinColumn( name = "doanh_muc_id")
     private Doanh_Muc catergory;
     @ManyToOne
     @JoinColumn(name = "khuyen_mai_id")
-    private Khuyen_Mai_DTO san_pham_km;
+    private Khuyen_Mai khuyen_mai;
 }

@@ -10,13 +10,15 @@ import java.util.List;
 public class Khuyen_Mai {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long khuyen_mai_id;
+    private long id;
+    @Column(columnDefinition = "DATE")
     private Date start_km;
+    @Column(columnDefinition = "DATE")
     private Date end_km;
     @Column(columnDefinition = "text")
     private String km_description;
-    @OneToMany(mappedBy = "san_pham_km", cascade = CascadeType.ALL)
-    //    Xóa một khuyến mãi thì những khuyến mãi trong sản phẩm bị xóa theo
+    @OneToMany(mappedBy = "khuyen_mai", cascade = CascadeType.ALL)
+    //    Xóa một khuyến mãi thì những khuyến mãi trong sản phẩm bị xóa khuyến mãi.
     private List<San_Pham> khuyen_mai_san_phams = new ArrayList<San_Pham>();
 
 }

@@ -9,6 +9,5 @@ public class Gio_Hang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-
     private List<San_Pham> san_phams;
 }

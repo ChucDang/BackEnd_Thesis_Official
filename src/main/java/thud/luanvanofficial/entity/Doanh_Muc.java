@@ -10,7 +10,7 @@ public class Doanh_Muc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String doanh_muc_id;
-    @Column(nullable = false, unique = true, length = 25)
+    @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
     @OneToMany(mappedBy = "catergory")
     private List<San_Pham> doanh_muc_sanphams= new ArrayList<>();

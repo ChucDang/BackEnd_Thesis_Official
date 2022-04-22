@@ -1,5 +1,6 @@
-package thud.luanvanofficial.dto.relative_giohang_thanhtoan;
+package thud.luanvanofficial.dto;
 
+import thud.luanvanofficial.dto.relative_giohang_thanhtoan.Shipping_DTO;
 import thud.luanvanofficial.dto.relative_product.San_Pham_DTO;
 import thud.luanvanofficial.dto.relative_user.Admin_DTO;
 import thud.luanvanofficial.dto.relative_user.KhachHang_DTO;

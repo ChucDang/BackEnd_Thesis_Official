@@ -1,26 +1,28 @@
 package thud.luanvanofficial.entity;
 
+import thud.luanvanofficial.dto.enums.Role_Enum;
+
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 @Entity
 @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long user_id;
-    @Column(nullable = false ,length = 25, columnDefinition = "nvarchar(25)")
+    private long id;
+    @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
-    @Column(length = 100, columnDefinition = "nvarchar(100)")
+    @Column(columnDefinition = "nvarchar(50) not null")
     private String address;
+    @Column(columnDefinition = "Date")
     private Date birthday;
+    @Column(columnDefinition = "Boolean")
     private Boolean sex;
     private String avatar_url;
-    @Column(length = 10, columnDefinition = "varchar(10)")
+    @Column(columnDefinition = "varchar(10) not null")
     private String phone;
-    @Column(length = 25, columnDefinition = "varchar(25)")
     private String email;
-    @OneToOne
-    private Gio_Hang user_gio_hang;
-    private List<Hoa_Don> user_Hoa_don_s;
+    @Column(columnDefinition = "int(1)")
+    private Role_Enum role;
+
 }
