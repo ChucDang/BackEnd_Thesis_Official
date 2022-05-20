@@ -1,9 +1,17 @@
 package thud.luanvanofficial.entity;
+
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
+
 @Entity
+@Data
 @Table(name = "User")
-public class User extends BaseEntity{
+public class User {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
     @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
     @Column(columnDefinition = "nvarchar(50) not null")
@@ -17,9 +25,7 @@ public class User extends BaseEntity{
     private String phone;
     private String email;
     @ManyToOne
-    @JoinColumn(name = "role_id")
     private Role role;
     @OneToOne
-    @JoinColumn(name = "cart_id")
     private Cart cart;
 }

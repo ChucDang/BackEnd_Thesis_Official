@@ -1,19 +1,22 @@
 package thud.luanvanofficial.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "Role")
-public class Role extends BaseEntity{
+public class Role {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
     @Column(columnDefinition = "nvarchar(10) not null")
     private String code;
     @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
-    @OneToMany(mappedBy = "role")
+    @OneToMany
     private List<User> users = new ArrayList<>();
 }

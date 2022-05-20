@@ -1,35 +1,47 @@
 package thud.luanvanofficial.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "Product")
-public class Product extends BaseEntity {
-    @Column(columnDefinition = "nvarchar(25) not null")
+public class Product {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+//    @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
-    @Column(columnDefinition = "decimal(15) not null")
+//    @Column(columnDefinition = "decimal(15) not null")
     private float original_price;
-    @Column(columnDefinition = "decimal(15) not null")
+//    @Column(columnDefinition = "decimal(15) not null")
     private float new_price;
-    @Column(columnDefinition = "text")
+//    @Column(columnDefinition = "text")
     private String description;
-    @Column(columnDefinition = "decimal(1,2)")
+//    @Column(columnDefinition = "decimal(1,2)")
     private float rate;
-    private List<String> image_urls;
-    @ManyToOne
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
-    @Column(columnDefinition = "Boolean")
+
+    public Product(String name, float original_price, float new_price, String description, float rate, List<String> image_url, Boolean amortization, Catergory category, Brand brand) {
+        this.name = name;
+        this.original_price = original_price;
+        this.new_price = new_price;
+        this.description = description;
+        this.rate = rate;
+        this.image_url = image_url;
+        this.amortization = amortization;
+        this.category = category;
+        this.brand = brand;
+    }
+
+    @ElementCollection
+    private List<String> image_url;
     private Boolean amortization;
     @ManyToOne
-    @JoinColumn( name = "category_id")
     private Catergory category;
-    @ManyToOne
-    @JoinColumn(name = "sale_id")
-    private Sale sale;
-    @ManyToMany
-    @JoinTable(name = "cart_item")
-    private List<Cart> carts = new ArrayList<>();
+    @OneToOne
+    private Brand brand;
 }

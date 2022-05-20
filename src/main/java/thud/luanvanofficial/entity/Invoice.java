@@ -1,16 +1,19 @@
 package thud.luanvanofficial.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 @Entity
+@Data
 @Table(name = "Invoice")
-public class Invoice extends BaseEntity{
-    @OneToOne(mappedBy = "cart")
+public class Invoice {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    @OneToOne(targetEntity=Cart.class)
     private Cart cart;
-    @OneToMany(mappedBy = "invoice")
+    @OneToMany(targetEntity=Product.class)
     private List<Product> products = new ArrayList<>();
 }
