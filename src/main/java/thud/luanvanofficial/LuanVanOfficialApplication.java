@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import thud.luanvanofficial.entity.Brand;
 import thud.luanvanofficial.entity.Catergory;
 import thud.luanvanofficial.entity.Product;
@@ -13,7 +12,7 @@ import thud.luanvanofficial.repository.BrandRepository;
 import thud.luanvanofficial.repository.CatergoryRepository;
 import thud.luanvanofficial.repository.ProductRepository;
 import thud.luanvanofficial.repository.UserRepository;
-import thud.luanvanofficial.util.CustomPasswordEncoder;
+import thud.luanvanofficial.security.CustomPasswordEncoder;
 
 @SpringBootApplication
 public class LuanVanOfficialApplication {
@@ -41,9 +40,11 @@ public class LuanVanOfficialApplication {
                     "phẩm công ty Sony nhé", 4.9f, true, phone, sony);
             productRepository.save(product_1);
             User user = new User();
+            user.setId(1L);
             user.setUsername("chucdang");
             user.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
             userRepository.save(user);
+
         };
     }
 }

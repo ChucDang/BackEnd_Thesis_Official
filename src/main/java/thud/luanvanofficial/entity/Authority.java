@@ -14,10 +14,7 @@ public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @Column(columnDefinition = "nvarchar(10) not null")
     private String authority;
-    @Column(columnDefinition = "nvarchar(25) not null")
-    private String name;
     @OneToMany
     private List<User> users = new ArrayList<>();
 
