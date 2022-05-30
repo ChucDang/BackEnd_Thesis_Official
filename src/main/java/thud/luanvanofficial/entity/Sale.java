@@ -14,13 +14,10 @@ public class Sale {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @Column(columnDefinition = "DATE")
     private Date start;
-    @Column(columnDefinition = "DATE")
     private Date end;
-    @Column(columnDefinition = "text")
     private String description;
-    @OneToMany
+    @OneToMany(targetEntity = Product.class)
     private List<Product> products = new ArrayList<Product>();
 
 }

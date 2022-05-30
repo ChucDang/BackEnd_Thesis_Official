@@ -1,7 +1,7 @@
 package thud.luanvanofficial.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import thud.luanvanofficial.entity.Role;
+import thud.luanvanofficial.entity.Authority;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Authority, Long> {
 }

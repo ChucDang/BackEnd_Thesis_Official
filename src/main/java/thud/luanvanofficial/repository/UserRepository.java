@@ -1,8 +1,11 @@
 package thud.luanvanofficial.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import thud.luanvanofficial.entity.Cart;
+import org.springframework.security.core.userdetails.UserDetails;
 import thud.luanvanofficial.entity.User;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
 }

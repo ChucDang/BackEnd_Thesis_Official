@@ -25,20 +25,20 @@ public class Product {
 //    @Column(columnDefinition = "decimal(1,2)")
     private float rate;
 
-    public Product(String name, float original_price, float new_price, String description, float rate, List<String> image_url, Boolean amortization, Catergory category, Brand brand) {
+    public Product(String name, float original_price, float new_price, String description, float rate, Boolean amortization, Catergory category, Brand brand) {
         this.name = name;
         this.original_price = original_price;
         this.new_price = new_price;
         this.description = description;
         this.rate = rate;
-        this.image_url = image_url;
+//        this.image_url = image_url;
         this.amortization = amortization;
         this.category = category;
         this.brand = brand;
     }
 
-    @ElementCollection
-    private List<String> image_url;
+//    @ElementCollection
+//    private List<String> image_url;
     private Boolean amortization;
     @ManyToOne
     private Catergory category;

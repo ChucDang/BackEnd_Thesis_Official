@@ -13,12 +13,11 @@ import java.util.List;
 public class Brand {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-
-    @Column(columnDefinition = "nvarchar(10) not null")
+    private int  id;
     private String code;
-
-    public Brand(String code) {
+    private String name;
+    public Brand(String code, String name) {
         this.code = code;
+        this.name = name;
     }
 }

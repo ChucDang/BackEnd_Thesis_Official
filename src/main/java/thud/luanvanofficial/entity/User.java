@@ -1,31 +1,69 @@
 package thud.luanvanofficial.entity;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
-@Table(name = "User")
-public class User {
+@Table(name = "Users")
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(columnDefinition = "nvarchar(25) not null")
     private String name;
-    @Column(columnDefinition = "nvarchar(50) not null")
     private String address;
-    @Column(columnDefinition = "Date")
-    private Date birthday;
-    @Column(columnDefinition = "Boolean")
     private Boolean sex;
     private String avatar_url;
-    @Column(columnDefinition = "varchar(10) not null")
     private String phone;
     private String email;
-    @ManyToOne
-    private Role role;
-    @OneToOne
-    private Cart cart;
+    private String username;
+    private String password;
+
+    public User() {
+
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add(new Authority("ROLE_STUDENT"));
+        return roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public User(String name, String address, Boolean sex, String avatar_url, String phone, String email, String username, String password) {
+        this.name = name;
+        this.address = address;
+        this.sex = sex;
+        this.avatar_url = avatar_url;
+        this.phone = phone;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 }
