@@ -1,4 +1,5 @@
-package thud.luanvanofficial.security;
+package thud.luanvanofficial.service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import thud.luanvanofficial.repository.UserRepository;
+import thud.luanvanofficial.util.JwtUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // Get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (!StringUtils.hasText(header) || (StringUtils.hasText(header) && !header.startsWith("Bearer "))) {
+        if (!StringUtils.hasText(header) || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
@@ -40,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // Get jwt token and validate
 
-        if (!jwtUtil.validateToken(token, userDetails)) {
+        if (!jwtUtil.validateToken(token,userDetails)) {
             chain.doFilter(request, response);
             return;
         }

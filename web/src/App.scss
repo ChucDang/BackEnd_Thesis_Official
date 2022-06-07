@@ -1,0 +1,34 @@
+// SCSS chính thức
+* {
+  font-family: "Hahmlet", serif;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.info-section div {
+  padding-bottom: 0.2rem;
+  font-size: smaller;
+}
+
+.alink_custom {
+  display: flex;
+  div {
+    margin: 0 auto;
+    padding: 0 auto;
+    a {
+      font-weight: bold;
+      margin: 0 1rem;
+    }
+  }
+}
+.img_detail {
+  width: 100%;
+}
+
+@media only screen and (max-width: 760px) {
+  * {
+    font-size: small;
+  }
+}
+
+/* import bootstrap to set changes */
+@import "../node_modules/bootstrap/scss/bootstrap";

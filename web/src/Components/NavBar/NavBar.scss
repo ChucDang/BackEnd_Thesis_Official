@@ -1,0 +1,19 @@
+@media only screen and (max-width: 900px) {
+  // .navbar-nav{
+  //   flex-direction: row !important;
+  //   justify-content: space-evenly;
+  //   // .nav-link {
+  //   //   padding: 5px !important;
+  //   // }
+  // }
+  .navbar {
+    flex-direction: row-reverse;
+  }
+  .navbar-brand {
+    order: 2;
+  }
+
+  .grpicon {
+    order: 1;
+  }
+}

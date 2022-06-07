@@ -1,5 +1,6 @@
 package thud.luanvanofficial.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -14,9 +15,10 @@ public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
     private String authority;
-    @OneToMany
-    private List<User> users = new ArrayList<>();
 
     public Authority(String authority) {
         this.authority = authority;
@@ -28,6 +30,6 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return null;
+        return authority;
     }
 }

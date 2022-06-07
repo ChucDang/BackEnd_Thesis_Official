@@ -1,4 +1,4 @@
-package thud.luanvanofficial.security;
+package thud.luanvanofficial.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import thud.luanvanofficial.security.UserDetailServiceIml;
+import thud.luanvanofficial.util.CustomPasswordEncoder;
+import thud.luanvanofficial.service.JwtFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomPasswordEncoder customPasswordEncoder;
     @Autowired
     private JwtFilter jwtFilter;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
@@ -32,18 +36,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http = http.csrf().disable().cors().disable();
-        http = http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and();
-        http = http.exceptionHandling()
-                .authenticationEntryPoint((request, response, exception)->{
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
-                }).and();
+        http = http.cors().disable().csrf().disable();
 
+        // Set session management to stateless
+        http = http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and();
+
+        // Set unauthorized requests exception handler
+        http = http
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }
+                )
+                .and();
+
+        // Set permissions on endpoints
         http.authorizeRequests()
-                .antMatchers(("/api/auth/**")).permitAll()
+                // Our public endpoints
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/products/**").permitAll()
+                // Our private endpoints
                 .anyRequest().authenticated();
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // Add JWT token filter
+        http.addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
+
     }
 }

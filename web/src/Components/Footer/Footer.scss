@@ -1,0 +1,43 @@
+.footer {
+  padding: 2rem;
+  background-color: rgb(26, 26, 31);
+  margin-top: 3rem;
+  color: rgb(168, 166, 166);
+  .footer__header {
+    font-size: larger;
+    margin-bottom: 1rem;
+    align-self: center;
+  }
+  .footer__logo {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    .footer__logo--img {
+      width: 5rem;
+      height: 5rem;
+      margin-right: 1rem;
+    }
+    .footer__logo--brand {
+      font-size: x-large;
+      align-self: inherit;
+    }
+  }
+  .footer--normal {
+    font-size: smaller;
+    padding: 0.2rem;
+  }
+  .footer__slogan {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .footer__email {
+    display: flex;
+    margin: auto;
+    height: 2.5rem;
+    padding: 1rem;
+    width: 50%;
+    border: 2px solid #ccc;
+    border-radius: 1rem;
+  }
+}

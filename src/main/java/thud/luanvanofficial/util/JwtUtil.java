@@ -1,4 +1,4 @@
-package thud.luanvanofficial.security;
+package thud.luanvanofficial.util;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,7 +21,7 @@ public class JwtUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 12 * 30 * 24 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 20*30*60*60*24;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -72,7 +72,7 @@ public class JwtUtil implements Serializable {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
