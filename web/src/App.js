@@ -15,6 +15,7 @@ import ProductDetail from './Components/Product/ProductDetail';
 import FooterComponent from './Components/Footer/FooterComponent';
 import RegisterComponent from './Components/Register/RegisterComponent';
 import CarouselComponent from './Components/NavBar/CarouselComponent';
+import ForgetComponent from './Components/Register/ForgetComponent';
 function App() {
     return (
         <div>
@@ -37,6 +38,14 @@ function App() {
                     </>
 
                 } />
+                <Route path="forget" element={
+                    <>
+                        <NavBarComponent />
+                        <ForgetComponent />
+
+                    </>
+                }
+                />
             </Routes>
 
         </div>

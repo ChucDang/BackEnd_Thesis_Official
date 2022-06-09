@@ -1,19 +1,24 @@
-import React from 'react'
-import { Button, Offcanvas, Form, Container, DropdownButton, Dropdown } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Button, Offcanvas, Form, Container, DropdownButton, Dropdown, Row, Col, Alert } from 'react-bootstrap'
 import { useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person'
-import { useLocalState } from '../../util/useLocalStorage';
 import "./Login.scss"
+import { useUser } from '../../UserProvider';
+import { useNavigate } from "react-router-dom";
+
 export default function LoginComponent() {
+    const user = useUser();
+    const navigate = useNavigate();
     const [show, setShow] = useState(false);
-    const [jwt, setJwt] = useLocalState("", "jwt")
     const [name, setName] = useState("");
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMsg, setErrorMsg] = useState(null);
 
     function sendLoginRequest() {
+        setErrorMsg("");
         const reqBody = {
             username: username,
             password: password,
@@ -35,17 +40,35 @@ export default function LoginComponent() {
             //         console.log("Đăng nhập thất bại")
             //     }
             // })
-            .then((response) => Promise.all([response.json(), response.headers]))
-            .then(([body, headers]) => {
+            .then((response) => {
+                if (response.status === 200) return response.text();
+                else if (response.status === 401 || response.status === 403) {
+                    return setErrorMsg("Invalid username or password");
+                } else {
+                    return setErrorMsg(
+                        "Something went wrong, try again later"
+                    );
+                }
+            })
+            .then((data) => {
+                if (data) {
+                    user.setJwt(data);
+                    let obj = JSON.parse(user.jwt)
+                    setName(obj.fullname)
+                    // console.log("data là " + user.value)
+                    setShow(false)
+                    alert("Đăng Nhập thành công")
 
-                setJwt(headers.get("Authorization"))
-                setName(body.name)
-                setShow(false)
+                }
             });
     }
+
     function handle_Logout() {
-        setJwt("")
+        user.setJwt("");
+
         setName("")
+        alert("Đăng xuất thành công")
+        navigate("/");
     }
     var icon_login;
     if (name.length === 0) {
@@ -68,7 +91,6 @@ export default function LoginComponent() {
             </>
 
     }
-
 
     return (
         <Container>
@@ -98,6 +120,17 @@ export default function LoginComponent() {
                                 Chúng tôi sẽ không tiết lộ thông tin cá nhân của bạn.
                             </Form.Text>
                         </Form.Group>
+                        {errorMsg ? (
+                            <Row className="justify-content-center mb-4">
+                                <Col md="8" lg="6">
+                                    <div className="" style={{ color: "red", fontWeight: "bold" }}>
+                                        {errorMsg}
+                                    </div>
+                                </Col>
+                            </Row>
+                        ) : (
+                            <></>
+                        )}
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="Nhớ mật khẩu" />
 
@@ -114,7 +147,7 @@ export default function LoginComponent() {
                             </Button>
                             <div className='link_login'>
                                 <a href='/register'>Đăng Ký</a>
-                                <a>Quên mật khẩu?</a>
+                                <a href='/forget'>Quên mật khẩu?</a>
                             </div>
 
                         </Form.Group>

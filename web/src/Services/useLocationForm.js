@@ -86,11 +86,11 @@ function useLocationForm() {
         setState({ ...state, selectedWard: option });
     }
 
-    function onSubmit(e) {
-        e.preventDefault();
-        window.location.reload();
-    }
+    // function onSubmit(e) {
+    //     e.preventDefault();
+    //     window.location.reload();
+    // }
 
-    return { state, onCitySelect, onDistrictSelect, onWardSelect, onSubmit };
+    return { state, onCitySelect, onDistrictSelect, onWardSelect };
 }
 export default useLocationForm

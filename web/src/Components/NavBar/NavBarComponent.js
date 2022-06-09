@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Navbar, Nav, Form } from 'react-bootstrap'
 import { FormControl, NavDropdown, Offcanvas, Carousel } from 'react-bootstrap'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -6,11 +6,20 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LoginComponent from '../Login/LoginComponent';
 import "./NavBar.scss"
+import { useUser } from '../../UserProvider';
 export default function NavBarComponent() {
+    const user = useUser();
+    const [name, setName] = useState("");
+    function onNameChange() {
+        if (user.jwt) {
+            let obj = JSON.parse(user.jwt)
+            setName(obj.fullname)
+        }
+    }
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="xl" sticky="top">
-                <Navbar.Brand href="#" className='d-flex'>
+                <Navbar.Brand href="/" className='d-flex'>
                     <img
                         alt="Không load được hình"
                         src="/icons/ic_store.png"
@@ -67,7 +76,7 @@ export default function NavBarComponent() {
                     <a href="#link" className='my_custom p-2' > <LocalMallIcon /> </a>
                     <a href="#link" className='p-2' > <NotificationsIcon /> </a>
                     <a href="#link" className='p-2' > <MailIcon /> </a>
-                    <a href="#link" className='p-2' >  <LoginComponent /></a>
+                    <a href="#link" className='p-2' >  <LoginComponent handleShowName={() => onNameChange()} /></a>
                 </div>
             </Navbar>
 
