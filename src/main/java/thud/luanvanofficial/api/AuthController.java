@@ -1,5 +1,6 @@
 package thud.luanvanofficial.api;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,44 +11,42 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import thud.luanvanofficial.dto.UserDTO;
 import thud.luanvanofficial.entity.User;
 import thud.luanvanofficial.security.AuthCredentialsRequest;
 import thud.luanvanofficial.util.JwtUtil;
+import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
 public class AuthController {
+    private Logger log = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtUtil jwtUtil;
+
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody AuthCredentialsRequest req){
+    public ResponseEntity<?> login(@RequestBody AuthCredentialsRequest req) {
         try {
-            Authentication authenticate = authenticationManager
-                    .authenticate(
-                            new UsernamePasswordAuthenticationToken(
-                                    req.getUsername(), req.getPassword()
-                            )
-                    );
+            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
 
             User user = (User) authenticate.getPrincipal();
 
-            return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtUtil.generateToken(user)
-                    )
-                    .body(user);
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user)).body(user);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-//    localhost:8080/api/auth/validate?token=something
+
+    //    localhost:8080/api/auth/validate?token=something
     @GetMapping("/validate")
-    public ResponseEntity<?> validateToken(@RequestParam String token, @AuthenticationPrincipal User user){
-        Boolean isTokenValid=jwtUtil.validateToken(token, user);
+    public ResponseEntity<?> validateToken(@RequestParam String token, @AuthenticationPrincipal User user) {
+        Boolean isTokenValid = jwtUtil.validateToken(token, user);
         return ResponseEntity.ok(isTokenValid);
     }
-    }
+
+
+}
+

@@ -104,9 +104,10 @@ function LocationComponent() {
                         <Form.Control type="text" />
                     </Form.Group>
                 </Row>
+                {/* 
                 <Button variant="primary" type="submit">
                     Submit
-                </Button>
+                </Button> */}
             </Form>
         </Container>
 

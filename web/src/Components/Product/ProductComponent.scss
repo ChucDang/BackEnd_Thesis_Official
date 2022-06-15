@@ -1,0 +1,111 @@
+// .card_item là className của mỗi Card product trong trang home
+.card_item {
+  padding: 0.5rem !important;
+  color: #001c44 !important;
+  text-transform: capitalize;
+  .card_item__icons {
+    display: flex;
+    flex-wrap: wrap;
+    .card_item__icons__icon {
+      padding: 0.3rem;
+      .card_item__icons__icon--width {
+        width: 20px;
+      }
+    }
+  }
+  .card_item__price {
+    display: flex;
+    justify-content: space-around;
+    .card_item__price--new {
+      background-color: #001c44;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 1rem;
+    }
+    .card_item__price--old {
+      padding: 0.5rem;
+      text-decoration-line: line-through;
+    }
+  }
+}
+// Đây là định dạng cho các product hiển thị trong Recommend product
+.Stack {
+  display: flex;
+  padding: 0.5rem;
+  .Stack__img {
+    width: 75%;
+    height: 75%;
+    margin-right: 0.5rem;
+  }
+  .Stack__info {
+    .Stack__info__model {
+    }
+    .Stack__info__price {
+      display: flex;
+      font-weight: bolder;
+      justify-content: space-around;
+      .Stack__info__price--new {
+        margin-right: 1rem;
+      }
+      .Stack__info__price--old {
+        text-decoration: line-through;
+      }
+    }
+  }
+}
+
+// Đây là tên danh mục lớn trước khi hiển thị một danh sách Card product
+.catergory_label {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 1rem;
+  font-size: xx-large;
+  letter-spacing: 0.5rem;
+  color: #001c44;
+  text-transform: capitalize;
+}
+
+// Đây là định dạng cho trang detail
+.row_detail {
+  display: flex;
+  flex-wrap: wrap;
+  color: #001c44;
+
+  .row_detail__recommend {
+    margin-top: 1rem;
+    margin-right: 2rem;
+    text-transform: capitalize;
+  }
+  .row_detail__mainimg {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+    .row_detail__mainimg--width {
+      width: 100%;
+    }
+  }
+  .row_detail__description {
+    font-size: larger;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    .row_detail__description--name {
+      text-transform: uppercase;
+    }
+    .row_detail__description__price {
+      display: flex;
+      flex-direction: row;
+      margin-top: 1rem;
+      .row_detail__description__price--new {
+        margin-right: 2rem;
+      }
+      .row_detail__description__price--old {
+        text-decoration: line-through;
+      }
+    }
+    .row_detail__description--fontInfo {
+      // text-decoration: none;
+      font-size: smaller;
+    }
+  }
+}

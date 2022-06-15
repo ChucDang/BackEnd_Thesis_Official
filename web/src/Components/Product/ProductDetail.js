@@ -1,16 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
-import { useLocalState } from '../../util/useLocalStorage'
-import ajax from '../../Services/fechServices'
-import ProductItem from './ProductItem'
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col } from 'react-bootstrap';
+import ajax from '../../Services/fechServices';
+import ProductItem from './ProductItem';
+
 function ProductDetail() {
-    const [jwt, setJwt] = useLocalState("", "jwt")
-    const [products, setProducts] = useState(null)
+    const productId = window.location.href.split("/products/product/")[1];
+    const [currentProduct, setCurrentProduct] = useState(null)
+    const [productRecommend, setproductRecommend] = useState(null)
     useEffect(() => {
-        ajax("/products", "GET", jwt)
+        ajax(`/api/products/product/${productId}`, "GET")
             .then((productResponse) => {
-                let productData = productResponse.slice(0, 4)
-                setProducts(productData)
+                const data = productResponse.product;
+                setCurrentProduct(data)
+            }).catch(error => {
+                console.log(error);
+            })
+    }, [])
+    useEffect(() => {
+        let caterCode
+        if (currentProduct) {
+            caterCode = currentProduct.catergory.code
+        } else {
+            caterCode = 'phone'
+        }
+        ajax(`/api/products/catergory/${caterCode}`, "GET")
+            .then((productResponse) => {
+                let productData = productResponse;
+                console.log(productData)
+                setproductRecommend(productData)
             }).catch(error => {
                 console.log(error);
             })
@@ -18,16 +35,15 @@ function ProductDetail() {
     return (
         <>
             <Container fluid>
-                <Row className='p-4 font-weight-bold'>Sản phẩm</Row>
-                <Row>
-                    <Col>
+                <Row className='row_detail'>
+                    <Col xs={3} className='row_detail__recommend'>
                         {
-                            products ? products.map(product =>
+                            productRecommend ? productRecommend.map(product =>
 
                                 <ProductItem
                                     key={product.id}
                                     productProps={product}
-                                // type_display="Card"
+                                    type_display="Stack"
                                 />
 
 
@@ -35,43 +51,30 @@ function ProductDetail() {
                             ) : <></>
                         }
                     </Col>
-                    <Col xs={4}>
-                        <img src='/imgs/computer.png' alt='Không tải được ảnh' className="img_detail"></img>
+                    <Col xs={4} className='row_detail__mainimg'>
+                        <img src='/imgs/computer.png' alt='Không tải được ảnh' className='row_detail__mainimg--width' />
                     </Col>
-                    <Col xs={4}>
-                        {
-                            products ? products.map(product =>
 
-                                <ProductItem
-                                    key={product.id}
-                                    productProps={product}
-                                // type_display="Card"
-                                />
+                    <Col className='row_detail__description'>
+                        {currentProduct ? <>
+                            <div className='row_detail__description--name'>{currentProduct.brand + ' ' + currentProduct.model + ' ' + currentProduct.ram +
+                                ' ' + currentProduct.cpu.code} </div>
 
+                            <div className='row_detail__description__price'>
+                                <p className='row_detail__description__price--new'> {currentProduct.new_price + ' đ'}</p>
+                                <p className='row_detail__description__price--old'> {currentProduct.original_price + ' đ'}</p>
 
-
-                            ) : <></>
+                            </div>
+                            <div className='row_detail__description--fontInfo'>{currentProduct.description}</div>
+                        </> : <> </>
                         }
-                    </Col>
 
+                    </Col>
                 </Row>
+
             </Container>
-            {/* <Col>
-
-                {
-                    products ? products.map(product =>
-
-                        <ProductItem
-                            key={product.id}
-                            productProps={product}
-                        // type_display="Card"
-                        />
 
 
-
-                    ) : <></>
-                }
-            </Col> */}
         </>
     )
 }

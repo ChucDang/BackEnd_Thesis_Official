@@ -68,7 +68,7 @@ function RegisterComponent() {
             address: state.selectedCity.label + "," + state.selectedDistrict.label + "," + state.selectedWard.label
         };
 
-        fetch("/api/users/register", {
+        fetch("/api/auth/users/register", {
             headers: {
                 "Content-Type": "application/json",
             },

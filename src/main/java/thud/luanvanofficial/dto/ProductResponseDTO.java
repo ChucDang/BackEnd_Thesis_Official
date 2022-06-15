@@ -1,30 +1,19 @@
 package thud.luanvanofficial.dto;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import thud.luanvanofficial.entity.Product;
-import thud.luanvanofficial.enums.Catergory_Enum;
-import thud.luanvanofficial.enums.LaptopBrand_Enum;
+import thud.luanvanofficial.enums.Catergory_Enums;
+import thud.luanvanofficial.enums.RAM_Enums;
 
+@Data
 public class ProductResponseDTO {
     private Product product;
-    private Catergory_Enum[] product_enum = Catergory_Enum.values();
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Catergory_Enum[] getProduct_enum() {
-        return product_enum;
-    }
-
-    public void setProduct_enum(Catergory_Enum[] product_enum) {
-        this.product_enum = product_enum;
-    }
+    private Catergory_Enums[] list_catergory = Catergory_Enums.values();
+    private RAM_Enums[] list_ram = RAM_Enums.values();
 
     public ProductResponseDTO(Product product) {
         this.product = product;
     }
 }
+

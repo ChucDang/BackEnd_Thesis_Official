@@ -12,8 +12,8 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @OneToOne(targetEntity=Cart.class)
-    private Cart cart;
-    @OneToMany(targetEntity=Product.class)
-    private List<Product> products = new ArrayList<>();
+//    @OneToOne(targetEntity=Cart.class)
+//    private Cart cart;
+//    @OneToMany(targetEntity=Product.class)
+//    private List<Product> products = new ArrayList<>();
 }

@@ -30,18 +30,10 @@ export default function LoginComponent() {
             method: "post",
             body: JSON.stringify(reqBody)
         })
-            // .then((response) => {
-            //     if (response.status === 200) {
-            //         console.log(response.body)
-            //         setShowName(true);
-            //         // setJwt()
-            //         return response.text()
-            //     } else {
-            //         console.log("Đăng nhập thất bại")
-            //     }
-            // })
             .then((response) => {
-                if (response.status === 200) return response.text();
+                if (response.status === 200) {
+                    return response.text()
+                }
                 else if (response.status === 401 || response.status === 403) {
                     return setErrorMsg("Invalid username or password");
                 } else {
@@ -53,9 +45,9 @@ export default function LoginComponent() {
             .then((data) => {
                 if (data) {
                     user.setJwt(data);
+                    console.log("jwt là " + user.jwt)
                     let obj = JSON.parse(user.jwt)
                     setName(obj.fullname)
-                    // console.log("data là " + user.value)
                     setShow(false)
                     alert("Đăng Nhập thành công")
 
@@ -64,7 +56,7 @@ export default function LoginComponent() {
     }
 
     function handle_Logout() {
-        user.setJwt("");
+        user.setJwt(undefined);
 
         setName("")
         alert("Đăng xuất thành công")
@@ -72,7 +64,7 @@ export default function LoginComponent() {
     }
     var icon_login;
     if (name.length === 0) {
-        icon_login = <PersonIcon onClick={handleShow} />;
+        icon_login = <><PersonIcon onClick={handleShow} /></>;
     } else {
         icon_login =
             <>

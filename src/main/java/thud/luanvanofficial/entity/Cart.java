@@ -20,10 +20,10 @@ public class Cart {
     private String deliveryCity;
     private String deliveryState;
     private String deliveryZip;
-    @ManyToMany(targetEntity = Product.class)
-    private List<Product> products = new ArrayList<>();
+//    @ManyToMany(targetEntity = Product.class)
+//    private List<Product> products = new ArrayList<>();
 
-    @OneToOne(targetEntity = User.class)
+    @OneToOne
     private User user;
 
 

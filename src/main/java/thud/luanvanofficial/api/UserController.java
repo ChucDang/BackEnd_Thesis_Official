@@ -1,38 +1,57 @@
 package thud.luanvanofficial.api;
 
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import thud.luanvanofficial.dto.UserDTO;
 import thud.luanvanofficial.entity.Authority;
 import thud.luanvanofficial.entity.Product;
 import thud.luanvanofficial.entity.User;
 import thud.luanvanofficial.repository.AuthorityRepository;
 import thud.luanvanofficial.repository.UserRepository;
+import thud.luanvanofficial.service.UserService;
+import thud.luanvanofficial.util.JwtUtil;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping(path = "/users", produces = "application/json")
+@RequestMapping(path = "/api/auth/users")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class UserController {
-    private UserRepository userRepository;
-    private AuthorityRepository authorityRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-    public UserController(UserRepository userRepository, AuthorityRepository authorityRepository) {
-        this.userRepository = userRepository;
-        this.authorityRepository = authorityRepository;
+    @PostMapping("/register")
+    private ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
+        userService.createUser(userDto);
+
+        try {
+            Authentication authenticate = authenticationManager
+                    .authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    userDto.getUsername(), userDto.getPassword()
+                            )
+                    );
+
+            User user = (User) authenticate.getPrincipal();
+            return ResponseEntity.ok()
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            jwtUtil.generateToken(user)
+                    )
+                    .body(user);
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
-
-//    @PutMapping
-//    public Product putUser(@RequestBody User data) {
-//            User user = new User();
-//            user.setId(1L);
-//            user.setName("Đặng Văn Chức");
-//            user.setUsername("admin");
-//            Set<Authority> set = new HashSet<>();
-//            set.add(admin);
-//            user.setAuthorities(set);
-//            user.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
-//            userRepository.save(user);
-
 }

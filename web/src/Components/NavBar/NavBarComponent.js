@@ -27,7 +27,7 @@ export default function NavBarComponent() {
                         height="50"
                         className="d-inline-block align-top"
                     />{' '}
-                    <span className="mx-3 fs-2 fw-bold align-self-center">MY LIFE</span>
+                    <span className="mx-3 fs-2 fw-bold align-self-center">Hi-Tech</span>
                 </Navbar.Brand>
 
                 <Navbar.Toggle id="offcanvasNavbarLabel-expand-sm" />
@@ -44,9 +44,9 @@ export default function NavBarComponent() {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                            <Nav.Link href="#action1">Điện Thoại</Nav.Link>
-                            <Nav.Link href="#action2">Laptop</Nav.Link>
-                            <Nav.Link href="#action2">Đồng Hồ</Nav.Link>
+                            <Nav.Link href="/products/catergory/phone">Điện Thoại</Nav.Link>
+                            <Nav.Link href="/products/catergory/laptop">Laptop</Nav.Link>
+                            <Nav.Link href="/products/catergory/clock">Đồng Hồ</Nav.Link>
                             <NavDropdown
                                 title="Phụ kiện khác"
                                 id='offcanvasNavbarDropdown-expand-sm'

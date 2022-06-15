@@ -3,6 +3,7 @@ package thud.luanvanofficial.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import thud.luanvanofficial.enums.Role_Enum;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    private String authority;
+
     @ManyToOne
     @JsonIgnore
     private User user;
-    private String authority;
-
     public Authority(String authority) {
         this.authority = authority;
     }
@@ -27,6 +28,8 @@ public class Authority implements GrantedAuthority {
     public Authority() {
 
     }
+
+
 
     @Override
     public String getAuthority() {

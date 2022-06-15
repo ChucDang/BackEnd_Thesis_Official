@@ -1,48 +1,55 @@
-import React from 'react'
-import { Card, Button } from 'react-bootstrap'
+
+import React, { Fragment } from 'react'
+import { Card } from 'react-bootstrap'
 export default function ProductItem(props) {
     const product = props.productProps;
     const type_display = props.type_display;
+
     let optrender
     if (type_display === "Card") {
         optrender =
-            <Card className='item_product'>
+            <Card className='card_item'>
                 <Card.Img variant="top" src="/imgs/computer.png" alt='Lỗi tải ảnh' />
                 <Card.Body>
-                    <Card.Title>{product.id}</Card.Title>
-                    <Card.Text>
-                        <span> {product.name}</span>
-                    </Card.Text>
-                    <Card.Text>
+                    <Card.Title>{product.brand + ' ' + product.model}</Card.Title>
+                    <div className='card_item__icons'>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_cpu.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.cpu.code} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_weight.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.ram} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_memory.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.memory} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_monitor.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.monitor} </p>
+                    </div>
+                    <div className='card_item__price'>
+                        <p className='card_item__price--new'> {product.new_price + ' đ'}</p>
+                        <p className='card_item__price--old'> {product.original_price + ' đ'}</p>
 
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
+                    </div>
+                    {/* <Card.Link to={`/products/${product.id}`} className='stretched-link' /> */}
+                    <a href={`/products/product/${product.id}`} className="stretched-link"> </a>
                 </Card.Body>
+
             </Card>;
-    } else {
+    }
+    else {
         optrender =
-            <div className='bg-primary my-2'>
-                <img src='/imgs/computer.png' width={150} alt="Không tải được ảnh" className='mx-1' />
-                {product.name}
-            </div>;
+            <>
+                <div className='Stack'>
+                    <img src='/imgs/computer.png' width={150} alt="Không tải được ảnh" className='Stack__img' />
+                    <div className='Stack__info'>
+                        <p className='Stack__info__model'>
+                            {product.brand + ' ' + product.model}
+                        </p>
+                        <p className='Stack__info__price'>
+                            <label className='Stack__info__price--new'>
+                                {product.new_price}
+                            </label>
+                            <label className='Stack__info__price--old'> {product.original_price}</label>
+                        </p>
+                    </div>
+                </div>
+            </>
+
     }
     return (
-        // Hiển thị dạng Card
-        // <Card className='item_product'>
-        //     <Card.Img variant="top" src="/imgs/computer.png" alt='Lỗi tải ảnh' />
-        //     <Card.Body>
-        //         <Card.Title>{product.id}</Card.Title>
-        //         <Card.Text>
-        //             <span> {product.name}</span>
-        //         </Card.Text>
-        //         <Card.Text>
-
-        //         </Card.Text>
-        //         <Button variant="primary">Go somewhere</Button>
-        //     </Card.Body>
-        // </Card>
         <>{optrender}</>
-
-
     )
 }

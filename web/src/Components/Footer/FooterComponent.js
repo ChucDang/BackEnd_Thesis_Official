@@ -14,7 +14,7 @@ function FooterComponent() {
                             src="/icons/ic_store.png"
                             className='footer__logo--img'
                         />
-                        <span className="footer__logo--brand">MY LIFE</span>
+                        <span className="footer__logo--brand">Hi-Tech</span>
                     </div>
                     <div className='footer__slogan'>Hãy tận hưởng những tiện ích từ hệ sinh thái của chúng tôi</div>
                     <input type='email' placeholder='Email' className='footer__email'></input>

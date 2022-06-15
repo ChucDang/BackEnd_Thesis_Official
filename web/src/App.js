@@ -11,11 +11,11 @@ import NavBarComponent from "./Components/NavBar/NavBarComponent";
 import { Routes, Route } from 'react-router-dom';
 import ProductComponent from './Components/Product/ProductComponent';
 import LoginComponent from './Components/Login/LoginComponent';
-import ProductDetail from './Components/Product/ProductDetail';
 import FooterComponent from './Components/Footer/FooterComponent';
 import RegisterComponent from './Components/Register/RegisterComponent';
 import CarouselComponent from './Components/NavBar/CarouselComponent';
 import ForgetComponent from './Components/Register/ForgetComponent';
+import ProductDetail from './Components/Product/ProductDetail';
 function App() {
     return (
         <div>
@@ -29,7 +29,6 @@ function App() {
                     </>
                 }></Route>
                 <Route path="login" element={<LoginComponent />} />
-                <Route path="details" element={<ProductDetail />} />
                 <Route path='register' element={
                     <>
                         <NavBarComponent />
@@ -45,6 +44,26 @@ function App() {
 
                     </>
                 }
+                />
+                <Route path="/products/catergory/:catergoryCode" element={
+                    <>
+                        <NavBarComponent />
+                        <ProductComponent />
+                        <FooterComponent />
+                    </>
+
+                }
+
+                />
+                <Route path="/products/product/:productId" element={
+                    <>
+                        <NavBarComponent />
+                        <ProductDetail />
+                        <FooterComponent />
+                    </>
+
+                }
+
                 />
             </Routes>
 

@@ -1,7 +1,6 @@
 package thud.luanvanofficial.entity;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -14,9 +13,9 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String fullname;
     private String address;
-    private Boolean sex;
+    private Boolean gender;
     private String phone;
     private String email;
     private String username;
@@ -53,14 +52,15 @@ public class User implements UserDetails {
         return true;
     }
 
-    public User(String name, String address, Boolean sex,String note, String phone, String email, String username, String password) {
-        this.name = name;
+    public User(String fullname, String address, Boolean gender, String phone, String email, String username, String password, String note, Set<Authority> authorities) {
+        this.fullname = fullname;
         this.address = address;
-        this.sex = sex;
+        this.gender = gender;
         this.phone = phone;
         this.email = email;
         this.username = username;
         this.password = password;
         this.note = note;
+        this.authorities = authorities;
     }
 }

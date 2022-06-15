@@ -17,7 +17,7 @@ public class Sale {
     private Date start;
     private Date end;
     private String description;
-    @OneToMany(targetEntity = Product.class)
-    private List<Product> products = new ArrayList<Product>();
+//    @OneToMany(targetEntity = Product.class)
+//    private List<Product> products = new ArrayList<Product>();
 
 }
