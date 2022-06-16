@@ -1,5 +1,5 @@
 
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Card } from 'react-bootstrap'
 export default function ProductItem(props) {
     const product = props.productProps;
@@ -13,14 +13,15 @@ export default function ProductItem(props) {
                 <Card.Body>
                     <Card.Title>{product.brand + ' ' + product.model}</Card.Title>
                     <div className='card_item__icons'>
-                        <p className='card_item__icons__icon'><img src='/icons/ic_cpu.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.cpu.code} </p>
-                        <p className='card_item__icons__icon'><img src='/icons/ic_weight.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.ram} </p>
-                        <p className='card_item__icons__icon'><img src='/icons/ic_memory.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.memory} </p>
-                        <p className='card_item__icons__icon'><img src='/icons/ic_monitor.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.monitor} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_cpu.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.cpu.version} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_weight.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.weight} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_memory.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.storage.storage} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_size.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.screen.size + ' inch'} </p>
+                        <p className='card_item__icons__icon'><img src='/icons/ic_monitor.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.screen.tech + ' ' + product.screen.standard} </p>
                     </div>
                     <div className='card_item__price'>
-                        <p className='card_item__price--new'> {product.new_price + ' đ'}</p>
-                        <p className='card_item__price--old'> {product.original_price + ' đ'}</p>
+                        <p className='card_item__price--new'> {Number(product.new_price).toLocaleString('vn') + ' đ'}</p>
+                        <p className='card_item__price--old'> {Number(product.original_price).toLocaleString('vn') + ' đ'}</p>
 
                     </div>
                     {/* <Card.Link to={`/products/${product.id}`} className='stretched-link' /> */}

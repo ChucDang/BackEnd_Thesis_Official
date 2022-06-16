@@ -22,9 +22,10 @@ public class Screen {
     private String size;
     private String tech;
     private String resolution;
-    private float color;
+    private String color;
     private int frequent;
     private String material;
+    private String standard;
 //    @OneToMany(mappedBy = "map_screen")
 //    private Set<Product> products = new HashSet<>();
 }

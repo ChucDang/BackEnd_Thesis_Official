@@ -28,32 +28,41 @@ public class Product {
     private float original_price;
 //    @Column(columnDefinition = "decimal(15) not null")
     private float new_price;
-//    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "text")
     private String description;
 //    @Column(columnDefinition = "decimal(1,2)")
     private float rate;
 
     private Boolean amortization;
-
-
-    private String ram;
-    private String memory;
     private String pin;
-    private int battery_capacity;
+    private String battery_capacity;
     //Đặt tên thuộc tính là release thì sẽ ra lỗi nên đổi thành tên khác
-    @JsonFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(pattern = "MM/dd/yyyy")
+    @Column(columnDefinition = "Date")
     private Date release_date;
-//@JsonFormat(pattern="yyyy-MM-dd")
-//private Date birthday;
+
     private int warranty;
-    private float weight;
+
+    private String weight;
     private String size;
-    private int camera;
-    private int selfie;
+    private String camera;
+    private String selfie;
+
+    private String origin;
+    private String graphic;
+    private String material;
+    private String video;
+    private String feature;
+    private String os;
     @ManyToOne
     private Catergory catergory;
     @ManyToOne
     private CPU cpu;
     @ManyToOne
     private Screen screen;
+    @ManyToOne
+    private RAM ram;
+    @ManyToOne
+    private Storage storage;
+
 }

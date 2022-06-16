@@ -17,10 +17,10 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private String authority;
-
-    @ManyToOne
-    @JsonIgnore
-    private User user;
+//
+//    @ManyToOne
+//    @JsonIgnore
+//    private User user;
     public Authority(String authority) {
         this.authority = authority;
     }

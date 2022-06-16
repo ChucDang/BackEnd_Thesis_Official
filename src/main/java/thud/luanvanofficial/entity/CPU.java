@@ -16,12 +16,19 @@ import java.util.Set;
 public class CPU {
     @Id
     private int id;
-    private String model;
+    @Column(columnDefinition = "varchar(10) default null")
+    private String brand;
     private String version;
     private String type;
     private int core;
     private float speed;
+    private String max_speed;
+    @Column(columnDefinition = "boolean default false")
     private Boolean sp_64bits;
-//    @OneToMany(mappedBy = "map_cpu")
-//    private Set<Product> products = new HashSet<>();
+    @Column(columnDefinition = "int default 0")
+    private int thread;
+    @Column(columnDefinition = "int default 0")
+    private int buffer;
+    @Column(columnDefinition = "int default 0",nullable = true)
+    private int bus;
 }

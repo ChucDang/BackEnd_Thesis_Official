@@ -23,6 +23,4 @@ public class Catergory {
     private Long id;
     private String code;
     private String name;
-//    @OneToMany
-//    private Set<Product> products = new HashSet<>();
 }
