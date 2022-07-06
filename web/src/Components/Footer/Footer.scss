@@ -3,6 +3,7 @@
   background-color: rgb(26, 26, 31);
   margin-top: 3rem;
   color: rgb(168, 166, 166);
+
   .footer__header {
     font-size: larger;
     margin-bottom: 1rem;
@@ -33,7 +34,7 @@
   }
   .footer__email {
     display: flex;
-    margin: auto;
+    margin: auto !important;
     height: 2.5rem;
     padding: 1rem;
     width: 50%;

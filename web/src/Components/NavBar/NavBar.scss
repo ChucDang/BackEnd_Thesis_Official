@@ -1,3 +1,18 @@
+// Cấu hình cho thanh icon của Navbar
+.grpicon {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem !important;
+  .grpicon__item {
+    .grpicon__item--badge {
+      position: relative;
+      top: -0.5rem;
+      left: -0.5rem;
+      padding: 0.2rem 0.4rem !important;
+    }
+  }
+}
+
 @media only screen and (max-width: 900px) {
   // .navbar-nav{
   //   flex-direction: row !important;

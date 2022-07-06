@@ -14,12 +14,13 @@ import LoginComponent from './Components/Login/LoginComponent';
 import FooterComponent from './Components/Footer/FooterComponent';
 import RegisterComponent from './Components/Register/RegisterComponent';
 import CarouselComponent from './Components/NavBar/CarouselComponent';
-import ForgetComponent from './Components/Register/ForgetComponent';
 import ProductDetail from './Components/Product/ProductDetail';
+import Loading from './Components/Loading/Loading';
 function App() {
     return (
         <div>
             <Routes>
+
                 <Route path="/" element={
                     <>
                         <NavBarComponent />
@@ -39,8 +40,7 @@ function App() {
                 } />
                 <Route path="forget" element={
                     <>
-                        <NavBarComponent />
-                        <ForgetComponent />
+                        <Loading />
 
                     </>
                 }

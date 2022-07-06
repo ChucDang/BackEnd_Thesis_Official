@@ -1,21 +1,12 @@
-import React, { useState } from 'react'
-import { Navbar, Nav, Form } from 'react-bootstrap'
-import { FormControl, NavDropdown, Offcanvas, Carousel } from 'react-bootstrap'
+import React from 'react'
+import { Navbar, Nav, Form, Badge } from 'react-bootstrap'
+import { FormControl, NavDropdown, Offcanvas } from 'react-bootstrap'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LoginComponent from '../Login/LoginComponent';
 import "./NavBar.scss"
-import { useUser } from '../../UserProvider';
 export default function NavBarComponent() {
-    const user = useUser();
-    const [name, setName] = useState("");
-    function onNameChange() {
-        if (user.jwt) {
-            let obj = JSON.parse(user.jwt)
-            setName(obj.fullname)
-        }
-    }
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="xl" sticky="top">
@@ -68,15 +59,30 @@ export default function NavBarComponent() {
                                 className="me-2"
                                 aria-label="Search"
                             />
-                            {/* <Button variant="outline-success">Search</Button> */}
                         </Form>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
-                <div className='grpicon d-flex flex-row ms-auto fw-bold p-2'>
-                    <a href="#link" className='my_custom p-2' > <LocalMallIcon /> </a>
-                    <a href="#link" className='p-2' > <NotificationsIcon /> </a>
-                    <a href="#link" className='p-2' > <MailIcon /> </a>
-                    <a href="#link" className='p-2' >  <LoginComponent handleShowName={() => onNameChange()} /></a>
+
+                <div className='grpicon'>
+                    <a href="#link" className='grpicon__item' >
+                        <LocalMallIcon />
+                        <Badge bg="light" text="dark" className='grpicon__item--badge'>
+                            10
+                        </Badge>
+                    </a>
+                    <a href="#link" className='grpicon__item' >
+                        <NotificationsIcon />
+                        <Badge bg="light" text="dark" className='grpicon__item--badge'>
+                            10
+                        </Badge>
+                    </a>
+                    <a href="#link" className='grpicon__item' >
+                        <MailIcon />
+                        <Badge bg="light" text="dark" className='grpicon__item--badge'>
+                            10
+                        </Badge>
+                    </a>
+                    <a href="#link" className='p-2' >  <LoginComponent /></a>
                 </div>
             </Navbar>
 

@@ -1,7 +1,13 @@
 // SCSS chính thức
 * {
+  margin: 0 !important;
   font-family: "Hahmlet", serif;
   font-family: "Source Sans Pro", sans-serif;
+}
+//CSS ẩn thanh scrollbar
+
+*::-webkit-scrollbar {
+  display: none; /* cho Chrome, Safari, and Opera */
 }
 
 .info-section div {

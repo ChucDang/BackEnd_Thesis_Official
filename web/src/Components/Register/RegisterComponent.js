@@ -4,11 +4,8 @@ import useLocationForm from '../../Services/useLocationForm';
 import Select from 'react-select';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './RegisterComponent.scss'
-import { useUser } from '../../UserProvider';
 import { useNavigate } from 'react-router-dom';
-import Cookies from "js-cookie";
 function RegisterComponent() {
-    const user = useUser();
     const navigate = useNavigate();
     const [input, setInput] = useState({
         fullname: '',
@@ -81,7 +78,7 @@ function RegisterComponent() {
                 else return Promise.reject("Invalid login attempt");
             })
             .then(([body, headers]) => {
-                user.setJwt(Cookies.get("jwt"));
+
                 alert("Đăng ký thành công");
                 navigate("/");
             })

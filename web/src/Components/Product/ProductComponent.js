@@ -1,37 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { Row } from 'react-bootstrap';
 import ajax from "../../Services/fechServices";
-import { useLocalState } from "../../util/useLocalStorage";
 import ProductItem from './ProductItem';
 import './ProductComponent.scss'
+import '../Loading/Loading.css';
+import { Suspense } from 'react';
+import Loading from '../Loading/Loading';
 const ProductComponent = () => {
     let catergoryCode = window.location.href.split("/products/catergory/")[1];
     if (!catergoryCode) catergoryCode = 'phone'
-    const [jwt, setJwt] = useLocalState("", "jwt")
     const [products, setProducts] = useState(null)
 
     useEffect(() => {
         ajax(`/api/products/catergory/${catergoryCode}`, "GET")
             .then((productResponse) => {
                 let productData = productResponse;
-                console.log(typeof productData)
                 setProducts(productData)
             }).catch(error => {
                 console.log(error);
             })
-    }, [])
-    // const deletePr = (employeeId) => {
-    //     ProductService.deleteEmployee(employeeId).then((response) => {
-    //         getAllProduct();
-
-    //     }).catch(error => {
-    //         console.log(error);
-    //     })
-
-    // }
+    }, [catergoryCode])
 
     return (
-        <>
+        <Suspense fallback={<Loading />}>
             {
                 products ? <Row className='catergory_label'> {products[0].catergory.code} </Row> : <></>
             }
@@ -53,7 +44,7 @@ const ProductComponent = () => {
                     ) : <></>}
             </ Row >
 
-        </>
+        </Suspense>
 
 
 

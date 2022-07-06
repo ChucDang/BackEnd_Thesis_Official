@@ -1,76 +1,74 @@
 import React, { useEffect } from 'react'
-import { Button, Offcanvas, Form, Container, DropdownButton, Dropdown, Row, Col, Alert } from 'react-bootstrap'
+import { Button, Offcanvas, Form, Container, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person'
 import "./Login.scss"
-import { useUser } from '../../UserProvider';
 import { useNavigate } from "react-router-dom";
 
 export default function LoginComponent() {
-    const user = useUser();
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
-    const [name, setName] = useState("");
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState(null);
 
-    function sendLoginRequest() {
+    async function sendLoginRequest() {
         setErrorMsg("");
         const reqBody = {
             username: username,
             password: password,
         };
-        fetch("/api/auth/login", {
+        const response = await fetch("/api/auth/login", {
             headers: {
                 "Content-Type": "application/json",
             },
             method: "post",
             body: JSON.stringify(reqBody)
         })
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.text()
-                }
-                else if (response.status === 401 || response.status === 403) {
-                    return setErrorMsg("Invalid username or password");
-                } else {
-                    return setErrorMsg(
-                        "Something went wrong, try again later"
-                    );
-                }
-            })
-            .then((data) => {
-                if (data) {
-                    user.setJwt(data);
-                    console.log("jwt là " + user.jwt)
-                    let obj = JSON.parse(user.jwt)
-                    setName(obj.fullname)
-                    setShow(false)
-                    alert("Đăng Nhập thành công")
 
-                }
-            });
+        if (response.status === 200) {
+            let _jwt = response.headers.get('Authorization')
+            let user = await response.json()
+            localStorage.setItem('jwt', _jwt)
+            localStorage.setItem('user', JSON.stringify(user))
+            handleClose()
+            alert("Đăng Nhập thành công")
+        }
+        else if (response.status === 401 || response.status === 403) {
+            return setErrorMsg("Invalid username or password");
+        } else {
+            return setErrorMsg(
+                "Something went wrong, try again later"
+            )
+        }
+
     }
 
     function handle_Logout() {
-        user.setJwt(undefined);
-
-        setName("")
+        localStorage.setItem('jwt', '')
+        localStorage.setItem('user', '')
         alert("Đăng xuất thành công")
         navigate("/");
     }
-    var icon_login;
-    if (name.length === 0) {
+    let icon_login;
+    let item = localStorage.getItem('user')
+    let user
+    if (item) {
+        user = JSON.parse(item)
+    } else {
+        user = ''
+    }
+
+    if (!user) {
         icon_login = <><PersonIcon onClick={handleShow} /></>;
     } else {
         icon_login =
             <>
                 <DropdownButton
                     variant="outline-secondary"
-                    title={name}
+                    title={user.fullname}
                     id="input-group-dropdown-2"
                     align="end"
                 >

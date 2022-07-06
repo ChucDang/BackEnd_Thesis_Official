@@ -40,10 +40,12 @@ export default function ProductItem(props) {
                             {product.brand + ' ' + product.model}
                         </p>
                         <p className='Stack__info__price'>
-                            <label className='Stack__info__price--new'>
-                                {product.new_price}
-                            </label>
-                            <label className='Stack__info__price--old'> {product.original_price}</label>
+                            <p className='Stack__info__price--new'>
+                                {Number(product.new_price).toLocaleString('vn') + 'đ'}
+                            </p>
+                            <p className='Stack__info__price--old'>
+                                {Number(product.original_price).toLocaleString('vn') + 'đ'}
+                            </p>
                         </p>
                     </div>
                 </div>
