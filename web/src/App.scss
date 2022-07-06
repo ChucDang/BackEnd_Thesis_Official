@@ -30,6 +30,12 @@
   width: 100%;
 }
 
+//Style cho thanh số trang
+.pagination {
+  justify-content: center;
+  margin: 1rem 0 !important;
+}
+
 @media only screen and (max-width: 760px) {
   * {
     font-size: small;

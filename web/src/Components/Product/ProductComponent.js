@@ -1,30 +1,50 @@
 import React, { useState, useEffect } from 'react'
-import { Row } from 'react-bootstrap';
+import { Row, Pagination } from 'react-bootstrap';
 import ajax from "../../Services/fechServices";
 import ProductItem from './ProductItem';
 import './ProductComponent.scss'
 import '../Loading/Loading.css';
-import { Suspense } from 'react';
-import Loading from '../Loading/Loading';
+
 const ProductComponent = () => {
     let catergoryCode = window.location.href.split("/products/catergory/")[1];
     if (!catergoryCode) catergoryCode = 'phone'
     const [products, setProducts] = useState(null)
+    const [page, setPage] = useState({
+        page: 0,
+        size: 2,
+        total: ''
+    })
+    //Tính toán số trang
+    let active = page.page + 1
+    let items = [];
+    for (let number = 1; number <= page.total; number++) {
+        items.push(
+            <Pagination.Item key={number} active={number === active} onClick={() => handlePageChange(number)}>
+                {number}
+            </Pagination.Item>,
+        );
+    }
 
+
+    const handlePageChange = (number) => {
+        if (number && (number <= page.total))
+            setPage({ ...page, page: number - 1 })
+    }
     useEffect(() => {
-        ajax(`/api/products/catergory/${catergoryCode}`, "GET")
+        console.log('come here', page.page)
+        ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET")
             .then((productResponse) => {
-                let productData = productResponse;
-                setProducts(productData)
+                setProducts(productResponse.product)
+                setPage({ ...page, total: productResponse.total })
             }).catch(error => {
                 console.log(error);
             })
-    }, [catergoryCode])
+    }, [catergoryCode, page.page, page.size])
 
     return (
-        <Suspense fallback={<Loading />}>
+        <>
             {
-                products ? <Row className='catergory_label'> {products[0].catergory.code} </Row> : <></>
+                products ? <Row className='catergory_label'> {catergoryCode} </Row> : <></>
             }
 
 
@@ -43,8 +63,24 @@ const ProductComponent = () => {
 
                     ) : <></>}
             </ Row >
+            <Row className="listPage">
+                {
+                    page.total > 1 ?
+                        <>
+                            <Pagination>
+                                <Pagination.First onClick={() => handlePageChange(1)} />
+                                <Pagination.Prev onClick={() => handlePageChange(page.page)} />
+                                {items}
+                                <Pagination.Next onClick={() => handlePageChange(page.page + 2)} />
+                                <Pagination.Last onClick={() => handlePageChange(page.total)} />
+                            </Pagination>
 
-        </Suspense>
+                        </> :
+                        <></>
+                }
+            </Row>
+
+        </>
 
 
 
