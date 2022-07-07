@@ -4,7 +4,7 @@ import './style.css'
 export default function ErrorPage() {
     return (
         <div className='errorPage' >
-            <a target="_blank" rel="noreferrer" href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwi2gZf267v4AhXnwzgGHSgnBYQQFnoECBgQAQ&url=https%3A%2F%2Fwww.enationalelectronics.com%2F&usg=AOvVaw0CoGpfiGKRton9yE4Q8_Hv">
+            <a target="_blank" rel="noreferrer" href="/">
                 <Container>
                     <Row>
                         <div className="col-sm-12 col-md-12 mt-5 mb-5">

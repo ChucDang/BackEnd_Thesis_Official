@@ -4,8 +4,11 @@ import ajax from "../../Services/fechServices";
 import ProductItem from './ProductItem';
 import './ProductComponent.scss'
 import '../Loading/Loading.css';
-
+import ErrorPage from '../ErrorPage/ErrorPage';
+import Loading from '../Loading/Loading';
+import { useLoading } from '../../Services/LoadingProvider';
 const ProductComponent = () => {
+    const isLoading = useLoading();
     let catergoryCode = window.location.href.split("/products/catergory/")[1];
     if (!catergoryCode) catergoryCode = 'phone'
     const [products, setProducts] = useState(null)
@@ -34,14 +37,17 @@ const ProductComponent = () => {
     useEffect(() => {
         ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET", jwt)
             .then((productResponse) => {
+                isLoading.setIsLoading(false)
                 setProducts(productResponse.product)
                 setPage({ ...page, total: productResponse.total })
-            }).catch(error => {
-                console.log(error);
-            })
+            }).catch(
+                <ErrorPage />
+            )
     }, [catergoryCode, page.page, page.size])
+    return isLoading.isLoading ? (
+        <Loading />
+    ) :
 
-    return (
         <>
             {
                 products ? <Row className='catergory_label'> {catergoryCode} </Row> : <></>
@@ -81,7 +87,5 @@ const ProductComponent = () => {
             </Row>
 
         </>
-    )
-
 }
 export default ProductComponent

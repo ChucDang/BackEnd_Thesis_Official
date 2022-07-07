@@ -21,7 +21,8 @@ function ProductDetail() {
     useEffect(() => {
         ajax(`/api/products/product/${productId}`, "GET")
             .then((productResponse) => {
-                const data = productResponse.product;
+                const data = productResponse;
+                console.log('data', data)
                 setCurrentProduct(data)
             }).catch(error => {
                 console.log(error);
@@ -34,9 +35,9 @@ function ProductDetail() {
         } else {
             caterCode = 'phone'
         }
-        ajax(`/api/products/catergory/${caterCode}`, "GET")
+        ajax(`/api/products/catergory/?code=${caterCode}&page=${0}&size=${4}`, "GET")
             .then((productResponse) => {
-                let productData = productResponse;
+                let productData = productResponse.product;
                 console.log(productData)
                 setproductRecommend(productData)
             }).catch(error => {

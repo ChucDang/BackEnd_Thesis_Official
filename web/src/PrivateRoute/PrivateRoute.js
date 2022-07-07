@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useUser } from "../UserProvider";
 import { useState, useEffect } from "react";
 import ajax from "../Services/fetchService";
+import Loading from "../Components/Loading/Loading";
 
 const PrivateRoute = (props) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +20,7 @@ const PrivateRoute = (props) => {
     }
 
     return isLoading ? (
-        <div>Loading...</div>
+        <Loading />
     ) : isValid === true ? (
         children
     ) : (
