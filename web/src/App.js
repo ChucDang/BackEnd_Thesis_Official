@@ -16,6 +16,7 @@ import RegisterComponent from './Components/Register/RegisterComponent';
 import CarouselComponent from './Components/NavBar/CarouselComponent';
 import ProductDetail from './Components/Product/ProductDetail';
 import Loading from './Components/Loading/Loading';
+import ErrorPage from './Components/ErrorPage/ErrorPage';
 function App() {
     return (
         <div>
@@ -40,7 +41,7 @@ function App() {
                 } />
                 <Route path="forget" element={
                     <>
-                        <Loading />
+                        <ErrorPage />
 
                     </>
                 }

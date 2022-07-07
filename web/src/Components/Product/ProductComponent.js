@@ -30,9 +30,9 @@ const ProductComponent = () => {
         if (number && (number <= page.total))
             setPage({ ...page, page: number - 1 })
     }
+    let jwt = localStorage.getItem('jwt')
     useEffect(() => {
-        console.log('come here', page.page)
-        ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET")
+        ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET", jwt)
             .then((productResponse) => {
                 setProducts(productResponse.product)
                 setPage({ ...page, total: productResponse.total })
@@ -81,10 +81,6 @@ const ProductComponent = () => {
             </Row>
 
         </>
-
-
-
-
     )
 
 }
