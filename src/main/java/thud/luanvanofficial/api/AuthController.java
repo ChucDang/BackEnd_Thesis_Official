@@ -11,11 +11,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
 import thud.luanvanofficial.dto.UserDTO;
+import thud.luanvanofficial.entity.Authority;
 import thud.luanvanofficial.entity.User;
 import thud.luanvanofficial.security.AuthCredentialsRequest;
 import thud.luanvanofficial.util.JwtUtil;
 import org.slf4j.Logger;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,16 +38,16 @@ public class AuthController {
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
 
             User user = (User) authenticate.getPrincipal();
-
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user)).body(user);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
-    //    localhost:8080/api/auth/validate?token=something
+    //    localhost:8080/api/auth/validate
     @GetMapping("/validate")
-    public ResponseEntity<?> validateToken(@RequestParam String token, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authorization,@AuthenticationPrincipal User user) {
+        String token = authorization.substring(authorization.indexOf(' ')+1);
         Boolean isTokenValid = jwtUtil.validateToken(token, user);
         return ResponseEntity.ok(isTokenValid);
     }

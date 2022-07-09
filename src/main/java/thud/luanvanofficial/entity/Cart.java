@@ -1,11 +1,8 @@
 package thud.luanvanofficial.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,15 +16,18 @@ public class Cart {
     private String deliveryStreet;
     private String deliveryCity;
     private String deliveryState;
-    private String deliveryZip;
-//    @ManyToMany(targetEntity = Product.class)
-//    private List<Product> products = new ArrayList<>();
+    @OneToMany
+    private List<Order> orders;
 
     @OneToOne
     private User user;
 
 
+    public Cart( User user) {
+        this.user = user;
+    }
 
+    public Cart() {
 
-
+    }
 }

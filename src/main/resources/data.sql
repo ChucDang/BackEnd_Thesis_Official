@@ -4,10 +4,6 @@ INSERT INTO `tmdt`.`catergories` (`id`, `code`, `name`) VALUES ('2','laptop', 'm
 INSERT INTO `tmdt`.`catergories` (`id`, `code`, `name`) VALUES ('3','clock', 'đồng hồ thông minh');
 INSERT INTO `tmdt`.`catergories` (`id`, `code`, `name`) VALUES ('4','airpod', 'tai nghe không dây');
 
-# Thêm Authority
-INSERT INTO `tmdt`.`authority` (`id`, `authority`) VALUES ('1', 'ROLE_ADMIN');
-INSERT INTO `tmdt`.`authority` (`id`, `authority`) VALUES ('2', 'ROLE_CUSTOMER');
-INSERT INTO `tmdt`.`authority` (`id`, `authority`) VALUES ('3', 'ROLE_STAFF');
 
 # Thêm dữ liệu vào bảng screens
 INSERT INTO `tmdt`.`screens` (`id`, `color`, `frequent`, `material`, `resolution`, `size`, `tech`, `standard`)

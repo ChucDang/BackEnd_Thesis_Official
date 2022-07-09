@@ -7,6 +7,7 @@ import '../Loading/Loading.css';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Loading from '../Loading/Loading';
 import { useLoading } from '../../Services/LoadingProvider';
+import { Navigate } from "react-router-dom";
 const ProductComponent = () => {
     const isLoading = useLoading();
     let catergoryCode = window.location.href.split("/products/catergory/")[1];
@@ -33,9 +34,8 @@ const ProductComponent = () => {
         if (number && (number <= page.total))
             setPage({ ...page, page: number - 1 })
     }
-    let jwt = localStorage.getItem('jwt')
     useEffect(() => {
-        ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET", jwt)
+        ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET")
             .then((productResponse) => {
                 isLoading.setIsLoading(false)
                 setProducts(productResponse.product)

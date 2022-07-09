@@ -2,6 +2,7 @@ package thud.luanvanofficial.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import thud.luanvanofficial.dto.UserDTO;
 import thud.luanvanofficial.entity.Authority;
@@ -29,7 +30,7 @@ public class UserService {
         return Optional.ofNullable(userRepo.findByUsername(username));
     }
 
-    public void createUser(UserDTO userDto) {
+    public User createUser(UserDTO userDto) {
         User newUser = new User();
         newUser.setUsername(userDto.getUsername());
         newUser.setFullname(userDto.getFullname());
@@ -39,12 +40,13 @@ public class UserService {
         newUser.setNote(userDto.getNote());
         String encodedPassword = customPasswordEncoder.getPasswordEncoder().encode(userDto.getPassword());
         newUser.setPassword(encodedPassword);
-        Authority customer = new Authority(Role_Enum.ROLE_CUSTOMER.toString());
-        Set<Authority> roles = new HashSet<>();
-        roles.add(customer);
-        newUser.setAuthorities(roles);
-        authorityRepo.save(customer);
-        userRepo.save(newUser);
+        Set<Authority> role = new HashSet<>();
+        role.add(authorityRepo.getAuthorityByAuthority(Role_Enum.ROLE_CUSTOMER.toString()));
+        newUser.setAuthorities(role);
+        return userRepo.save(newUser);
+    }
+    public Set<User> getAllUsers(@AuthenticationPrincipal User user) {
+        return userRepo.getAllUsers();
     }
 
 }

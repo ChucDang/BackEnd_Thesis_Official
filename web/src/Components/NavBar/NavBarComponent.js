@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Navbar, Nav, Form, Badge } from 'react-bootstrap'
 import { FormControl, NavDropdown, Offcanvas } from 'react-bootstrap'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -6,7 +6,11 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LoginComponent from '../Login/LoginComponent';
 import "./NavBar.scss"
+import { useLocalState } from '../../Services/useLocalStorage';
+import { useLoading } from '../../Services/LoadingProvider';
 export default function NavBarComponent() {
+    let loading = useLoading();
+
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="xl" sticky="top">
@@ -64,13 +68,13 @@ export default function NavBarComponent() {
                 </Navbar.Offcanvas>
 
                 <div className='grpicon'>
-                    <a href="#link" className='grpicon__item' >
+                    <a href="/cart" className='grpicon__item' >
                         <LocalMallIcon />
                         <Badge bg="light" text="dark" className='grpicon__item--badge'>
-                            10
+                            {loading.count}
                         </Badge>
                     </a>
-                    <a href="#link" className='grpicon__item' >
+                    <a href="/cart" className='grpicon__item' >
                         <NotificationsIcon />
                         <Badge bg="light" text="dark" className='grpicon__item--badge'>
                             10

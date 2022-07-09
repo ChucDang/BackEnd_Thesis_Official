@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
+import { useLocalState } from "./useLocalStorage";
 const UserContext = createContext();
 
 const LoadingProvider = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const value = { isLoading, setIsLoading };
+    //count để đếm số lượng order có trong cart hiện tại
+    const [count, setCount] = useLocalState('count', 0)
+    const [displayName, setDisplayName] = useLocalState('displayName', '')
+    const value = { isLoading, setIsLoading, count, setCount, displayName, setDisplayName };
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 

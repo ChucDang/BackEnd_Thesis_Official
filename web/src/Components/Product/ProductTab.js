@@ -6,8 +6,6 @@ export default function ProductTab({ product }) {
     let features
     if (product) {
         features = product.feature.split('*')
-        let temp = features[0]
-        console.log(temp)
     }
 
     return (

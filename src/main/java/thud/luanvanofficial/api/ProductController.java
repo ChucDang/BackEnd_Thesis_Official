@@ -1,8 +1,11 @@
 package thud.luanvanofficial.api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import thud.luanvanofficial.dto.ProductResponseDTO;
+import thud.luanvanofficial.dto.ProductResponseListDTO;
 import thud.luanvanofficial.entity.Product;
 import thud.luanvanofficial.entity.Catergory;
 import thud.luanvanofficial.repository.catalogRepo.CatergoryRepository;
@@ -13,24 +16,27 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/products")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
 public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
     private CatergoryRepository catergoryRepository;
 
-    @GetMapping("/catergory/{code}")
-    public ResponseEntity<?> getProductByCatergoryCode(@PathVariable String code) {
+    @GetMapping("/catergory/")
+    public ResponseEntity<?> getProductByCatergoryCode(@RequestParam(name = "code") String code, @RequestParam( name = "page") int page, @RequestParam( name = "size") int size) {
         Optional<Catergory> catergory = catergoryRepository.findByCode(code);
-        List<Product> products = productService.findAllByCatergory(catergory);
-        return ResponseEntity.ok(products);
+        Pageable _page = PageRequest.of(page, size);
+        Page<Product> result = productService.findAllByCatergory(catergory, _page);
+        List<Product>  products = result.getContent();
+        int total = result.getTotalPages();
+        return ResponseEntity.ok(new ProductResponseListDTO(products, total));
     }
 
     @GetMapping("/product/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         Optional<Product> optproduct = productService.findById(id);
-        return ResponseEntity.ok( new ProductResponseDTO(optproduct.orElse(new Product())));
+        return ResponseEntity.ok( optproduct);
     }
 
 //    @PostMapping(consumes = "application/json")

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import thud.luanvanofficial.enums.Role_Enum;
 import thud.luanvanofficial.security.UserDetailServiceIml;
 import thud.luanvanofficial.util.CustomPasswordEncoder;
 import thud.luanvanofficial.service.JwtFilter;
@@ -62,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Our public endpoints
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/products/**").permitAll()
+                .antMatchers("/cart/addCart").permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated();
         // Add JWT token filter

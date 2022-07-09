@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String note;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
     public User() {
 

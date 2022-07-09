@@ -67,6 +67,7 @@
     .row_detail__description--name {
       text-transform: capitalize;
       font-size: x-large;
+      color: green;
     }
     .row_detail__description__price {
       font-size: large;
@@ -80,6 +81,7 @@
       }
       .row_detail__description__price--old {
         text-decoration: line-through;
+        color: gray;
       }
     }
     .row_detail__description--fontInfo {
@@ -113,6 +115,7 @@
 // Đây là định dạng cho các product hiển thị trong Recommend product
 .Stack {
   display: flex;
+  position: relative;
   align-items: center;
   margin-bottom: 0.5rem !important;
   .Stack__img {

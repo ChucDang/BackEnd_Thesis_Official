@@ -17,22 +17,26 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private String authority;
-//
-//    @ManyToOne
-//    @JsonIgnore
-//    private User user;
-    public Authority(String authority) {
-        this.authority = authority;
-    }
-
     public Authority() {
 
     }
 
-
+    public Authority(String toString) {
+        this.authority = toString;
+    }
 
     @Override
     public String getAuthority() {
-        return authority;
+        return this.authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+
+    public Authority(Long id, String authority) {
+        this.id = id;
+        this.authority = authority;
     }
 }

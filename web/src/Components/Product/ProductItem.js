@@ -2,11 +2,14 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 export default function ProductItem(props) {
-    const product = props.productProps;
+
     const type_display = props.type_display;
+    const product = props.productProps;
+    const item = props.recommendProps;
 
     let optrender
     if (type_display === "Card") {
+
         optrender =
             <Card className='card_item'>
                 <Card.Img variant="top" src="/imgs/computer.png" alt='Lỗi tải ảnh' />
@@ -31,24 +34,29 @@ export default function ProductItem(props) {
             </Card>;
     }
     else {
+
         optrender =
             <>
                 <div className='Stack'>
+
                     <img src='/imgs/computer.png' width={150} alt="Không tải được ảnh" className='Stack__img' />
                     <div className='Stack__info'>
                         <p className='Stack__info__model'>
-                            {product.brand + ' ' + product.model}
+                            {item.brand + ' ' + item.model}
                         </p>
                         <p className='Stack__info__price'>
                             <p className='Stack__info__price--new'>
-                                {Number(product.new_price).toLocaleString('vn') + 'đ'}
+                                {Number(item.new_price).toLocaleString('vn') + 'đ'}
                             </p>
                             <p className='Stack__info__price--old'>
-                                {Number(product.original_price).toLocaleString('vn') + 'đ'}
+                                {Number(item.original_price).toLocaleString('vn') + 'đ'}
                             </p>
                         </p>
                     </div>
+                    <a href={`/products/product/${item.id}`} className="stretched-link"> </a>
+
                 </div>
+
             </>
 
     }

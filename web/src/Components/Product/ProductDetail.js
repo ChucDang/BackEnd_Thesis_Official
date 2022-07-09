@@ -6,13 +6,20 @@ import ProductItem from './ProductItem';
 import './ProductComponent.scss'
 import { Rating } from 'react-simple-star-rating';
 import ProductTab from './ProductTab';
+import { useLocalState } from '../../Services/useLocalStorage';
+import { useLoading } from '../../Services/LoadingProvider';
 function ProductDetail() {
     const productId = window.location.href.split("/products/product/")[1]
     const [currentProduct, setCurrentProduct] = useState(null)
     const [productRecommend, setproductRecommend] = useState(null)
+    //Amount này là số lượng tùy chỉnh muốn mua
     const [amount, setAmount] = useState(1)
     const [rating, setRating] = useState(0) // initial rating value
-
+    //Tuy chỉ dùng để đọc jwt, nếu gọi trực tiếp localStorage.getItem thì sẽ ra như sau "jwt", 
+    // dùng như vầy thì đọc sẽ không có ""
+    const [jwt, setJwt] = useLocalState('jwt', null)
+    //Count là số order đang có trong giỏ hàng.
+    const loading = useLoading()
     // Catch Rating value
     const handleRating = (rate) => {
         setRating(rate)
@@ -22,12 +29,21 @@ function ProductDetail() {
         ajax(`/api/products/product/${productId}`, "GET")
             .then((productResponse) => {
                 const data = productResponse;
-                console.log('data', data)
                 setCurrentProduct(data)
             }).catch(error => {
                 console.log(error);
             })
     }, [productId])
+    const handleAddCart = () => {
+        const reqBody = {
+            productId: currentProduct.id,
+            amount: amount
+        }
+        ajax('/cart/addCart', 'POST', jwt, reqBody).then(res => {
+            loading.setCount(loading.count + 1)
+        })
+
+    }
     useEffect(() => {
         let caterCode
         if (currentProduct) {
@@ -38,7 +54,7 @@ function ProductDetail() {
         ajax(`/api/products/catergory/?code=${caterCode}&page=${0}&size=${4}`, "GET")
             .then((productResponse) => {
                 let productData = productResponse.product;
-                console.log(productData)
+
                 setproductRecommend(productData)
             }).catch(error => {
                 console.log(error);
@@ -51,11 +67,11 @@ function ProductDetail() {
                 <Row className='row_detail'>
                     <Col xs={3} className='row_detail__recommend'>
                         {
-                            productRecommend ? productRecommend.map(product =>
+                            productRecommend ? productRecommend.map(item =>
 
                                 <ProductItem
-                                    key={product.id}
-                                    productProps={product}
+                                    key={item.id}
+                                    recommendProps={item}
                                     type_display="Stack"
                                 />
 
@@ -97,7 +113,8 @@ function ProductDetail() {
                                 >
                                     +
                                 </button>
-                                <Button className='row_detail__description__amount--cart' >Add to Cart</Button>
+                                <Button className='row_detail__description__amount--cart'
+                                    onClick={() => handleAddCart()}>Add to Cart</Button>
                             </div>
                         </> : <> </>
                         }

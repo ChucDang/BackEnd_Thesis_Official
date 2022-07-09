@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Button, Offcanvas, Form, Container, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
 import PersonIcon from '@mui/icons-material/Person'
 import "./Login.scss"
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useLocalState } from '../../Services/useLocalStorage';
+import { useLoading } from '../../Services/LoadingProvider';
 
+let icon_login
 export default function LoginComponent() {
+    const loading = useLoading();
+    const [user, setUser] = useLocalState('user', null)
+    const [jwt, setJwt] = useLocalState('jwt', null)
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -20,6 +26,7 @@ export default function LoginComponent() {
             username: username,
             password: password,
         };
+
         const response = await fetch("/api/auth/login", {
             headers: {
                 "Content-Type": "application/json",
@@ -30,9 +37,10 @@ export default function LoginComponent() {
 
         if (response.status === 200) {
             let _jwt = response.headers.get('Authorization')
-            let user = await response.json()
-            localStorage.setItem('jwt', _jwt)
-            localStorage.setItem('user', JSON.stringify(user))
+            let _user = await response.json()
+            setUser(_user)
+            loading.setDisplayName(_user.fullname)
+            setJwt(_jwt)
             handleClose()
             alert("Đăng Nhập thành công")
         }
@@ -47,45 +55,35 @@ export default function LoginComponent() {
     }
 
     function handle_Logout() {
-        localStorage.setItem('jwt', '')
-        localStorage.setItem('user', '')
+        setJwt(null)
+        setUser(null)
+        loading.setDisplayName('')
+        loading.setCount(0)
         alert("Đăng xuất thành công")
         navigate("/");
     }
-    let icon_login;
-    let item = localStorage.getItem('user')
-    let user
-    if (item) {
-        user = JSON.parse(item)
-    } else {
-        user = ''
-    }
-
-    if (!user) {
-        icon_login = <><PersonIcon onClick={handleShow} /></>;
-    } else {
-        icon_login =
-            <>
-                <DropdownButton
-                    variant="outline-secondary"
-                    title={user.fullname}
-                    id="input-group-dropdown-2"
-                    align="end"
-                >
-                    <Dropdown.Item href="#">Account</Dropdown.Item>
-                    <Dropdown.Item href="#">My Coupons</Dropdown.Item>
-                    <Dropdown.Item href="#">History invoices</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={() => handle_Logout()}>Logout</Dropdown.Item>
-                </DropdownButton>
-            </>
-
-    }
-
     return (
         <Container>
 
-            {icon_login}
+            {user ?
+                <>
+                    <DropdownButton
+                        variant="outline-secondary"
+                        title={loading.displayName}
+                        id="input-group-dropdown-2"
+                        align="end"
+                    >
+                        <Dropdown.Item href="#">Account</Dropdown.Item>
+                        <Dropdown.Item href="#">My Coupons</Dropdown.Item>
+                        <Dropdown.Item href="#">History invoices</Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={() => handle_Logout()}>Logout</Dropdown.Item>
+                    </DropdownButton>
+                </>
+                :
+                <>
+                    <PersonIcon onClick={handleShow} />
+                </>}
             <Offcanvas show={show} onHide={handleClose} placement='center' >
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title className='fs-2 fw-bold align-self-center'>Login</Offcanvas.Title>
