@@ -16,13 +16,24 @@ import RegisterComponent from './Components/Register/RegisterComponent';
 import CarouselComponent from './Components/NavBar/CarouselComponent';
 import ProductDetail from './Components/Product/ProductDetail';
 import Loading from './Components/Loading/Loading';
-import ErrorPage from './Components/ErrorPage/ErrorPage';
 import Cart from './Components/Cart/Cart';
+import ADNavbar from './Admin/Components/NavBar/ADNavbar';
+import ListUser from './Admin/ListUser/ListUser';
+import OrderPage from './Components/OrderPage/OrderPage';
+
 function App() {
     return (
         <div>
             <Routes>
+                <Route path='/order' element={
+                    <>
+                        <OrderPage />
 
+
+
+
+                    </>
+                }></Route>
                 <Route path="/" element={
                     <>
                         <NavBarComponent />

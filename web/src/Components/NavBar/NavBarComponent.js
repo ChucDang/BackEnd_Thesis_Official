@@ -6,11 +6,10 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LoginComponent from '../Login/LoginComponent';
 import "./NavBar.scss"
-import { useLocalState } from '../../Services/useLocalStorage';
 import { useLoading } from '../../Services/LoadingProvider';
-export default function NavBarComponent() {
-    let loading = useLoading();
 
+export default function NavBarComponent() {
+    const loading = useLoading();
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="xl" sticky="top">

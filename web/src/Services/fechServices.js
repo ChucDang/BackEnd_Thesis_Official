@@ -15,14 +15,19 @@ function ajax(url, requestmethod, jwt, requestBody) {
         fetchData.body = JSON.stringify(requestBody)
     }
     return fetch(url, fetchData).then(response => {
-        console.log('status', response.status)
-        if (response.status === 200) return response.json()
-        if (response.status === 401) {
-            alert('Token đã hết hạn, vui lòng đăng nhập lại');
-            localStorage.setItem('jwt', '')
-            localStorage.setItem('user', '');
-            <Navigate to="/" />;
-        }
-    }).catch((error) => { console.log('error', error) })
+        if (response.status === 500) {
+            console.log("505 error")
+        } else
+            if (response.status === 200 && typeof response === 'object') return response.json()
+            else if (response.status === 200 && typeof response !== 'object') return response.text()
+            else if (response.status === 401) {
+                alert('Token đã hết hạn, vui lòng đăng nhập lại');
+                localStorage.setItem('jwt', '')
+                localStorage.setItem('user', '');
+                <Navigate to="/" />;
+            } else {
+
+            }
+    }).catch(console.log('come to catch'))
 }
 export default ajax

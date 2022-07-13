@@ -18,6 +18,7 @@ function ProductDetail() {
     //Tuy chỉ dùng để đọc jwt, nếu gọi trực tiếp localStorage.getItem thì sẽ ra như sau "jwt", 
     // dùng như vầy thì đọc sẽ không có ""
     const [jwt, setJwt] = useLocalState('jwt', null)
+    const [idCart, setIdCart] = useLocalState('idCart', null)
     //Count là số order đang có trong giỏ hàng.
     const loading = useLoading()
     // Catch Rating value
@@ -40,6 +41,7 @@ function ProductDetail() {
             amount: amount
         }
         ajax('/cart/addCart', 'POST', jwt, reqBody).then(res => {
+            setIdCart(res)
             loading.setCount(loading.count + 1)
         })
 

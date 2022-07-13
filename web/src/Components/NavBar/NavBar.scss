@@ -2,8 +2,9 @@
 .grpicon {
   display: flex;
   align-items: center;
-  margin: 0 1rem !important;
   .grpicon__item {
+    margin-left: 0.7rem !important;
+    width: fit-content;
     .grpicon__item--badge {
       position: relative;
       top: -0.5rem;

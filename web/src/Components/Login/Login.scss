@@ -7,10 +7,15 @@
   transform: translateY(-100%);
 }
 .link_login {
-  padding-top: 2rem;
-  padding-left: 8rem;
+  position: relative;
+  top: -2.5rem;
+  right: -30rem;
+  a {
+    padding-right: 1rem;
+  }
 }
 .button_login {
-  margin-top: 2rem;
-  width: 10rem;
+  margin-top: 1rem !important;
+  width: 12rem;
+  padding: 0.7rem !important;
 }

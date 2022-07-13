@@ -6,12 +6,12 @@ import "./Login.scss"
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useLocalState } from '../../Services/useLocalStorage';
 import { useLoading } from '../../Services/LoadingProvider';
-
-let icon_login
+import ajax from '../../Services/fechServices';
 export default function LoginComponent() {
     const loading = useLoading();
     const [user, setUser] = useLocalState('user', null)
     const [jwt, setJwt] = useLocalState('jwt', null)
+    const [orders, setOrders] = useLocalState('orders', null)
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -38,11 +38,16 @@ export default function LoginComponent() {
         if (response.status === 200) {
             let _jwt = response.headers.get('Authorization')
             let _user = await response.json()
-            setUser(_user)
-            loading.setDisplayName(_user.fullname)
-            setJwt(_jwt)
+            await setUser(_user)
+            await loading.setDisplayName(_user.fullname)
+            await setJwt(_jwt)
             handleClose()
-            alert("Đăng Nhập thành công")
+            alert("Đăng Nhập thành công");
+            ajax('/cart', 'GET', _jwt).then(async response => {
+                let count = response.length
+                await loading.setCount(count)
+                await setOrders(response)
+            })
         }
         else if (response.status === 401 || response.status === 403) {
             return setErrorMsg("Invalid username or password");
@@ -54,18 +59,19 @@ export default function LoginComponent() {
 
     }
 
-    function handle_Logout() {
-        setJwt(null)
-        setUser(null)
-        loading.setDisplayName('')
-        loading.setCount(0)
+    async function handle_Logout() {
+        await setJwt(null)
+        await setUser(null)
+        await loading.setDisplayName('')
+        await loading.setCount(0)
+        await setOrders(null)
         alert("Đăng xuất thành công")
         navigate("/");
     }
     return (
         <Container>
 
-            {user ?
+            {loading.displayName ?
                 <>
                     <DropdownButton
                         variant="outline-secondary"
@@ -119,11 +125,8 @@ export default function LoginComponent() {
                         ) : (
                             <></>
                         )}
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Nhớ mật khẩu" />
 
-                        </Form.Group>
-                        <Form.Group className="alink_custom mb-3" controlId="formBasicCheckbox">
+                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Button
                                 id="submit"
                                 type="button"

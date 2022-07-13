@@ -26,7 +26,32 @@ async function fetchLocationOptions(fetchType, locationId) {
     return locations.map(({ id, name }) => ({ value: id, label: name }));
 }
 
-function useLocationForm() {
+async function fetchInitialData(shouldFetchInitialLocation) {
+    const { city, district, ward } = shouldFetchInitialLocation
+
+    const [cities] = await Promise.all([
+        fetchLocationOptions(FETCH_TYPES.CITIES),
+    ]);
+    let cityObject = cities.find((c) => c.label === city)
+    const [districts] = await Promise.all([
+        fetchLocationOptions(FETCH_TYPES.DISTRICTS, cityObject.value),
+    ]);
+    let districtObject = districts.find((d) => d.label === district)
+    const [wards] = await Promise.all([
+        fetchLocationOptions(FETCH_TYPES.WARDS, districtObject.value)
+    ]);
+    let wardObject = wards.find((d) => d.label === ward)
+    return {
+        cityOptions: cities,
+        districtOptions: districts,
+        wardOptions: wards,
+        selectedCity: cityObject,
+        selectedDistrict: districtObject,
+        selectedWard: wardObject,
+    };
+}
+
+function useLocationForm(shouldFetchInitialLocation) {
     const [state, setState] = useState({
         cityOptions: [],
         districtOptions: [],
@@ -40,9 +65,13 @@ function useLocationForm() {
 
     useEffect(() => {
         (async function () {
-            const options = await fetchLocationOptions(FETCH_TYPES.CITIES)
-            setState({ ...state, cityOptions: options })
-
+            if (shouldFetchInitialLocation != null) {
+                const initialData = await fetchInitialData(shouldFetchInitialLocation);
+                setState(initialData);
+            } else {
+                const options = await fetchLocationOptions(FETCH_TYPES.CITIES)
+                setState({ ...state, cityOptions: options })
+            }
         })();
     }, []);
 
@@ -85,11 +114,6 @@ function useLocationForm() {
     function onWardSelect(option) {
         setState({ ...state, selectedWard: option });
     }
-
-    // function onSubmit(e) {
-    //     e.preventDefault();
-    //     window.location.reload();
-    // }
 
     return { state, onCitySelect, onDistrictSelect, onWardSelect };
 }
