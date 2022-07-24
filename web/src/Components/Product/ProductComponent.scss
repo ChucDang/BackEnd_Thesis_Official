@@ -44,7 +44,7 @@
 .row_detail {
   display: flex;
   flex-wrap: wrap;
-  color: #001c44;
+  color: #001c44 !important;
   margin: 2rem 0 !important;
 
   .row_detail__recommend {
@@ -141,6 +141,7 @@
 // Định dạng cho các Tab của trang chi tiết sản phẩm
 //Tab Rating
 .tab-section {
+  color: #001c44 !important;
   width: inherit;
   margin-bottom: 1rem !important;
   .tab-section__item {

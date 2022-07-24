@@ -8,7 +8,7 @@ import './App.scss';
 import NavBarComponent from "./Components/NavBar/NavBarComponent";
 // import CarouselComponent from './Components/Casourel/CasourelComponent';
 // import ProductComponent from './Components/Product/ProductComponent';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import ProductComponent from './Components/Product/ProductComponent';
 import LoginComponent from './Components/Login/LoginComponent';
 import FooterComponent from './Components/Footer/FooterComponent';
@@ -20,21 +20,25 @@ import Cart from './Components/Cart/Cart';
 import ADNavbar from './Admin/Components/NavBar/ADNavbar';
 import ListUser from './Admin/ListUser/ListUser';
 import OrderPage from './Components/OrderPage/OrderPage';
+import { useLocalState } from './Services/useLocalStorage';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
+import { useEffect, useState } from 'react';
+import { ROLE_ENUM } from './Constants/roles';
+import ErrorPage from './Components/ErrorPage/ErrorPage';
 
 function App() {
+
     return (
         <div>
             <Routes>
+                {/* Danh sách điều hướng của Khách Hàng */}
                 <Route path='/order' element={
-                    <>
+                    <PrivateRoute>
                         <OrderPage />
-
-
-
-
-                    </>
+                    </PrivateRoute>
                 }></Route>
                 <Route path="/" element={
+
                     <>
                         <NavBarComponent />
                         <CarouselComponent />
@@ -43,10 +47,10 @@ function App() {
                     </>
                 }></Route>
                 <Route path="cart" element={
-                    <>
+                    <PrivateRoute>
                         <NavBarComponent />
                         <Cart />
-                    </>
+                    </PrivateRoute>
 
                 } />
                 <Route path='register' element={
@@ -70,9 +74,7 @@ function App() {
                         <ProductComponent />
                         <FooterComponent />
                     </>
-
                 }
-
                 />
                 <Route path="/products/product/:productId" element={
                     <>
@@ -80,13 +82,19 @@ function App() {
                         <ProductDetail />
                         <FooterComponent />
                     </>
-
                 }
-
                 />
+                {/* Điều hướng cho ADMIN */}
+                <Route path='admin' element={
+
+                    <PrivateRoute>
+                        <ListUser />
+                    </PrivateRoute>
+                } />
+                <Route path='/notfound' element={<ErrorPage />} />
             </Routes>
 
-        </div>
+        </div >
     );
 }
 

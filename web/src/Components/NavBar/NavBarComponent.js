@@ -7,6 +7,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import LoginComponent from '../Login/LoginComponent';
 import "./NavBar.scss"
 import { useLoading } from '../../Services/LoadingProvider';
+import { useNavigate } from 'react-router-dom';
+import { useLocalState } from '../../Services/useLocalStorage';
+import { ROLE_ENUM } from '../../Constants/roles';
 
 export default function NavBarComponent() {
     const loading = useLoading();
@@ -85,7 +88,7 @@ export default function NavBarComponent() {
                             10
                         </Badge>
                     </a>
-                    <a href="#link" className='p-2' >  <LoginComponent /></a>
+                    <a href="#" className='p-2' >  <LoginComponent /></a>
                 </div>
             </Navbar>
 

@@ -7,10 +7,11 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useLocalState } from '../../Services/useLocalStorage';
 import { useLoading } from '../../Services/LoadingProvider';
 import ajax from '../../Services/fechServices';
+import { ROLE_ENUM } from '../../Constants/roles';
 export default function LoginComponent() {
     const loading = useLoading();
     const [user, setUser] = useLocalState('user', null)
-    const [jwt, setJwt] = useLocalState('jwt', null)
+    const [jwt, setJwt] = useLocalState('jwt', '')
     const [orders, setOrders] = useLocalState('orders', null)
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
@@ -36,35 +37,46 @@ export default function LoginComponent() {
         })
 
         if (response.status === 200) {
-            let _jwt = response.headers.get('Authorization')
+            let _jwt = await response.headers.get('Authorization')
             let _user = await response.json()
             await setUser(_user)
             await loading.setDisplayName(_user.fullname)
             await setJwt(_jwt)
+            console.log('this role', _user.authorities[0].authority)
+            if (_user && _user.authorities[0].authority === ROLE_ENUM.CUSTOMER) {
+                const response = await fetch('/cart', {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${jwt}`
+                    },
+                    method: 'GET',
+
+                })
+                if (response.status === 200) {
+                    let count = response.length
+                    await loading.setCount(count)
+                    await setOrders(response)
+                }
+                alert("Xin chào Khách hàng");
+
+            } else if (_user && _user.authorities[0].authority === ROLE_ENUM.STAFF) {
+                alert("Xin chào Nhân Viên")
+            } else if (_user && _user.authorities[0].authority === ROLE_ENUM.ADMIN) {
+                // await user
+                const test = await user
+                console.log('user', test)
+                return navigate('/admin')
+            }
             handleClose()
-            alert("Đăng Nhập thành công");
-            ajax('/cart', 'GET', _jwt).then(async response => {
-                let count = response.length
-                await loading.setCount(count)
-                await setOrders(response)
-            })
-        }
-        else if (response.status === 401 || response.status === 403) {
-            return setErrorMsg("Invalid username or password");
-        } else {
-            return setErrorMsg(
-                "Something went wrong, try again later"
-            )
+
         }
 
     }
 
+
     async function handle_Logout() {
-        await setJwt(null)
-        await setUser(null)
         await loading.setDisplayName('')
-        await loading.setCount(0)
-        await setOrders(null)
+        await window.localStorage.clear()
         alert("Đăng xuất thành công")
         navigate("/");
     }
@@ -131,7 +143,7 @@ export default function LoginComponent() {
                                 id="submit"
                                 type="button"
                                 className='button_login'
-                                onClick={() => sendLoginRequest()}
+                                onClick={sendLoginRequest}
 
                             >
                                 Login

@@ -12,10 +12,8 @@ export default function ADNavbar() {
   const [jwt, setJwt] = useLocalState('jwt', '')
   const [user, setUser] = useLocalState('user', null)
   async function handle_Logout() {
-    await setJwt(null)
-    await setUser(null)
     await loading.setDisplayName('')
-    await loading.setCount(0)
+    window.localStorage.clear()
     alert("Đăng xuất thành công")
     navigate("/");
   }

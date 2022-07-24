@@ -7,7 +7,6 @@ import '../Loading/Loading.css';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Loading from '../Loading/Loading';
 import { useLoading } from '../../Services/LoadingProvider';
-import { Navigate } from "react-router-dom";
 const ProductComponent = () => {
     const isLoading = useLoading();
     let catergoryCode = window.location.href.split("/products/catergory/")[1];

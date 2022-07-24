@@ -4,7 +4,7 @@ import './style.css'
 export default function ErrorPage() {
     return (
         <div className='errorPage' >
-            <a target="_blank" rel="noreferrer" href="/">
+            <a rel="noreferrer" href="/">
                 <Container>
                     <Row>
                         <div className="col-sm-12 col-md-12 mt-5 mb-5">

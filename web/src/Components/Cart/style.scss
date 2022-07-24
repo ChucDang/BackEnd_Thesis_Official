@@ -1,6 +1,15 @@
 .cart {
   padding: 2rem;
   text-align: center;
+  .cart__noneValue {
+    display: flex;
+    width: 100vw;
+    height: 80vh;
+    color: green;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+  }
   .cart__label {
     color: #1f4690;
     text-align: center;
@@ -38,7 +47,7 @@
 
 // Định dạng cho ConfirmUserDetail.js
 .confirm {
-  height: 25rem;
+  height: fit-content;
   .confirm__container {
     height: fit-content;
     .confirm__container__user {
@@ -51,6 +60,23 @@
         width: 25% !important;
         display: inline-block;
         margin-left: 1rem !important;
+      }
+    }
+    .confirm__container__note {
+      margin-top: 1rem !important;
+    }
+    .confirm__container__btn {
+      margin-top: 1rem !important;
+      padding: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      .confirm__container__btn--cancel {
+        width: 20%;
+        margin-right: 1rem !important;
+      }
+      .confirm__container__btn--order {
+        width: 20%;
       }
     }
   }

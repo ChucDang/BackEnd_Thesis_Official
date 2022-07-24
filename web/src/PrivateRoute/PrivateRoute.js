@@ -1,26 +1,31 @@
 import { Navigate } from "react-router-dom";
-import { useUser } from "../UserProvider";
 import { useState, useEffect } from "react";
-import ajax from "../Services/fetchService";
 import Loading from "../Components/Loading/Loading";
-
-const PrivateRoute = (props) => {
+import ajax from '../Services/fechServices';
+import { useLocalState } from '../Services/useLocalStorage';
+import ErrorPage from '../Components/ErrorPage/ErrorPage';
+const PrivateRoute = async (props) => {
+    const [user, setUser] = useLocalState('user', null)
+    const [jwt, setJwt] = useLocalState('jwt', '')
     const [isLoading, setIsLoading] = useState(true);
     const [isValid, setIsValid] = useState(null);
     const { children } = props;
-    let jwt = localStorage.getItem('jwt')
+    console.log('user', user)
 
-    const response = ajax(`/api/auth/validate`, "get", jwt)
-    if (response.status === 200) {
-        setIsValid(isValid);
-        setIsLoading(false);
-    }
-    else {
-        return <Navigate to="/" />;
+    const _jwt = await jwt
+    const _user = await user;
+    console.log('_user', _user)
+    if (jwt && user) {
+        ajax('/api/auth/validate', 'GET', jwt).then((isValid) => {
+            setIsValid(isValid);
+            setIsLoading(false);
+        });
+    } else {
+        return <ErrorPage />;
     }
 
     return isLoading ? (
-        <Loading />
+        <div>Loading...</div>
     ) : isValid === true ? (
         children
     ) : (

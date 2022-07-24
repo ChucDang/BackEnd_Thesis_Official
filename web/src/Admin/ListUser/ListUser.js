@@ -14,7 +14,7 @@ export default function ListUser() {
         ajax('/admin/users', 'GET', jwt).then(response => {
             setUsers(response);
         })
-    }, [])
+    }, [jwt])
     return (
         <>
             <ADNavbar />

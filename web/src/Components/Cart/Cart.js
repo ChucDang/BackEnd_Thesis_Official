@@ -4,13 +4,15 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import ajax from '../../Services/fechServices';
 import { useLocalState } from '../../Services/useLocalStorage.js'
 import { useLoading } from '../../Services/LoadingProvider';
-import { EnergySavingsLeaf } from '@mui/icons-material';
+
 import { useNavigate } from 'react-router-dom';
 import ConfirmUserDetail from './ConfirmUserDetail';
+import Loading from '../Loading/Loading';
 export default function Cart() {
     const [jwt, setJwt] = useLocalState('jwt', '')
-    const [idCart, setIdCart] = useLocalState('idCart', null);
+    const [idCart, setIdCart] = useLocalState('idCart', null)
     const [orders, setOrders] = useLocalState('orders', null)
+
     const loading = useLoading();
     const totalPrice = useRef(0);
     const navigate = useNavigate();
@@ -33,29 +35,6 @@ export default function Cart() {
         }
     }
 
-    const handleBuy = async () => {
-        const reqBody = {
-            idCart: idCart,
-            cartLineList: orders,
-        };
-        const response = await fetch(`/order/save`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
-            },
-            method: "POST",
-            body: JSON.stringify(reqBody)
-        })
-
-        if (response.status === 200) {
-            loading.setCount(0)
-            setOrders(null)
-            navigate("/order")
-
-        } else {
-            console.log('Thất bại')
-        }
-    }
     // Rerender lại khi Loading thay đổi.
     useEffect(() => {
         totalPrice.current = 0
@@ -63,18 +42,21 @@ export default function Cart() {
 
         ajax('/cart', 'GET', jwt).then(async response => {
             await loading.setCount(0)
+            loading.setIsLoading(false)
             if (typeof response !== 'undefined') {
                 setIdCart(response.idCart)
                 await loading.setCount(response.cartLineList.length)
                 await setOrders(response.cartLineList)
+
             } else {
                 await setOrders(null)
             }
 
         })
     }, [loading, totalPrice.current, jwt])
-    return (
-
+    return (loading.isLoading ? (
+        <Loading />
+    ) : <>
         <Container fluid className='cart'>
             <Row className='cart__label'>
                 <Col>
@@ -130,7 +112,7 @@ export default function Cart() {
 
             }
             ) :
-                <Row className='text-success cart__row'> Bạn chưa có Order nào trong giỏ hàng </Row>
+                <Row className='cart__noneValue'> Bạn chưa có Order nào trong giỏ hàng </Row>
             }
 
             {totalPrice.current !== 0 &&
@@ -159,5 +141,6 @@ export default function Cart() {
                 </Row>)
             }
         </Container>
+    </>
     )
 }
