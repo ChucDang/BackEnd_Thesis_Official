@@ -7,20 +7,19 @@ import Select from 'react-select';
 import { useLoading } from '../../Services/LoadingProvider';
 
 import { useNavigate } from 'react-router-dom';
-export default function ConfirmUserDetail() {
-    const [jwt, setJwt] = useLocalState('jwt', '')
-    const [user, setUser] = useLocalState('user', null)
-    const [idCart, setIdCart] = useLocalState('idCart', null)
-    const [orders, setOrders] = useLocalState('orders', null)
+
+// Phải truyền prop localStorage thế này, vì nếu khai báo trong đây thì nó load lần đầu là null hay '',
+// làm hư chương trình phía sau.
+export default function ConfirmUserDetail({ idCart, orders, setOrders }) {
     const loading = useLoading();
     const navigate = useNavigate();
     const [confirm, setConfirm] = useState({
-        fullname: user.fullname ? user.fullname : '',
-        phone: user.phone ? user.phone : '',
-        address: user.address,
-        note: user.note ? user.note : '',
+        fullname: loading.user ? loading.user.fullname : '',
+        phone: loading.user ? loading.user.phone : '',
+        address: loading.user ? loading.user.address : null,
+        note: loading.user ? loading.user.note : '',
     })
-    const address = user.address.split(', ')
+    const address = loading.user ? loading.user.address.split(', ') : null
     const location =
     {
         "city": address[2],
@@ -42,9 +41,7 @@ export default function ConfirmUserDetail() {
     } = state;
     const onConfirmChange = async e => {
         const { name, value } = e.target;
-        console.log('name', name)
-        console.log('value', value)
-        await setConfirm(prev => ({
+        setConfirm(prev => ({
             ...prev,
             [name]: value
         }));
@@ -57,10 +54,12 @@ export default function ConfirmUserDetail() {
             idCart: idCart,
             cartLines: orders,
         };
+
+
         const response = await fetch('/order/save', {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${loading.jwt}`
             },
             method: "POST",
             body: JSON.stringify(reqBody)
@@ -72,7 +71,7 @@ export default function ConfirmUserDetail() {
             navigate("/order")
 
         } else {
-            console.log('Thất bại')
+            alert('Đặt hàng không thành công, vui lòng thử lại sau!!!')
         }
     }
 

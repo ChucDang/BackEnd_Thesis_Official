@@ -25,9 +25,11 @@ import PrivateRoute from './PrivateRoute/PrivateRoute';
 import { useEffect, useState } from 'react';
 import { ROLE_ENUM } from './Constants/roles';
 import ErrorPage from './Components/ErrorPage/ErrorPage';
+import { useLoading } from './Services/LoadingProvider';
+import { Label } from '@mui/icons-material';
 
 function App() {
-
+    const loading = useLoading()
     return (
         <div>
             <Routes>
@@ -38,13 +40,14 @@ function App() {
                     </PrivateRoute>
                 }></Route>
                 <Route path="/" element={
-
                     <>
                         <NavBarComponent />
                         <CarouselComponent />
                         <ProductComponent />
                         <FooterComponent />
                     </>
+
+
                 }></Route>
                 <Route path="cart" element={
                     <PrivateRoute>
@@ -57,7 +60,6 @@ function App() {
                     <>
                         <NavBarComponent />
                         <RegisterComponent />
-                        <FooterComponent />
                     </>
 
                 } />
@@ -86,13 +88,14 @@ function App() {
                 />
                 {/* Điều hướng cho ADMIN */}
                 <Route path='admin' element={
-
-                    <PrivateRoute>
-                        <ListUser />
-                    </PrivateRoute>
+                    loading.user && loading.user.authorities[0].authority === ROLE_ENUM.ADMIN ?
+                        <PrivateRoute>
+                            <ListUser />
+                        </PrivateRoute> :
+                        <ErrorPage />
                 } />
                 <Route path='/notfound' element={<ErrorPage />} />
-            </Routes>
+            </Routes >
 
         </div >
     );

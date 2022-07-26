@@ -23,15 +23,8 @@
     margin-top: 1rem !important ;
     justify-content: center;
     .cart__row__grpbtn {
-      display: flex;
-      .cart__row__grpbtn__btn--margin {
-        margin-right: 0.3rem !important;
-        width: 50%;
-      }
-
-      .cart__row__grpbtn__btn {
-        width: 50%;
-      }
+      text-align: center;
+      cursor: pointer;
     }
 
     .cart__row--strikethrough {

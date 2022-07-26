@@ -18,6 +18,15 @@
 .img_detail {
   width: 100%;
 }
+// Khung logo và tên cửa hàng tại Navbar
+.navbar-brand {
+  margin-left: 2rem !important;
+  display: flex;
+  align-items: center;
+  .storeName {
+    padding-left: 1rem;
+  }
+}
 
 //Style cho thanh số trang
 .pagination {

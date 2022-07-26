@@ -14,12 +14,15 @@ function ajax(url, requestmethod, jwt, requestBody) {
     if (requestBody) {
         fetchData.body = JSON.stringify(requestBody)
     }
-    return fetch(url, fetchData).then(response => {
+    return fetch(url, fetchData).then(async response => {
+
         if (response.status === 200) {
-            if (typeof response === 'object') return response.json();
-            return response.text()
-        }
-        else if (response.status === 401 || response.status === 403) {
+
+
+            return response
+        } else if (response.status === 500) {
+            return response
+        } else if (response.status === 401 || response.status === 403) {
             return <Navigate to={'/notfound'} />
         }
     })

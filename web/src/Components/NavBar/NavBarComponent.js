@@ -24,7 +24,7 @@ export default function NavBarComponent() {
                         height="50"
                         className="d-inline-block align-top"
                     />{' '}
-                    <span className="mx-3 fs-2 fw-bold align-self-center">Hi-Tech</span>
+                    <span className="storeName">Hi-Tech</span>
                 </Navbar.Brand>
 
                 <Navbar.Toggle id="offcanvasNavbarLabel-expand-sm" />

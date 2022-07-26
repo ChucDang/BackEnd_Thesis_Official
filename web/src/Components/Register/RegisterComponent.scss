@@ -1,8 +1,9 @@
 .registerForm {
   padding-top: 2rem;
+  margin: auto !important;
   .registerForm__title {
     color: blue;
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 !important;
     padding-bottom: 0.5rem;
   }
   .registerForm__button {

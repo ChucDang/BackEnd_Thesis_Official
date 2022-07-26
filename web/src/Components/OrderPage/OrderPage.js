@@ -6,13 +6,15 @@ import { useLocalState } from '../../Services/useLocalStorage';
 import './OrderPage.scss'
 import { useLoading } from '../../Services/LoadingProvider';
 import Loading from '../Loading/Loading';
+import DeleteIcon from '@mui/icons-material/Delete';
 export default function OrderPage() {
     const [jwt, setJwt] = useLocalState('jwt', '')
     const [orders, setOrders] = useState([])
     const loading = useLoading();
     useEffect(() => {
         ajax('/order', 'GET', jwt).then(async (response) => {
-            await setOrders(response)
+            const result = await response.json()
+            await setOrders(result)
             loading.setIsLoading(false)
         })
     }, [orders.length, jwt])
@@ -39,12 +41,8 @@ export default function OrderPage() {
 
                     <Card.Header className='orderitem__header'>
                         <div className='orderitem__header--name'>Trần Dương Hoài</div>
-                        <div className='orderitem__header--status'><Badge bg="primary">Waiting</Badge></div>
-
-                        <img value={item.id} className='orderitem__header--icon' src='/icons/ic_trash.png' alt="Lỗi tải icon"
-                            onClick={() => handleDeleteOrder(item.id)} />
-
-
+                        <div className='orderitem__header--status'><Badge bg="success">Waiting</Badge></div>
+                        < DeleteIcon className='orderitem__header--icon' onClick={() => handleDeleteOrder(item.id)} />
                     </Card.Header>
                     <Card.Body className='orderitem__body'>
                         {item.cartLines.map(line => {
@@ -66,7 +64,7 @@ export default function OrderPage() {
 
                         )}
 
-                        <Row className='.d-flex justify-content-end px-5 py-2'>Tổng cộng: {Number(total).toLocaleString('vn') + ' đ'}</Row>
+                        <Row className='.d-flex justify-content-end px-5 pt-2'>Tổng cộng: {Number(total).toLocaleString('vn') + ' đ'}</Row>
                     </Card.Body>
                 </Card>
             }

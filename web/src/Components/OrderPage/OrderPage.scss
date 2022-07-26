@@ -1,6 +1,7 @@
 .orderitem {
   color: #001c44;
   margin: 2rem 3rem !important;
+  border: 2px solid #001c44 !important;
   .orderitem__body {
     padding: 1rem 3rem;
     .orderitem__body__nameproduct {
@@ -19,6 +20,9 @@
   }
   .orderitem__header {
     display: flex;
+    background-color: #001c44;
+    color: aliceblue;
+
     .orderitem__header--name {
       font-size: large;
     }

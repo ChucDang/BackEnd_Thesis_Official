@@ -18,7 +18,6 @@ function ProductDetail() {
     const [rating, setRating] = useState(0) // initial rating value
     //Tuy chỉ dùng để đọc jwt, nếu gọi trực tiếp localStorage.getItem thì sẽ ra như sau "jwt", 
     // dùng như vầy thì đọc sẽ không có ""
-    const [jwt, setJwt] = useLocalState('jwt', null)
     const [idCart, setIdCart] = useLocalState('idCart', null)
     //Count là số order đang có trong giỏ hàng.
     const loading = useLoading()
@@ -29,8 +28,8 @@ function ProductDetail() {
     }
     useEffect(() => {
         ajax(`/api/products/product/${productId}`, "GET")
-            .then((productResponse) => {
-                const data = productResponse;
+            .then(async (productResponse) => {
+                const data = await productResponse.json();
                 setCurrentProduct(data)
                 loading.setIsLoading(false)
             }).catch(error => {
@@ -42,7 +41,8 @@ function ProductDetail() {
             productId: currentProduct.id,
             amount: amount
         }
-        ajax('/cart/addCart', 'POST', jwt, reqBody).then(res => {
+        ajax('/cart/addCart', 'POST', loading.jwt, reqBody).then(async res => {
+            console.log('id cart  come here', await res.text())
             setIdCart(res)
             loading.setCount(loading.count + 1)
         })
@@ -56,7 +56,8 @@ function ProductDetail() {
             caterCode = 'phone'
         }
         ajax(`/api/products/catergory/?code=${caterCode}&page=${0}&size=${4}`, "GET")
-            .then((productResponse) => {
+            .then(async (response) => {
+                const productResponse = await response.json()
                 let productData = productResponse.product;
 
                 setproductRecommend(productData)

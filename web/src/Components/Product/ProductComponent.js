@@ -35,7 +35,9 @@ const ProductComponent = () => {
     }
     useEffect(() => {
         ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET")
-            .then((productResponse) => {
+            .then(async (response) => {
+
+                const productResponse = await response.json();
                 isLoading.setIsLoading(false)
                 setProducts(productResponse.product)
                 setPage({ ...page, total: productResponse.total })
@@ -66,7 +68,7 @@ const ProductComponent = () => {
 
 
 
-                    ) : <></>}
+                    ) : <div className='text-primary'>Danh mục này chưa có sản phẩm nào</div>}
             </ Row >
             <Row className="listPage">
                 {

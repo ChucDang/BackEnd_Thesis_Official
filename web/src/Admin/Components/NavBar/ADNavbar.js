@@ -12,10 +12,11 @@ export default function ADNavbar() {
   const [jwt, setJwt] = useLocalState('jwt', '')
   const [user, setUser] = useLocalState('user', null)
   async function handle_Logout() {
-    await loading.setDisplayName('')
-    window.localStorage.clear()
     alert("Đăng xuất thành công")
     navigate("/");
+    await loading.setDisplayName('')
+    window.localStorage.clear()
+
   }
   return (
     <>
@@ -45,9 +46,10 @@ export default function ADNavbar() {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="/products/catergory/phone">Users</Nav.Link>
+              <Nav.Link href="/admin">Users</Nav.Link>
               <Nav.Link href="/products/catergory/laptop">Dashboard</Nav.Link>
               <Nav.Link href="/products/catergory/clock">Flash-Sale</Nav.Link>
+              <Nav.Link href="/products/catergory/clock">Stock</Nav.Link>
               <NavDropdown
                 title="Products"
                 id='offcanvasNavbarDropdown-expand-sm'
@@ -62,25 +64,25 @@ export default function ADNavbar() {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            <Form className="d-flex">
+            {/* <Form className="d-flex">
               <FormControl
                 type="search"
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
               />
-            </Form>
+            </Form> */}
           </Offcanvas.Body>
         </Navbar.Offcanvas>
 
         <div className='grpicon'>
-          <a href="/cart" className='grpicon__item' >
+          {/* <a href="/cart" className='grpicon__item' >
             <LocalMallIcon />
             {loading.count > 0 && <Badge bg="light" text="dark" className='grpicon__item--badge'>
               {loading.count}
             </Badge>}
 
-          </a>
+          </a> */}
           <a href="/cart" className='grpicon__item' >
             <NotificationsIcon />
             <Badge bg="light" text="dark" className='grpicon__item--badge'>

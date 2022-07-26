@@ -8,8 +8,10 @@ const Index = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [isValid, setIsValid] = useState(null)
     if (jwt) {
-        ajax(`/api/auth/validate`, "GET", jwt).then(isValid => {
-
+        ajax(`/api/auth/validate`, "GET", jwt).then(async response => {
+            console.log('test private page', response)
+            const _isValid = await response.text()
+            console.log('isValid', isValid)
             setIsValid(isValid)
             setIsLoading(false)
         })

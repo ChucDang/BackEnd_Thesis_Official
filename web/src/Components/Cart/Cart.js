@@ -4,31 +4,30 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import ajax from '../../Services/fechServices';
 import { useLocalState } from '../../Services/useLocalStorage.js'
 import { useLoading } from '../../Services/LoadingProvider';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useNavigate } from 'react-router-dom';
 import ConfirmUserDetail from './ConfirmUserDetail';
 import Loading from '../Loading/Loading';
 export default function Cart() {
-    const [jwt, setJwt] = useLocalState('jwt', '')
     const [idCart, setIdCart] = useLocalState('idCart', null)
     const [orders, setOrders] = useLocalState('orders', null)
-
+    console.log('idCArt', idCart)
     const loading = useLoading();
     const totalPrice = useRef(0);
-    const navigate = useNavigate();
     //handleDelete cần thực thi the sync để cập nhật lại ngay orders khi bấm button Delete
-    const handleDelete = async (e) => {
-        const response = await fetch(`/cart/deleteCartItem/${e.target.value}`, {
+    const handleDelete = async (idCartLine) => {
+        const response = await fetch(`/cart/deleteCartItem/${idCartLine}`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${loading.jwt}`
             },
             method: "Delete",
         })
 
         if (response.status === 200) {
             const ordersCopy = [...orders];
-            const i = ordersCopy.findIndex((item) => item.id === e.target.value);
+            const i = ordersCopy.findIndex((item) => item.id === idCartLine);
             ordersCopy.splice(i, 1);
             await setOrders(ordersCopy);
             loading.setCount(loading.count - 1)
@@ -38,22 +37,28 @@ export default function Cart() {
     // Rerender lại khi Loading thay đổi.
     useEffect(() => {
         totalPrice.current = 0
-        console.log("Rerender")
 
-        ajax('/cart', 'GET', jwt).then(async response => {
-            await loading.setCount(0)
-            loading.setIsLoading(false)
-            if (typeof response !== 'undefined') {
-                setIdCart(response.idCart)
-                await loading.setCount(response.cartLineList.length)
-                await setOrders(response.cartLineList)
+        ajax('/cart', 'GET', loading.jwt).then(async response => {
 
+            if (response && response.status === 200) {
+                const result = await response.json()
+                await loading.setCount(0)
+                loading.setIsLoading(false)
+                if (typeof result !== 'undefined') {
+                    setIdCart(result.idCart)
+                    await loading.setCount(result.cartLineList.length)
+                    await setOrders(result.cartLineList)
+
+                } else {
+                    await setOrders(null)
+                }
             } else {
-                await setOrders(null)
-            }
 
+                await setOrders(null)
+                loading.setIsLoading(false)
+            }
         })
-    }, [loading, totalPrice.current, jwt])
+    }, [loading, totalPrice.current])
     return (loading.isLoading ? (
         <Loading />
     ) : <>
@@ -101,12 +106,17 @@ export default function Cart() {
                     </Col>
                     <Col>{Number(item.product.new_price * item.amount).toLocaleString('vn') + ' đ'}</Col>
                     <Col className='cart__row__grpbtn'>
-                        <Button className='cart__row__grpbtn__btn--margin' variant="success" value={item.id} >Buy</Button>
+                        {/* <Button className='cart__row__grpbtn__btn--margin' variant="success" value={item.id} >Buy</Button>
 
                         <Button className='cart__row__grpbtn__btn' variant="danger" value={item.id} onClick={(e) => {
                             handleDelete(e)
                             totalPrice.current = totalPrice.current - item.product.new_price * item.amount
-                        }}>Delete</Button>
+                        }}>Delete</Button> */}
+                        <DeleteIcon className='cart__row__grpbtn__icon' value={item.id} onClick={() => {
+
+                            handleDelete(item.id)
+                            totalPrice.current = totalPrice.current - item.product.new_price * item.amount
+                        }} />
                     </Col>
                 </Row>
 
@@ -136,7 +146,7 @@ export default function Cart() {
                     </Col>
                     <Col>
                         {/* <Button className='cart__label__btn' variant="success" onClick={() => handleBuy()}>Đặt hàng</Button> */}
-                        <ConfirmUserDetail />
+                        <ConfirmUserDetail idCart={idCart} orders={orders} setOrders={setOrders} />
                     </Col>
                 </Row>)
             }

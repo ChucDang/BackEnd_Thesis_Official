@@ -1,0 +1,50 @@
+.listUser {
+  margin: auto !important;
+  padding-top: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  .listUser__search {
+    margin-bottom: 1rem !important;
+
+    display: flex;
+    justify-content: center;
+    .listUser__search__input {
+      display: inline-block;
+      width: 50%;
+      margin-right: 1rem !important;
+      padding: 0.5rem;
+    }
+    .listUser__search__btn {
+      display: inline-block !important;
+      width: 7rem;
+
+      background-color: #003865;
+      color: #d4f6cc;
+      border: none;
+      padding: 0.5rem;
+    }
+  }
+  //   border-style: solid;
+  .listUser__header {
+    background-color: #003865;
+    color: #d4f6cc;
+    padding: 0.3rem;
+    text-align: center;
+  }
+  .listUser__user {
+    padding: 0.5rem;
+    border-bottom: 1px solid #003865;
+  }
+}
+
+//Style cho Edit Button
+.edit {
+  height: fit-content;
+}
+
+//Style cho icon add User
+.icon_addUser {
+  position: absolute;
+  right: 3rem;
+  bottom: 1rem;
+}

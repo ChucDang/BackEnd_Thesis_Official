@@ -6,12 +6,11 @@ import "./Login.scss"
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useLocalState } from '../../Services/useLocalStorage';
 import { useLoading } from '../../Services/LoadingProvider';
-import ajax from '../../Services/fechServices';
+
 import { ROLE_ENUM } from '../../Constants/roles';
 export default function LoginComponent() {
     const loading = useLoading();
     const [user, setUser] = useLocalState('user', null)
-    const [jwt, setJwt] = useLocalState('jwt', '')
     const [orders, setOrders] = useLocalState('orders', null)
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
@@ -41,30 +40,31 @@ export default function LoginComponent() {
             let _user = await response.json()
             await setUser(_user)
             await loading.setDisplayName(_user.fullname)
-            await setJwt(_jwt)
-            console.log('this role', _user.authorities[0].authority)
+            await loading.setJwt(_jwt)
+            await loading.setUser(_user)
+            await loading.setCount(0)
             if (_user && _user.authorities[0].authority === ROLE_ENUM.CUSTOMER) {
                 const response = await fetch('/cart', {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${jwt}`
+                        "Authorization": `Bearer ${_jwt}`
                     },
                     method: 'GET',
 
                 })
                 if (response.status === 200) {
-                    let count = response.length
-                    await loading.setCount(count)
-                    await setOrders(response)
+                    console.log('response',)
+                    console.log('length', await response.length)
+                    let order = (await response.json()).cartLineList
+                    await loading.setCount(order.length)
+                    await setOrders(order)
                 }
                 alert("Xin chào Khách hàng");
 
             } else if (_user && _user.authorities[0].authority === ROLE_ENUM.STAFF) {
                 alert("Xin chào Nhân Viên")
             } else if (_user && _user.authorities[0].authority === ROLE_ENUM.ADMIN) {
-                // await user
-                const test = await user
-                console.log('user', test)
+                alert("Xin chào Admin")
                 return navigate('/admin')
             }
             handleClose()
@@ -75,10 +75,14 @@ export default function LoginComponent() {
 
 
     async function handle_Logout() {
-        await loading.setDisplayName('')
-        await window.localStorage.clear()
+        // Lưu ý nên navigate trước, sau đó mới dọn dẹp localStorage, nếu không sẽ bị lỗi truy suất null
+        navigate('/')
         alert("Đăng xuất thành công")
-        navigate("/");
+        await loading.setUser(null)
+        await loading.setJwt('')
+        await loading.setDisplayName('')
+        await loading.setCount(0)
+        window.localStorage.clear()
     }
     return (
         <Container>
