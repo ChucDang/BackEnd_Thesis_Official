@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "orders")
-public class Order {
+@Table(name = "cartline")
+public class CartLine {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -16,9 +16,9 @@ public class Order {
     @OneToOne
     private Product product;
 
-    public Order(Product product, byte amount) {
+    public CartLine(Product product, byte amount) {
         this.product = product;
         this.amount = amount;
     }
-    public Order(){}
+    public CartLine(){}
 }

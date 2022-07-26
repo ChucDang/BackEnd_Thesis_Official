@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import thud.luanvanofficial.dto.ProductResponseListDTO;
 import thud.luanvanofficial.entity.Product;
 import thud.luanvanofficial.entity.Catergory;
-import thud.luanvanofficial.repository.catalogRepo.CatergoryRepository;
+import thud.luanvanofficial.repository.CatergoryRepository;
 import thud.luanvanofficial.service.ProductService;
 
 import java.util.List;

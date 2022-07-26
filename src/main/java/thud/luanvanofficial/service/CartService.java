@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import thud.luanvanofficial.dto.CartDTO;
 import thud.luanvanofficial.entity.Cart;
-import thud.luanvanofficial.entity.Order;
+import thud.luanvanofficial.entity.CartLine;
 import thud.luanvanofficial.entity.Product;
 import thud.luanvanofficial.entity.User;
-import thud.luanvanofficial.repository.OrderRepository;
+import thud.luanvanofficial.repository.CartLineRepository;
 import thud.luanvanofficial.repository.CartRepository;
 
 import java.util.ArrayList;
@@ -18,71 +19,78 @@ import java.util.Optional;
 @Service
 public class CartService {
     private CartRepository cartRepository;
-    private OrderRepository orderRepository;
+    private CartLineRepository cartLineRepository;
 
     @Autowired
 
-    public CartService(CartRepository cartRepository, OrderRepository orderRepository) {
+    public CartService(CartRepository cartRepository, CartLineRepository cartLineRepository) {
         this.cartRepository = cartRepository;
-        this.orderRepository = orderRepository;
+        this.cartLineRepository = cartLineRepository;
     }
 
 
     public ResponseEntity<?> save(Product product, byte amount, User user) {
-        Order order = new Order(product, amount);
+        CartLine cartLine = new CartLine(product, amount);
         Optional<Cart> cart = cartRepository.getByUser(user);
-        List<Order> list_orders = new ArrayList<>();
+        List<CartLine> list_cartLines = new ArrayList<>();
 
-        list_orders.add(order);
-        orderRepository.save(order);
+        list_cartLines.add(cartLine);
+        cartLineRepository.save(cartLine);
         if (cart.isEmpty()) {
             Cart newCart = new Cart(user);
-            newCart.setOrders(list_orders);
+            newCart.setCartLines(list_cartLines);
             cartRepository.save(newCart);
+            return ResponseEntity.ok(newCart.getId());
         } else {
-            list_orders.addAll(cart.get().getOrders());
+            list_cartLines.addAll(cart.get().getCartLines());
 
-            cart.get().setOrders(list_orders);
+            cart.get().setCartLines(list_cartLines);
 
             cartRepository.save(cart.get());
-
+            return ResponseEntity.ok(cart.get().getId());
         }
-        return ResponseEntity.ok(new Cart());
+
     }
 
-    public List<Order> getAllOrders(User user) {
+    public ResponseEntity<?> getAllCartLines(User user) {
         Optional<Cart> cart = cartRepository.getByUser(user);
+        Long id = cart.get().getId();
+        List<CartLine> list = cart.get().getCartLines();
         if (cart.isPresent()) {
-            return cart.get().getOrders();
+            return ResponseEntity.ok(new CartDTO(id,list ));
         }
-        return new ArrayList<>();
+        return ResponseEntity.ok(new CartDTO());
     }
 
-    public ResponseEntity<?> delete(Long idcartItem, User user) {
+    public ResponseEntity<?> delete(Long idCartLine, User user) {
         try {
             Optional<Cart> cart = cartRepository.getByUser(user);
-            List<Order> list_orders = new ArrayList<>();
-            Order order = orderRepository.getById(idcartItem);
-            if (cart.get().getOrders().size() == 1) {
+            List<CartLine> list_cartLines = new ArrayList<>();
+            CartLine cartLine = cartLineRepository.getById(idCartLine);
+            if (cart.get().getCartLines().size() == 1) {
                 cartRepository.delete(cart.get());
-                orderRepository.delete(order);
+                cartLineRepository.delete(cartLine);
 
             } else {
 
-                Boolean result = cart.get().getOrders().remove(order);
+                Boolean result = cart.get().getCartLines().remove(cartLine);
                 if (result) {
-                    list_orders.addAll(cart.get().getOrders());
-                    orderRepository.delete(order);
+                    list_cartLines.addAll(cart.get().getCartLines());
+                    cartLineRepository.delete(cartLine);
                     cartRepository.save(cart.get());
                 }
 
             }
-            return ResponseEntity.ok("Order được xóa thành công");
+            return ResponseEntity.ok("1 dòng trong giỏ hàng được xóa thành công");
         } catch (Exception e) {
             e.printStackTrace();
 
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    public Optional<Cart> findById(Long idCart) {
+        return cartRepository.findById(idCart);
     }
 }

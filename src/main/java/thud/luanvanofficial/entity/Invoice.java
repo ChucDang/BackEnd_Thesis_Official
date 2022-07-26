@@ -12,8 +12,12 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-//    @OneToOne(targetEntity=Cart.class)
-//    private Cart cart;
-//    @OneToMany(targetEntity=Product.class)
-//    private List<Product> products = new ArrayList<>();
+    @OneToOne
+    private Cart cart;
+    private Boolean isPaid;
+
+    public Invoice(Cart cart, Boolean isPaid) {
+        this.cart = cart;
+        this.isPaid = isPaid;
+    }
 }

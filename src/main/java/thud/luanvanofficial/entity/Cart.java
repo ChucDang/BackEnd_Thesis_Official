@@ -12,12 +12,8 @@ public class Cart {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    private String deliveryName;
-    private String deliveryStreet;
-    private String deliveryCity;
-    private String deliveryState;
     @OneToMany
-    private List<Order> orders;
+    private List<CartLine> cartLines;
 
     @OneToOne
     private User user;

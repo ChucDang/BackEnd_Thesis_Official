@@ -37,6 +37,10 @@ public class LuanVanOfficialApplication {
             user.setId(1L);
             user.setFullname("Đặng Văn Chức");
             user.setUsername("admin");
+            user.setPhone("0868285890");
+            user.setEmail("Violympic1998@gmail.com");
+            user.setGender(false);
+            user.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
             Set<Authority> set = new HashSet<>();
             set.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_ADMIN.toString()));
             user.setAuthorities(set);
@@ -46,11 +50,29 @@ public class LuanVanOfficialApplication {
             customer1.setId(2L);
             customer1.setFullname("Khách Hàng 1");
             customer1.setUsername("customer");
+            customer1.setPhone("0868285890");
+            customer1.setGender(true);
+            customer1.setEmail("Chucb1706677@student.ctu.edu.vn");
+            customer1.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
             Set<Authority> roles = new HashSet<>();
-            roles.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_ADMIN.toString()));
+            roles.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_CUSTOMER.toString()));
             customer1.setAuthorities(roles);
             customer1.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
             userRepository.save(customer1);
+
+            User _staff = new User();
+            _staff.setId(2L);
+            _staff.setFullname("Nhân Viên");
+            _staff.setUsername("staff");
+            _staff.setPhone("0868285890");
+            _staff.setGender(true);
+            _staff.setEmail("Chucb1706677@student.ctu.edu.vn");
+            _staff.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
+            Set<Authority> roles1 = new HashSet<>();
+            roles1.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_STAFF.toString()));
+            _staff.setAuthorities(roles1);
+            _staff.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
+            userRepository.save(_staff);
         };
     }
 }
