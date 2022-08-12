@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import React, { useRef } from 'react'
+import { Button, Col, Container, Overlay, Row, Table } from 'react-bootstrap';
 import ADNavbar from '../Components/NavBar/ADNavbar';
 import { useLoading } from '../../Services/LoadingProvider';
 import { useEffect } from 'react';
@@ -7,17 +7,26 @@ import ajax from '../../Services/fechServices';
 import { useLocalState } from '../../Services/useLocalStorage';
 import './ListUser.scss'
 
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditButton from './EditButton';
+import AddAnAccount from './AddAnAccount';
+import { useState } from 'react';
+import { InputGroup, Input } from 'reactstrap';
+import convert_vi_to_en from '../../Services/convert_vi_to_en';
 export default function ListUser() {
     const loading = useLoading();
     const [users, setUsers] = useLocalState('users', null)
+    const allUsers = useRef([])
     useEffect(() => {
         ajax('/admin/users', 'GET', loading.jwt).then(async response => {
             const result = await response.json()
-            setUsers(result);
+            result.sort(function (a, b) { return a.id - b.id })
+            setUsers(result)
+            allUsers.current = result
         })
-    }, [loading.jwt])
+    }, [])
+    // const handleAddAnAccount = () => {
+    //     ajax
+    // }
     const handleDelete = async (id) => {
         ajax(`/admin/deleteAUser/${id}`, 'DELETE', loading.jwt).then(async response => {
             const msg = (await response.text()).toString()
@@ -26,24 +35,28 @@ export default function ListUser() {
             usersCopy.splice(i, 1);
             alert(msg)
             setUsers(usersCopy)
+            allUsers.current = usersCopy
         })
+    }
+    const handleSearch = (key) => {
+        let usersCopy = [...allUsers.current]
+
+        let result = usersCopy.filter(item =>
+            convert_vi_to_en(JSON.stringify(Object.values(item)).toLowerCase())
+                .includes(convert_vi_to_en(key.toLowerCase())) === true)
+
+        if (result) {
+            setUsers(result)
+        }
+
     }
 
 
     return (
         <>
-            <ADNavbar />
-
-            {/* <img src='/icons/ic_plus.png' alt='Loading...' className='icon_addUser' /> */}
-            <Button variant='success' className='icon_addUser'>Add a acount</Button>
-
+            <ADNavbar handleSearch={handleSearch} />
+            <AddAnAccount setUsers={setUsers} users={users} />
             <Container className='listUser'>
-                <Row className='listUser__search'>
-
-                    <input type='text' className='listUser__search__input'></input>
-                    <button type="button" className="listUser__search__btn" > Search </button>
-
-                </Row>
 
 
                 <Table as={Row} striped bordered hover>
@@ -54,25 +67,33 @@ export default function ListUser() {
                             <th>Gender</th>
                             <th>Phone</th>
                             <th>Email</th>
+                            <th>Status</th>
                             <th>Authority</th>
                             <th>Manage</th>
                         </tr>
                     </thead>
                     <tbody>
                         {users ? users.map(item => {
-                            return <tr>
+                            return <tr key={item.id}>
                                 <td>{item.id}</td>
                                 <td> {item.fullname}</td>
                                 <td>{item.gender ? 'Nam' : 'Nữ'}</td>
                                 <td>{item.phone}</td>
 
                                 <td>{item.email}</td>
+                                <td>{item.enabled ? 'Enable' : 'Disable'}</td>
                                 <td>
                                     {item.authorities[0].authority.split("ROLE_")[1]}
                                 </td>
                                 <td>
-                                    <EditButton className='me-2' user={item} />
-                                    <Button value={item.id} variant='danger' onClick={(e) => handleDelete(e.target.value)}>Delete</Button>
+                                    <EditButton className='me-2' user={item} setUsers={setUsers} />
+                                    <Button value={item.id}
+                                        variant='danger'
+                                        onClick={(e) => handleDelete(e.target.value)}
+                                        disabled={item.id === loading.user.id}
+
+                                    >Delete</Button>
+
 
                                 </td>
                             </tr>

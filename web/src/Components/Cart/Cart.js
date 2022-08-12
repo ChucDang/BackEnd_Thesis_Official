@@ -5,14 +5,14 @@ import ajax from '../../Services/fechServices';
 import { useLocalState } from '../../Services/useLocalStorage.js'
 import { useLoading } from '../../Services/LoadingProvider';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import { useNavigate } from 'react-router-dom';
 import ConfirmUserDetail from './ConfirmUserDetail';
 import Loading from '../Loading/Loading';
 export default function Cart() {
+
     const [idCart, setIdCart] = useLocalState('idCart', null)
-    const [orders, setOrders] = useLocalState('orders', null)
-    console.log('idCArt', idCart)
+    // const [orders, setOrders] = useLocalState('orders', null)
+    const [cartLines, setCartLines] = useLocalState('cartLines', null)
+
     const loading = useLoading();
     const totalPrice = useRef(0);
     //handleDelete cần thực thi the sync để cập nhật lại ngay orders khi bấm button Delete
@@ -26,10 +26,10 @@ export default function Cart() {
         })
 
         if (response.status === 200) {
-            const ordersCopy = [...orders];
+            const ordersCopy = [...cartLines];
             const i = ordersCopy.findIndex((item) => item.id === idCartLine);
             ordersCopy.splice(i, 1);
-            await setOrders(ordersCopy);
+            await setCartLines(ordersCopy);
             loading.setCount(loading.count - 1)
         }
     }
@@ -47,14 +47,12 @@ export default function Cart() {
                 if (typeof result !== 'undefined') {
                     setIdCart(result.idCart)
                     await loading.setCount(result.cartLineList.length)
-                    await setOrders(result.cartLineList)
+                    await setCartLines(result.cartLineList)
 
-                } else {
-                    await setOrders(null)
                 }
             } else {
 
-                await setOrders(null)
+                await setCartLines(null)
                 loading.setIsLoading(false)
             }
         })
@@ -84,7 +82,7 @@ export default function Cart() {
                     Quản lý
                 </Col>
             </Row>
-            {orders !== null ? orders.map(item => {
+            {cartLines !== null ? cartLines.map(item => {
                 totalPrice.current = totalPrice.current + item.product.new_price * item.amount
 
                 //Row và return phải cùng hàng, xuống hàng thì sẽ lỗi
@@ -146,7 +144,7 @@ export default function Cart() {
                     </Col>
                     <Col>
                         {/* <Button className='cart__label__btn' variant="success" onClick={() => handleBuy()}>Đặt hàng</Button> */}
-                        <ConfirmUserDetail idCart={idCart} orders={orders} setOrders={setOrders} />
+                        <ConfirmUserDetail idCart={idCart} cartLines={cartLines} setCartLines={setCartLines} />
                     </Col>
                 </Row>)
             }

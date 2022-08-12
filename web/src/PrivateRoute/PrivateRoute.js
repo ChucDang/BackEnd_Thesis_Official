@@ -12,12 +12,15 @@ const PrivateRoute = (props) => {
     useEffect(() => {
         if (loading && loading.jwt) {
             ajax('/api/auth/validate', 'GET', loading.jwt).then(async (response) => {
-                const isValid = await response.json()
-                setIsValid(isValid);
+                const _isValid = await response.json()
+                setIsValid(_isValid);
                 setIsLoading(false);
             });
         } else {
-            return <ErrorPage />;
+
+            setIsValid(false);
+            setIsLoading(false);
+
         }
     }, [])
 
@@ -27,6 +30,7 @@ const PrivateRoute = (props) => {
     ) : isValid === true ? (
         children
     ) : (
+
         <Navigate to="/" />
     );
 };

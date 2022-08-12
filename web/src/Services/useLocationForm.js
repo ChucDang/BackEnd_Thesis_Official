@@ -23,9 +23,9 @@ async function fetchLocationOptions(fetchType, locationId) {
         }
     }
     const locations = (await axios.get(url)).data["data"];
-    return locations.map(({ id, name }) => ({ value: id, label: name }));
-}
 
+    return locations.map(({ id, name }) => ({ value: id, label: name })).sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
+}
 async function fetchInitialData(shouldFetchInitialLocation) {
     const { city, district, ward } = shouldFetchInitialLocation
 

@@ -18,7 +18,7 @@ function LocationComponent() {
         <Container className='registerForm'>
             <Row className='registerForm__title'> Thông tin cá nhân</Row>
             <Form as={Row}>
-                <Form.Group as={Col} xs={4} class>
+                <Form.Group as={Col} xs={4}>
                     <Form.Label>Họ và tên</Form.Label>
                     <Form.Control type="text" />
                 </Form.Group>

@@ -1,0 +1,20 @@
+.info-user {
+  margin: auto !important;
+
+  .info-user__header {
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .info-user__btn {
+    display: flex;
+    margin-top: 2rem !important;
+    justify-content: right;
+    .info-user__btn__save {
+      width: 9rem;
+    }
+    .info-user__btn__reset {
+      width: 9rem;
+      margin-left: 1rem !important;
+    }
+  }
+}

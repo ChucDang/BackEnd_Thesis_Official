@@ -1,23 +1,27 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useLocationForm from '../../Services/useLocationForm';
 import Select from 'react-select';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './RegisterComponent.scss'
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../../Services/LoadingProvider';
 function RegisterComponent() {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [input, setInput] = useState({
         fullname: '',
         email: '',
-        gender: null,
-        dateOfBirth: null,
+        gender: '',
+        dateOfBirth: '',
         phone: '',
         username: '',
         password: '',
         confirmPassword: '',
-        note: ''
+        note: '',
+        address: '',
+        authorities: ''
     })
+
     const [errorMsg, setErrorMsg] = useState(null);
     // Các state xử lý địa chỉ hành chính
     const { state, onCitySelect, onDistrictSelect, onWardSelect } =
@@ -120,6 +124,8 @@ function RegisterComponent() {
                 <Row className='registerForm__title'>
                     Thông tin tài khoản
                 </Row>
+
+
                 <Row>
                     <Form.Group as={Col} xs={3}>
                         <Form.Label>Username</Form.Label>
@@ -133,9 +139,10 @@ function RegisterComponent() {
                         <Form.Label>Nhập lại Password</Form.Label>
                         <Form.Control type="password" value={input.confirmPassword} name="confirmPassword" onChange={onInputChange} />
                     </Form.Group>
-
-
                 </Row>
+
+
+
                 {errorMsg ? (
                     <Row className="justify-content-center mb-4">
                         <Col md="8" lg="6">

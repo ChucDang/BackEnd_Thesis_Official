@@ -13,6 +13,11 @@ import { ROLE_ENUM } from '../../Constants/roles';
 
 export default function NavBarComponent() {
     const loading = useLoading();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (loading.user && loading.user.authorities[0].authority === ROLE_ENUM.ADMIN)
+            navigate('/admin')
+    })
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="xl" sticky="top">
@@ -41,9 +46,9 @@ export default function NavBarComponent() {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                            <Nav.Link href="/products/catergory/phone">Điện Thoại</Nav.Link>
-                            <Nav.Link href="/products/catergory/laptop">Laptop</Nav.Link>
-                            <Nav.Link href="/products/catergory/clock">Đồng Hồ</Nav.Link>
+                            <Nav.Link href="/products/category/phone">Điện Thoại</Nav.Link>
+                            <Nav.Link href="/products/category/laptop">Laptop</Nav.Link>
+                            <Nav.Link href="/products/category/clock">Đồng Hồ</Nav.Link>
                             <NavDropdown
                                 title="Phụ kiện khác"
                                 id='offcanvasNavbarDropdown-expand-sm'
@@ -89,6 +94,7 @@ export default function NavBarComponent() {
                         </Badge>
                     </a>
                     <a href="#" className='p-2' >  <LoginComponent /></a>
+                    {/* <LoginComponent /> */}
                 </div>
             </Navbar>
 

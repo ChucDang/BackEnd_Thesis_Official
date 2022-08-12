@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Phải truyền prop localStorage thế này, vì nếu khai báo trong đây thì nó load lần đầu là null hay '',
 // làm hư chương trình phía sau.
-export default function ConfirmUserDetail({ idCart, orders, setOrders }) {
+export default function ConfirmUserDetail({ idCart, cartLines, setCartLines }) {
     const loading = useLoading();
     const navigate = useNavigate();
     const [confirm, setConfirm] = useState({
@@ -52,7 +52,7 @@ export default function ConfirmUserDetail({ idCart, orders, setOrders }) {
             ...confirm,
             address: selectedWard.label + ', ' + selectedDistrict.label + ', ' + selectedCity.label,
             idCart: idCart,
-            cartLines: orders,
+            cartLines: cartLines,
         };
 
 
@@ -67,7 +67,7 @@ export default function ConfirmUserDetail({ idCart, orders, setOrders }) {
 
         if (response.status === 200) {
             await loading.setCount(0)
-            await setOrders(null)
+            await setCartLines(null)
             navigate("/order")
 
         } else {
@@ -149,10 +149,8 @@ export default function ConfirmUserDetail({ idCart, orders, setOrders }) {
 
                         </Form.Group>
                         <Form.Group as={Row} controlId="formBasicEmail" className='confirm__container__btn' >
-                            <Button className='confirm__container__btn--cancel' onClick={() => handleClose()}>Hủy Bỏ</Button>
                             <Button className='confirm__container__btn--order' onClick={() => handleBuy()}>Đặt Hàng</Button>
-
-
+                            <Button className='confirm__container__btn--cancel' onClick={() => handleClose()}>Hủy Bỏ</Button>
                         </Form.Group>
 
 

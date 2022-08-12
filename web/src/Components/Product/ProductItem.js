@@ -1,20 +1,18 @@
 
 import React from 'react'
-import { Card } from 'react-bootstrap'
+import { Badge, Card } from 'react-bootstrap'
 export default function ProductItem(props) {
 
     const type_display = props.type_display;
     const product = props.productProps;
-    const item = props.recommendProps;
-
     let optrender
     if (type_display === "Card") {
-
+        console.log('product', product)
         optrender =
             <Card className='card_item'>
-                <Card.Img variant="top" src="/imgs/computer.png" alt='Lỗi tải ảnh' />
+                <Card.Img variant="top" src={product.image ? `data:image/png;base64,${product.image.data}` : '/imgs/computer.png'} alt='Lỗi tải ảnh' />
                 <Card.Body>
-                    <Card.Title>{product.brand + ' ' + product.model}</Card.Title>
+                    <Card.Title>{product.brand.name + ' ' + product.model}</Card.Title>
                     <div className='card_item__icons'>
                         <p className='card_item__icons__icon'><img src='/icons/ic_cpu.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.cpu.version} </p>
                         <p className='card_item__icons__icon'><img src='/icons/ic_weight.png' alt="Lỗi tải icon" className='card_item__icons__icon--width'></img> {product.weight} </p>
@@ -24,9 +22,14 @@ export default function ProductItem(props) {
                     </div>
                     <div className='card_item__price'>
                         <p className='card_item__price--new'> {Number(product.new_price).toLocaleString('vn') + ' đ'}</p>
-                        <p className='card_item__price--old'> {Number(product.original_price).toLocaleString('vn') + ' đ'}</p>
+                        <p className='card_item__price--old'>
+                            {Number(product.original_price).toLocaleString('vn') + ' đ'}
+                            <label
+                                className='card_item__price--old--badge'>-{Math.floor((1 - Number(product.new_price) / Number(product.original_price)) * 100)}%</label>
+                        </p>
 
                     </div>
+                    <div className='cart_item__amount'>{product.amount > 10 ? '' : product.amount <= 10 && product.amount > 0 ? `Còn ${product.amount} sản phẩm` : 'Tạm hết hàng'}</div>
                     {/* <Card.Link to={`/products/${product.id}`} className='stretched-link' /> */}
                     <a href={`/products/product/${product.id}`} className="stretched-link"> </a>
                 </Card.Body>
@@ -39,21 +42,21 @@ export default function ProductItem(props) {
             <>
                 <div className='Stack'>
 
-                    <img src='/imgs/computer.png' width={150} alt="Không tải được ảnh" className='Stack__img' />
+                    <img src={product.image ? `data:image/png;base64,${product.image.data}` : '/imgs/computer.png'} width={150} alt="Không tải được ảnh" className='Stack__img' />
                     <div className='Stack__info'>
                         <p className='Stack__info__model'>
-                            {item.brand + ' ' + item.model}
+                            {product.brand.name + ' ' + product.model}
                         </p>
                         <p className='Stack__info__price'>
                             <p className='Stack__info__price--new'>
-                                {Number(item.new_price).toLocaleString('vn') + 'đ'}
+                                {Number(product.new_price).toLocaleString('vn') + 'đ'}
                             </p>
                             <p className='Stack__info__price--old'>
-                                {Number(item.original_price).toLocaleString('vn') + 'đ'}
+                                {Number(product.original_price).toLocaleString('vn') + 'đ'}
                             </p>
                         </p>
                     </div>
-                    <a href={`/products/product/${item.id}`} className="stretched-link"> </a>
+                    <a href={`/products/product/${product.id}`} className="stretched-link"> </a>
 
                 </div>
 

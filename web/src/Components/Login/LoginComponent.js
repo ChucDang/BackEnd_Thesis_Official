@@ -8,10 +8,12 @@ import { useLocalState } from '../../Services/useLocalStorage';
 import { useLoading } from '../../Services/LoadingProvider';
 
 import { ROLE_ENUM } from '../../Constants/roles';
+import '../ErrorPage/style.css';
 export default function LoginComponent() {
     const loading = useLoading();
     const [user, setUser] = useLocalState('user', null)
     const [orders, setOrders] = useLocalState('orders', null)
+
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -36,7 +38,7 @@ export default function LoginComponent() {
         })
 
         if (response.status === 200) {
-            let _jwt = await response.headers.get('Authorization')
+            let _jwt = response.headers.get('Authorization')
             let _user = await response.json()
             await setUser(_user)
             await loading.setDisplayName(_user.fullname)
@@ -56,7 +58,12 @@ export default function LoginComponent() {
                     console.log('response',)
                     console.log('length', await response.length)
                     let order = (await response.json()).cartLineList
-                    await loading.setCount(order.length)
+                    if (order) {
+                        await loading.setCount(order.length)
+                    } else {
+                        await loading.setCount(0)
+                    }
+
                     await setOrders(order)
                 }
                 alert("Xin chào Khách hàng");
@@ -68,6 +75,9 @@ export default function LoginComponent() {
                 return navigate('/admin')
             }
             handleClose()
+
+        } else if (response.status === 401) {
+            alert("Username hoặc Password không đúng")
 
         }
 
@@ -82,8 +92,10 @@ export default function LoginComponent() {
         await loading.setJwt('')
         await loading.setDisplayName('')
         await loading.setCount(0)
-        window.localStorage.clear()
+
+        window.location.reload()
     }
+
     return (
         <Container>
 
@@ -95,7 +107,7 @@ export default function LoginComponent() {
                         id="input-group-dropdown-2"
                         align="end"
                     >
-                        <Dropdown.Item href="#">Account</Dropdown.Item>
+                        <Dropdown.Item href="/account">Account</Dropdown.Item>
                         <Dropdown.Item href="#">My Coupons</Dropdown.Item>
                         <Dropdown.Item href="#">History invoices</Dropdown.Item>
                         <Dropdown.Divider />

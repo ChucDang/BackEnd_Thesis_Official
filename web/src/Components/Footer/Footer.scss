@@ -2,12 +2,13 @@
   padding: 2rem;
   background-color: rgb(26, 26, 31);
   margin-top: 3rem;
-  color: rgb(168, 166, 166);
+  color: #e1dee6 !important;
 
   .footer__header {
     font-size: larger;
     margin-bottom: 1rem;
     align-self: center;
+    color: #e1dee6 !important;
   }
   .footer__logo {
     display: flex;
@@ -16,21 +17,24 @@
     .footer__logo--img {
       width: 5rem;
       height: 5rem;
-      margin-right: 1rem;
+      margin-right: 1rem !important;
     }
     .footer__logo--brand {
       font-size: x-large;
       align-self: inherit;
+      color: #e1dee6 !important;
     }
   }
   .footer--normal {
     font-size: smaller;
     padding: 0.2rem;
+    color: #e1dee6 !important;
   }
   .footer__slogan {
     display: flex;
     justify-content: center;
     padding: 1rem;
+    color: #e1dee6 !important;
   }
   .footer__email {
     display: flex;

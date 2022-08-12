@@ -9,10 +9,15 @@
     display: flex;
     justify-content: center;
     .listUser__search__input {
-      display: inline-block;
-      width: 50%;
-      margin-right: 1rem !important;
+      margin-right: 0rem !important;
       padding: 0.5rem;
+    }
+    .listUser__search__clear {
+      display: inline-block !important;
+      width: 3rem;
+      text-align: center;
+      margin-right: 1rem !important;
+      background-color: #003865;
     }
     .listUser__search__btn {
       display: inline-block !important;
@@ -38,17 +43,26 @@
 }
 
 //Style cho Edit Button
-.edit {
-  height: fit-content;
-}
-
-//Style cho icon add User
-.icon_addUser {
-  position: absolute;
-  right: 3rem;
-  bottom: 1rem;
-}
-
-.lktj {
-  color: red;
+.editForm {
+  .editForm__label {
+    color: #003865;
+    font-size: large;
+    padding: 0.5rem 0;
+  }
+  .editForm__info {
+    margin-bottom: 0.5rem !important;
+  }
+  .editFrom__btn {
+    display: flex;
+    justify-content: right;
+    margin-top: 1.8rem !important;
+    margin-bottom: 0.3rem !important;
+    .editFrom__btn--save {
+      width: 7rem;
+      margin-right: 1rem !important;
+    }
+    .editFrom__btn--cancel {
+      width: 7rem;
+    }
+  }
 }

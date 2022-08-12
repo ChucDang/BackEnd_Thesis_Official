@@ -6,7 +6,8 @@ function ajax(url, requestmethod, jwt, requestBody) {
         headers: {
             "Content-Type": "application/json"
         },
-        method: requestmethod
+        method: requestmethod,
+
     }
     if (jwt) {
         fetchData.headers.Authorization = `Bearer ${jwt}`
@@ -22,7 +23,7 @@ function ajax(url, requestmethod, jwt, requestBody) {
             return response
         } else if (response.status === 500) {
             return response
-        } else if (response.status === 401 || response.status === 403) {
+        } else {
             return <Navigate to={'/notfound'} />
         }
     })

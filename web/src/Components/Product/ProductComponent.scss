@@ -25,12 +25,20 @@
     .card_item__price--old {
       padding: 0.5rem;
       text-decoration-line: line-through;
+      .card_item__price--old--badge {
+        color: red;
+        margin-left: 0.2rem !important;
+      }
     }
+  }
+  .cart_item__amount {
+    color: #002e5a;
+    text-align: right;
   }
 }
 
 // Đây là tên danh mục lớn trước khi hiển thị một danh sách Card product
-.catergory_label {
+.category_label {
   display: flex;
   justify-content: space-evenly;
   padding: 1.5rem;

@@ -7,10 +7,13 @@ import '../Loading/Loading.css';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Loading from '../Loading/Loading';
 import { useLoading } from '../../Services/LoadingProvider';
+import NavBarComponent from '../NavBar/NavBarComponent';
+import CarouselComponent from '../NavBar/CarouselComponent';
+import FooterComponent from '../Footer/FooterComponent';
 const ProductComponent = () => {
-    const isLoading = useLoading();
-    let catergoryCode = window.location.href.split("/products/catergory/")[1];
-    if (!catergoryCode) catergoryCode = 'phone'
+    const loading = useLoading()
+    let categoryCode = window.location.href.split("/products/category/")[1];
+    if (!categoryCode) categoryCode = 'laptop'
     const [products, setProducts] = useState(null)
     const [page, setPage] = useState({
         page: 0,
@@ -34,34 +37,41 @@ const ProductComponent = () => {
             setPage({ ...page, page: number - 1 })
     }
     useEffect(() => {
-        ajax(`/api/products/catergory/?code=${catergoryCode}&page=${page.page}&size=${page.size}`, "GET")
+        ajax(`/api/products/category/${categoryCode}/${page.page}/${page.size}`, "GET")
             .then(async (response) => {
+                let result = await response.json();
+                loading.setIsLoading(false)
 
-                const productResponse = await response.json();
-                isLoading.setIsLoading(false)
-                setProducts(productResponse.product)
-                setPage({ ...page, total: productResponse.total })
+                setProducts(result.products)
+                setPage({ ...page, total: result.total })
+
+                // const productResponse = await response.json();
+                // isLoading.setIsLoading(false)
+                // setProducts(productResponse.product)
+                // setPage({ ...page, total: productResponse.total })
             }).catch(
                 <ErrorPage />
             )
-    }, [catergoryCode, page.page, page.size])
-    return isLoading.isLoading ? (
+    }, [categoryCode, page.page, page.size])
+    return loading.isLoading ? (
         <Loading />
     ) :
 
         <>
+            <NavBarComponent />
+            <CarouselComponent />
             {
-                products ? <Row className='catergory_label'> {catergoryCode} </Row> : <></>
+                products ? <Row className='category_label'> {categoryCode} </Row> : <></>
             }
 
 
             < Row xs={1} md={2} xl={4} className="justify-content-between mx-4" >
                 {
-                    products ? products.map(product =>
+                    products ? products.map(item =>
 
                         <ProductItem
-                            key={product.id}
-                            productProps={product}
+                            key={item.id}
+                            productProps={item}
                             type_display="Card"
                         />
 
@@ -86,7 +96,7 @@ const ProductComponent = () => {
                         <></>
                 }
             </Row>
-
+            <FooterComponent />
         </>
 }
 export default ProductComponent

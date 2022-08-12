@@ -8,7 +8,7 @@ import './App.scss';
 import NavBarComponent from "./Components/NavBar/NavBarComponent";
 // import CarouselComponent from './Components/Casourel/CasourelComponent';
 // import ProductComponent from './Components/Product/ProductComponent';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import ProductComponent from './Components/Product/ProductComponent';
 import LoginComponent from './Components/Login/LoginComponent';
 import FooterComponent from './Components/Footer/FooterComponent';
@@ -26,10 +26,14 @@ import { useEffect, useState } from 'react';
 import { ROLE_ENUM } from './Constants/roles';
 import ErrorPage from './Components/ErrorPage/ErrorPage';
 import { useLoading } from './Services/LoadingProvider';
-import { Label } from '@mui/icons-material';
+import StockComponent from './Admin/Stock/StockComponent';
+import FlashSale from './Admin/FlashSale/FlashSale';
+import ProductAdmin from './Admin/Product/ProductAdmin';
+import EditProductAdmin from './Admin/Product/EditProductAdmin';
+import Account from './Components/Account/Account';
 
 function App() {
-    const loading = useLoading()
+    const loading = useLoading();
     return (
         <div>
             <Routes>
@@ -41,10 +45,9 @@ function App() {
                 }></Route>
                 <Route path="/" element={
                     <>
-                        <NavBarComponent />
-                        <CarouselComponent />
+
                         <ProductComponent />
-                        <FooterComponent />
+
                     </>
 
 
@@ -56,7 +59,7 @@ function App() {
                     </PrivateRoute>
 
                 } />
-                <Route path='register' element={
+                <Route path='/register' element={
                     <>
                         <NavBarComponent />
                         <RegisterComponent />
@@ -70,11 +73,11 @@ function App() {
                     </>
                 }
                 />
-                <Route path="/products/catergory/:catergoryCode" element={
+                <Route path="/products/category/:categoryCode" element={
                     <>
-                        <NavBarComponent />
+
                         <ProductComponent />
-                        <FooterComponent />
+
                     </>
                 }
                 />
@@ -86,6 +89,13 @@ function App() {
                     </>
                 }
                 />
+                <Route path="/account" element={
+                    <>
+                        <Account />
+                    </>
+                }
+                />
+
                 {/* Điều hướng cho ADMIN */}
                 <Route path='admin' element={
                     loading.user && loading.user.authorities[0].authority === ROLE_ENUM.ADMIN ?
@@ -94,7 +104,29 @@ function App() {
                         </PrivateRoute> :
                         <ErrorPage />
                 } />
+                <Route path='stock' element={
+                    loading.user && loading.user.authorities[0].authority === ROLE_ENUM.ADMIN ?
+                        <PrivateRoute>
+                            <StockComponent />
+                        </PrivateRoute> :
+                        <ErrorPage />
+                } />
+                <Route path='/admin/product' element={
+                    loading.user && loading.user.authorities[0].authority === ROLE_ENUM.ADMIN ?
+                        <PrivateRoute>
+                            <ProductAdmin />
+                        </PrivateRoute> :
+                        <ErrorPage />
+                } />
+                <Route path='/admin/product/create/:id' element={
+                    loading.user && loading.user.authorities[0].authority === ROLE_ENUM.ADMIN ?
+                        <PrivateRoute>
+                            <EditProductAdmin />
+                        </PrivateRoute> :
+                        <ErrorPage />
+                } />
                 <Route path='/notfound' element={<ErrorPage />} />
+
             </Routes >
 
         </div >

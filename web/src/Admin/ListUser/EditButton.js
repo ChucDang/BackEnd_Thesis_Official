@@ -1,16 +1,35 @@
 import React from 'react'
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button, Col, Container, Form, FormControl, Offcanvas, Row } from 'react-bootstrap'
 import Select from 'react-select';
 import { ROLE_ENUM } from '../../Constants/roles';
-export default function EditButton({ user }) {
-    console.log('User trong props', user)
+import ajax from '../../Services/fechServices';
+import { useLoading } from '../../Services/LoadingProvider';
+export default function EditButton({ user, setUsers }) {
+    const loading = useLoading();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [editValue, setEditValue] = useState({
+        authority: user.authorities[0].authority,
+        status: user.enabled,
+    })
+    const handleSave = async () => {
+        ajax(`admin/editAUser/${user.id}`, 'POST', loading.jwt, editValue).then(async response => {
+
+            let result = (await response.json())
+            result.sort(function (a, b) { return a.id - b.id })
+            await setUsers(result);
+        })
+
+        alert("Nhân viên đã được chỉnh sửa")
+        handleClose()
+    }
+
     const roles = [
         {
-            label: "Quản trị",
+            label: "Quản trị viên",
             value: ROLE_ENUM.ADMIN,
         },
         {
@@ -29,65 +48,68 @@ export default function EditButton({ user }) {
         },
     ]
 
+
     return (
         <>
-            <Button variant='success' className='me-2' onClick={handleShow}>Edit</Button>
-            <Offcanvas show={show} onHide={handleClose} placement='center' className='edit'>
+            <Button variant='success'
+                className='me-2'
+                onClick={handleShow}
+                disabled={user.id === loading.user.id}
+            >Edit</Button>
+            <Offcanvas show={show} onHide={handleClose} placement='center'>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title className='fs-2 fw-bold align-self-center'>Edit User</Offcanvas.Title>
+                    <Offcanvas.Title className='fs-2 fw-bold align-self-center '>Edit User</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <Form>
+                    <Form className='editForm'>
+                        <Row className='editForm__label'> Account</Row>
                         <Row>
-                            <Form.Group className="mb-3">
-                                <Form.Text className="text-dark ">
-                                    Thông tin Account
-                                </Form.Text>
-                                <Form.Text className="text-success ">
-                                    Bạn không thể chỉnh sửa ở vùng này
-                                </Form.Text>
-                            </Form.Group>
+
+                            <Form.Text className="editForm__info text-success">
+                                Bạn không thể chỉnh sửa ở vùng này
+                            </Form.Text>
+
                         </Row>
                         <Row>
                             <Form.Group as={Col} xs={4} >
                                 <Form.Label>Họ và tên</Form.Label>
-                                <Form.Control type="text" value={user.fullname} readOnly />
+                                <Form.Control type="text" value={user.fullname} plaintext readOnly />
                             </Form.Group>
                             <Form.Group as={Col} xs={4} >
                                 <Form.Label>Số điện thoại</Form.Label>
-                                <Form.Control type="text" value={user.phone} readOnly />
+                                <Form.Control type="text" value={user.phone} plaintext readOnly />
                             </Form.Group>
 
                         </Row>
                         <Row>
                             <Form.Group as={Col} xs={6} >
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="text" value={user.email} readOnly />
+                                <Form.Control type="text" value={user.email} plaintext readOnly />
                             </Form.Group>
                             <Form.Group as={Col} xs={2} >
                                 <Form.Label>Giới tính</Form.Label>
-                                <Form.Control type="text" value={user.gender ? 'Nam' : 'Nữ'} readOnly />
+                                <Form.Control type="text" value={user.gender ? 'Nam' : 'Nữ'} plaintext readOnly />
                             </Form.Group>
 
                         </Row>
-                        <Row>
-                            <Form.Group className="mb-3">
-                                <Form.Text className="text-dark ">
-                                    Phân quyền và thiết lập trạng thái
-                                </Form.Text>
+                        <Row className="editForm__label">
 
-                            </Form.Group>
+                            Authority and status
+
                         </Row>
                         <Row>
                             <Form.Group as={Col} xs={4}>
                                 <Form.Label>Authority</Form.Label>
                                 <Select as={FormControl}
-                                    name="roleId"
-                                    // key={`roleId${selectedDistrict?.value}`}
+                                    key="role"
+
                                     options={roles}
-                                    // onChange={(option) => onDistrictSelect(option)}
-                                    defaultValue={user.authorities[0].authority}
-                                // value={selectedDistrict}
+                                    onChange={(option) => setEditValue({
+                                        ...editValue,
+                                        authority: option.value
+                                    })}
+                                    defaultValue={roles.filter(item => item.value === user.authorities[0].authority)}
+
                                 />
                             </Form.Group>
                             <Form.Group as={Col} className="mb-3" xs={3}>
@@ -95,21 +117,25 @@ export default function EditButton({ user }) {
                                     Trạng thái hoạt động
                                 </Form.Label>
                                 <Select as={FormControl}
-                                    name="statusId"
-                                    // key={`roleId${selectedDistrict?.value}`}
+
+                                    key='status'
                                     options={status}
-                                    // onChange={(option) => onDistrictSelect(option)}
-                                    defaultValue={true}
-                                // value={selectedDistrict}
+
+                                    onChange={(option) => setEditValue({
+                                        ...editValue,
+                                        status: option.value
+                                    })}
+                                    defaultValue={status.filter(item => item.value === user.enabled)}
+                                // value={user.status}
                                 />
+
                             </Form.Group>
 
                         </Row>
-
-                        <Form.Group as={Row}>
-                            <Form.Label>Ghi chú</Form.Label>
-                            <Form.Control type='text'></Form.Control>
-                        </Form.Group>
+                        <Row className='editFrom__btn'>
+                            <Button className='editFrom__btn--save' variant='success' onClick={() => handleSave()}>Save</Button>
+                            <Button className='editFrom__btn--cancel' variant='danger' onClick={handleClose}>Cancel</Button>
+                        </Row>
 
 
 

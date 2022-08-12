@@ -13,7 +13,7 @@ export default function ProductTab({ product }) {
             {product ?
                 <>
                     <Row className='product-tab__2col' >
-                        <label className='product-tab__2col--item'>Thương hiệu: {product.brand}</label>
+                        <label className='product-tab__2col--item'>Thương hiệu: {product.brand.name}</label>
                         <label className='product-tab__2col--item'>Xuất xứ: {product.origin}</label>
                         <label className='product-tab__2col--item'>Bảo hành : {product.warranty} tháng</label>
                         <label className='product-tab__2col--item'>Thời điểm ra mắt: {product.release_date}</label>

@@ -31,40 +31,38 @@ function ProductDetail() {
             .then(async (productResponse) => {
                 const data = await productResponse.json();
                 setCurrentProduct(data)
-                loading.setIsLoading(false)
+                ajax(`/api/products/category/${data.brand.category.code}/0/4`, "GET")
+                    .then(async (response) => {
+                        const result = await response.json()
+
+                        setproductRecommend(result.products)
+                        loading.setIsLoading(false)
+                    }).catch(error => {
+                        console.log(error);
+                    })
+
             }).catch(error => {
                 console.log(error);
             })
     }, [productId])
     const handleAddCart = () => {
-        const reqBody = {
-            productId: currentProduct.id,
-            amount: amount
+        if (loading.jwt) {
+            const reqBody = {
+                productId: currentProduct.id,
+                amount: amount
+            }
+            ajax('/cart/addCart', 'POST', loading.jwt, reqBody).then(async res => {
+                console.log('id cart  come here', await res.text())
+                setIdCart(res)
+                loading.setCount(loading.count + 1)
+            })
         }
-        ajax('/cart/addCart', 'POST', loading.jwt, reqBody).then(async res => {
-            console.log('id cart  come here', await res.text())
-            setIdCart(res)
-            loading.setCount(loading.count + 1)
-        })
+        else {
+            alert('Vui lòng đăng nhập để sử dụng tính năng này')
+        }
+
 
     }
-    useEffect(() => {
-        let caterCode
-        if (currentProduct) {
-            caterCode = currentProduct.catergory.code
-        } else {
-            caterCode = 'phone'
-        }
-        ajax(`/api/products/catergory/?code=${caterCode}&page=${0}&size=${4}`, "GET")
-            .then(async (response) => {
-                const productResponse = await response.json()
-                let productData = productResponse.product;
-
-                setproductRecommend(productData)
-            }).catch(error => {
-                console.log(error);
-            })
-    }, [])
 
     return (loading.isLoading ? (
         <Loading />
@@ -77,7 +75,7 @@ function ProductDetail() {
 
                             <ProductItem
                                 key={item.id}
-                                recommendProps={item}
+                                productProps={item}
                                 type_display="Stack"
                             />
 
@@ -87,12 +85,12 @@ function ProductDetail() {
                     }
                 </Col>
                 <Col xs={4} className='row_detail__mainimg'>
-                    <img src='/imgs/computer.png' alt='Không tải được ảnh' className='row_detail__mainimg--width' />
+                    <img src={currentProduct.image ? `data:image/png;base64,${currentProduct.image.data}` : '/imgs/computer.png'} alt='Không tải được ảnh' className='row_detail__mainimg--width' />
                 </Col>
 
                 <Col className='row_detail__description'>
                     {currentProduct ? <>
-                        <div className='row_detail__description--name'>{currentProduct.brand + ' ' + currentProduct.model + ' ' + currentProduct.ram.storage +
+                        <div className='row_detail__description--name'>{currentProduct.brand.name + ' ' + currentProduct.model + ' ' + currentProduct.ram.storage +
                             'GB ' + currentProduct.cpu.brand + ' ' + currentProduct.cpu.version + ' ' + currentProduct.cpu.type} </div>
 
                         <div className='row_detail__description__price'>
