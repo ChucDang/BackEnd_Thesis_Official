@@ -41,7 +41,6 @@ export default function EditProductAdmin() {
         feature: '',
         graphic: '',
         id: '',
-        image: '',
         material: '',
         model: '',
         new_price: '',
