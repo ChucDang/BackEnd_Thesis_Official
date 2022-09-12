@@ -1,8 +1,7 @@
 package thud.luanvanofficial.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import thud.luanvanofficial.entity.CartLine;
-import thud.luanvanofficial.entity.User;
+import thud.luanvanofficial.entity.OrderLine;
 import java.util.List;
 
 public class OrderDTO {
@@ -14,15 +13,13 @@ public class OrderDTO {
     private String deliveryPhone;
     @JsonProperty("note")
     private String deliveryNote;
-    private Long idCart;
-    private List<CartLine> cartLines;
+    @JsonProperty("orderLines")
+    private List<OrderLine> orderLines;
 
-    public List<CartLine> getCartLines() {
-        return cartLines;
-    }
 
-    public Long getIdCart() {
-        return idCart;
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
     }
 
     public String getDeliveryName() {

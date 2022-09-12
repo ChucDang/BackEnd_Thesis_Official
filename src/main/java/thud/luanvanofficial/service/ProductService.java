@@ -1,28 +1,87 @@
 package thud.luanvanofficial.service;
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import thud.luanvanofficial.dto.ProductDTO;
 import thud.luanvanofficial.entity.Product;
-import thud.luanvanofficial.entity.Catergory;
+import thud.luanvanofficial.entity.Category;
+import thud.luanvanofficial.entity.Image;
 import thud.luanvanofficial.repository.ProductRepository;
 
+import javax.servlet.ServletContext;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 public class ProductService {
-    @Autowired
+    private ServletContext servletContext;
     private ProductRepository productRepository;
 
-    public Optional<Product>  findById(Long id) {
+    @Autowired
+    public ProductService(ServletContext servletContext, ProductRepository productRepository) {
+        this.servletContext = servletContext;
+        this.productRepository = productRepository;
+    }
+
+    public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
     }
-    public Product findProductById(Long id){
+
+    public Product findProductById(Long id) {
         return productRepository.findProductById(id);
     }
 
-    public Page<Product> findAllByCatergory(Optional<Catergory> catergory, Pageable pageable) {
-        return productRepository.findAllByCatergoryCode(catergory, pageable);
+    public Page<Product> findAllByCategory(Optional<Category> category, Pageable pageable) {
+        return productRepository.findAllByCategoryCode(category, pageable);
     }
+
+    public ResponseEntity<?> getAllProducts() {
+        return ResponseEntity.ok(productRepository.findAll());
+    }
+
+    public ResponseEntity<?> updateProduct(Product product) {
+        try {
+            productRepository.save(product);
+        } catch (Exception e) {
+            System.out.println("Lỗi " + e.toString());
+        }
+        return ResponseEntity.ok("Không lỗi");
+    }
+
+    public ResponseEntity<?> createProduct(Product product) {
+        String path = servletContext.getRealPath("/");
+        System.out.println("path "+ path);
+        try{
+//            String filePath = path + "/" + product.getPhoto();
+        }catch (Exception e){
+
+        }
+        return ResponseEntity.ok("Nothing");
+    }
+    public Product getJson(String _txtProduct){
+        
+        ProductDTO newProductDTO = new ProductDTO();
+        Product newProduct = new Product();
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            newProductDTO = objectMapper.readValue(_txtProduct, ProductDTO.class);
+            ModelMapper modelMapper = new ModelMapper();
+            newProduct = modelMapper.map(newProductDTO, Product.class);
+        } catch (JsonProcessingException e) {
+            System.out.println("Lỗi");
+            throw new RuntimeException(e);
+        }
+
+        return newProduct;
+    }
+
+    
 }

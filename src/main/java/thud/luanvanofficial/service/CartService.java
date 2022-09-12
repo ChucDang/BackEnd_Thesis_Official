@@ -5,12 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import thud.luanvanofficial.dto.CartDTO;
+import thud.luanvanofficial.dto.MessageResponse;
 import thud.luanvanofficial.entity.Cart;
 import thud.luanvanofficial.entity.CartLine;
 import thud.luanvanofficial.entity.Product;
 import thud.luanvanofficial.entity.User;
 import thud.luanvanofficial.repository.CartLineRepository;
 import thud.luanvanofficial.repository.CartRepository;
+import thud.luanvanofficial.util.ConsoleColors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,28 +37,29 @@ public class CartService {
         List<CartLine> list_cartLines = new ArrayList<>();
 
         list_cartLines.add(cartLine);
-        cartLineRepository.save(cartLine);
+        CartLine savedCartLine = cartLineRepository.save(cartLine);
         if (cart.isEmpty()) {
             Cart newCart = new Cart(user);
             newCart.setCartLines(list_cartLines);
             cartRepository.save(newCart);
-            return ResponseEntity.ok(newCart.getId());
+            
         } else {
             list_cartLines.addAll(cart.get().getCartLines());
 
             cart.get().setCartLines(list_cartLines);
 
             cartRepository.save(cart.get());
-            return ResponseEntity.ok(cart.get().getId());
+           
         }
-
+        return ResponseEntity.ok(savedCartLine) ;
     }
 
     public ResponseEntity<?> getAllCartLines(User user) {
         Optional<Cart> cart = cartRepository.getByUser(user);
-        Long id = cart.get().getId();
-        List<CartLine> list = cart.get().getCartLines();
+
         if (cart.isPresent()) {
+            Long id = cart.get().getId();
+            List<CartLine> list = cart.get().getCartLines();
             return ResponseEntity.ok(new CartDTO(id,list ));
         }
         return ResponseEntity.ok(new CartDTO());
@@ -67,6 +70,7 @@ public class CartService {
             Optional<Cart> cart = cartRepository.getByUser(user);
             List<CartLine> list_cartLines = new ArrayList<>();
             CartLine cartLine = cartLineRepository.getById(idCartLine);
+
             if (cart.get().getCartLines().size() == 1) {
                 cartRepository.delete(cart.get());
                 cartLineRepository.delete(cartLine);

@@ -1,20 +1,17 @@
 package thud.luanvanofficial.entity;
-
-import lombok.Data;
+import thud.luanvanofficial.service.Auditable;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "Cart")
-public class Cart {
+public class Cart extends Auditable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<CartLine> cartLines;
-
     @OneToOne
     private User user;
 
@@ -26,4 +23,30 @@ public class Cart {
     public Cart() {
 
     }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public List<CartLine> getCartLines() {
+		return cartLines;
+	}
+
+	public void setCartLines(List<CartLine> cartLines) {
+		this.cartLines = cartLines;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+    
+    
 }

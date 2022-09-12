@@ -1,25 +1,46 @@
 package thud.luanvanofficial.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Data
-@NoArgsConstructor
 @Table(name = "storages")
 public class Storage {
     @Id
+	@GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
-    @Column(columnDefinition = "varchar(10) default null")
     private String code;
     private String storage;
     private String type;
-    private Boolean optane;
-    private byte slot;
-    private byte remain;
+    private Boolean supportOptane;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getStorage() {
+		return storage;
+	}
+	public void setStorage(String storage) {
+		this.storage = storage;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Boolean getSupportOptane() {
+		return supportOptane;
+	}
+	public void setSupportOptane(Boolean supportOptane) {
+		this.supportOptane = supportOptane;
+	}
+    
 }

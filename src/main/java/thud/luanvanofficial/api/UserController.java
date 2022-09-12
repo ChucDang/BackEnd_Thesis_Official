@@ -1,24 +1,18 @@
 package thud.luanvanofficial.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import thud.luanvanofficial.dto.UserDTO;
-import thud.luanvanofficial.entity.Authority;
-import thud.luanvanofficial.entity.Product;
-import thud.luanvanofficial.entity.User;
-import thud.luanvanofficial.repository.AuthorityRepository;
-import thud.luanvanofficial.repository.UserRepository;
-import thud.luanvanofficial.service.UserService;
-import thud.luanvanofficial.util.JwtUtil;
 
-import java.util.Set;
+import thud.luanvanofficial.dto.MessageResponse;
+import thud.luanvanofficial.dto.UserDTO;
+import thud.luanvanofficial.entity.User;
+import thud.luanvanofficial.service.UserService;
+import thud.luanvanofficial.util.ConsoleColors;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/auth/users")
@@ -26,33 +20,27 @@ import java.util.Set;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    private ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
-        userService.createUser(userDto);
+    private ResponseEntity<?> createACustomer(@RequestBody UserDTO userDto) {
+        Optional<User> existUser = userService.findUserByUsername(userDto.getUsername());
+        System.out.println( ConsoleColors.GREEN + "userDto "+ userDto.getFullname() + ' ' + userDto.getPassword() +ConsoleColors.RESET);
 
-        try {
-            Authentication authenticate = authenticationManager
-                    .authenticate(
-                            new UsernamePasswordAuthenticationToken(
-                                    userDto.getUsername(), userDto.getPassword()
-                            )
-                    );
+        if(existUser.isEmpty()){
+            userService.createACustomer(userDto);
 
-            User user = (User) authenticate.getPrincipal();
-            return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtUtil.generateToken(user)
-                    )
-                    .body(user);
-        } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            
+                return ResponseEntity.ok(new MessageResponse("Đăng ký thành công"));
+                       
         }
+        return ResponseEntity.badRequest().body(new MessageResponse("Username đã tồn tại!!!"));
     }
-
+    @PostMapping("changePassword")
+    public ResponseEntity<?> changePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @AuthenticationPrincipal User user){
+        return userService.changePassword(currentPassword, newPassword, user);
+    }
+    @PostMapping("changeInfoUser")
+    public ResponseEntity<?> changeInfoUser(@RequestBody UserDTO userDTO, @AuthenticationPrincipal User user){
+        return userService.changeInfoUser(userDTO, user);
+    }
 }

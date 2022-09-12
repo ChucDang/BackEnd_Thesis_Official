@@ -3,28 +3,37 @@ package thud.luanvanofficial.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import thud.luanvanofficial.entity.CartLine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartDTO {
     @JsonProperty("idCart")
     private Long idCart;
-    @JsonProperty("cartLineList")
-    private List<CartLine> cartLineList;
+    @JsonProperty("cartLines")
+    private List<CartLine> cartLines = new ArrayList<>();
 
-    public CartDTO(Long idCart, List<CartLine> cartLineList) {
+    public CartDTO(Long idCart, List<CartLine> cartLines) {
         this.idCart = idCart;
-        this.cartLineList = cartLineList;
+        this.cartLines = cartLines;
     }
 
     public CartDTO() {
-
+        
     }
 
     public Long getIdCart() {
         return idCart;
     }
 
-    public List<CartLine> getCartLineList() {
-        return cartLineList;
+    public void setIdCart(Long idCart) {
+        this.idCart = idCart;
+    }
+
+    public List<CartLine> getCartLines() {
+        return cartLines;
+    }
+
+    public void setCartLines(List<CartLine> cartLines) {
+        this.cartLines = cartLines;
     }
 }

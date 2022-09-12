@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import thud.luanvanofficial.dto.CartDTO;
 import thud.luanvanofficial.dto.OrderDTO;
-import thud.luanvanofficial.entity.Order;
 import thud.luanvanofficial.entity.User;
 import thud.luanvanofficial.service.OrderService;
+import thud.luanvanofficial.util.ConsoleColors;
+
+import javax.annotation.security.RolesAllowed;
 
 @RestController
 @RequestMapping(path = "/order")
@@ -21,6 +22,7 @@ public class OrderController {
     }
     @PostMapping("save")
     public ResponseEntity<?> saveOrder(@RequestBody OrderDTO orderDTO, @AuthenticationPrincipal User user){
+        System.out.println( ConsoleColors.GREEN + "orderDTO "+ orderDTO.getOrderLines().toString() +ConsoleColors.RESET);
 
         return  orderService.saveOrder(orderDTO, user);
     }
@@ -30,6 +32,18 @@ public class OrderController {
     }
     @DeleteMapping("delete/{idOrder}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long idOrder, @AuthenticationPrincipal User user){
-        return orderService.deleteOrder(idOrder, user);
+        return orderService.deleteOrder(idOrder);
+    }
+
+    @GetMapping("/customerOrders")
+    @RolesAllowed({"ROLE_STAFF","ROLE_ADMIN"})
+    public ResponseEntity<?> getAllCustomerOrders(@AuthenticationPrincipal User user){
+        return orderService.getAllCustomerOrders();
+    }
+
+    @PostMapping("/editStatusOrder/{id}/{status}")
+    @RolesAllowed({"ROLE_STAFF","ROLE_ADMIN"})
+    public ResponseEntity<?> editStatusOrder(@PathVariable Long id, @PathVariable String status, @AuthenticationPrincipal User user){
+        return orderService.editStatusOrder(id, status);
     }
 }

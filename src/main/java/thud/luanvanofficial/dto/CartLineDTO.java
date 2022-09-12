@@ -1,7 +1,5 @@
 package thud.luanvanofficial.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CartLineDTO {
 
     private Long productId;

@@ -6,7 +6,6 @@ import thud.luanvanofficial.entity.Order;
 import thud.luanvanofficial.entity.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select a from Order a where (a.user = :user) ")

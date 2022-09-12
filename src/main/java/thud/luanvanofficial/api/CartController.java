@@ -31,7 +31,7 @@ public class CartController {
         return cartService.delete(idCartLine, user);
     }
     @GetMapping
-    public ResponseEntity<?> getAllOrders(@AuthenticationPrincipal User user){
+    public ResponseEntity<?> getAllCartLines(@AuthenticationPrincipal User user){
         return cartService.getAllCartLines(user);
     }
 }

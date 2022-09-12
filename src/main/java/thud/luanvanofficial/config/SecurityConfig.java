@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import thud.luanvanofficial.enums.Role_Enum;
 import thud.luanvanofficial.security.UserDetailServiceIml;
 import thud.luanvanofficial.util.CustomPasswordEncoder;
@@ -30,14 +35,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
+
+        // configure authentication manager
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(customPasswordEncoder.getPasswordEncoder());
     }
-
+        // configure web security
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http = http.cors().disable().csrf().disable();
+
+       // Enable CORS and disable CSRF
+       http = http.cors().and().csrf().disable();
+    
+
 
         // Set session management to stateless
         http = http
@@ -60,20 +71,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Set permissions on endpoints
         http.authorizeRequests()
-                // Our public endpoints
+                
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/products/**").permitAll()
-                .antMatchers("/cart/addCart").permitAll()
-                .antMatchers("/admin/**").hasAuthority(Role_Enum.ROLE_ADMIN.toString())
+                // order là enpoint sử dụng bảo mật cấp method, do có một số method cần public cho customer.
+                // nên đặt permitAll
+                .antMatchers("/order/**").permitAll()
                 .antMatchers("/invoice/saveInvoice/**").permitAll()
+                .antMatchers("/categories/**").permitAll()
+                .antMatchers("/api/products/**").permitAll()
 
-                // Our private endpoints
+        // Private enpoint
+                .antMatchers("/cart/addCart").hasAuthority(Role_Enum.ROLE_CUSTOMER.toString())
+                .antMatchers("/stock/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_CUSTOMER.toString())
+                .antMatchers("/admin/**").hasAuthority(Role_Enum.ROLE_ADMIN.toString())
+                .antMatchers("/sales/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_CUSTOMER.toString())
+                .antMatchers("/gifts/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_CUSTOMER.toString())
+
                 .anyRequest().authenticated();
+
         // Add JWT token filter
         http.addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class
         );
 
+       
+   
     }
+   
 }

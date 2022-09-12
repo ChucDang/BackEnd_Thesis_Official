@@ -5,6 +5,6 @@ import thud.luanvanofficial.entity.Category;
 
 import java.util.Optional;
 
-public interface CatergoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByCode(String code);
 }

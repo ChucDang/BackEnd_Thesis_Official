@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        //Authorization -> Bearer asdf.13898sh.alskdjflksfj
+        //Authorization -> Bearer <jwt>
         final String token = header.split(" ")[1].trim();
         // Get user identity and set it on the spring security context
         UserDetails userDetails = userRepository
@@ -50,7 +50,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         UsernamePasswordAuthenticationToken
                 authentication = new UsernamePasswordAuthenticationToken(
-                userDetails, userDetails.getPassword(),
+                userDetails, null,
+
                 userDetails == null ?
                         List.of() : userDetails.getAuthorities()
         );

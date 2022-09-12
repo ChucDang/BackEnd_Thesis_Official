@@ -1,24 +1,23 @@
 package thud.luanvanofficial.api;
-
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import thud.luanvanofficial.entity.User;
-import thud.luanvanofficial.service.InvoiceService;
+import thud.luanvanofficial.repository.InvoiceRepository;
 
 @RestController
-@RequestMapping(path = "/invoice")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080"})
+@RequestMapping(path = "/invoices")
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:8080" })
 public class InvoiceController {
-    private InvoiceService invoiceService;
+    private InvoiceRepository invoiceRepository;
+
     @Autowired
-    public InvoiceController(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
+    public InvoiceController(InvoiceRepository invoiceRepository) {
+        this.invoiceRepository = invoiceRepository;
     }
-    @PostMapping("saveInvoice")
-    public ResponseEntity<?> saveInvoice( @AuthenticationPrincipal User user){
-        return invoiceService.saveInvoice(user);
+    @GetMapping
+    public ResponseEntity<?> getAllInvoicesByUser(@AuthenticationPrincipal User user){
+        return ResponseEntity.ok(invoiceRepository.findByUser(user));
     }
 }

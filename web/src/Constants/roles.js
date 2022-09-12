@@ -1,5 +1,0 @@
-export const ROLE_ENUM = {
-    ADMIN: 'ROLE_ADMIN',
-    CUSTOMER: 'ROLE_CUSTOMER',
-    STAFF: 'ROLE_STAFF'
-};
