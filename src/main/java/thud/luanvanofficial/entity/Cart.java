@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "Cart")
 public class Cart extends Auditable {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @OneToMany(fetch = FetchType.EAGER)
     private List<CartLine> cartLines;

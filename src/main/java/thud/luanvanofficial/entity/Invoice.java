@@ -8,7 +8,7 @@ import java.util.ListIterator;
 @Table(name = "Invoices")
 public class Invoice {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @OneToMany
     private List<InvoiceLine> invoiceLines = new ArrayList<>();

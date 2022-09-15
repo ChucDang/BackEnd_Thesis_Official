@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Stock extends Auditable {
     
 	@Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     
     private Long price;

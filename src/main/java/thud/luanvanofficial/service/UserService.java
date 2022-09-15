@@ -2,6 +2,8 @@ package thud.luanvanofficial.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
@@ -22,33 +24,49 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import thud.luanvanofficial.entity.User;
+import thud.luanvanofficial.security.AuthCredentialsRequest;
+import thud.luanvanofficial.util.JwtUtil;
 
 @Service
 public class UserService {
 
+    private AuthenticationManager authenticationManager;
     private UserRepository userRepo;
 
     private AuthorityRepository authorityRepo;
 
     private CustomPasswordEncoder customPasswordEncoder;
-    private User user;
+  
+    private JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepo, AuthorityRepository authorityRepo,
-            CustomPasswordEncoder customPasswordEncoder) {
+    public UserService(AuthenticationManager authenticationManager, UserRepository userRepo,
+            AuthorityRepository authorityRepo, CustomPasswordEncoder customPasswordEncoder,
+            JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
         this.userRepo = userRepo;
         this.authorityRepo = authorityRepo;
         this.customPasswordEncoder = customPasswordEncoder;
+    
+        this.jwtUtil = jwtUtil;
     }
 
     public ResponseEntity<?> changePassword(String currentPassword, String newPassword, User user) {
         String encodedNewPassword = customPasswordEncoder.getPasswordEncoder().encode(newPassword);
         if (customPasswordEncoder.getPasswordEncoder().matches(currentPassword, user.getPassword())) {
             user.setPassword(encodedNewPassword);
-            userRepo.save(user);
-            return ResponseEntity.ok(new MessageResponse("Password đã được thay đổi"));
+            User savedUser = userRepo.save(user);
+            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(savedUser)).body(savedUser);
+           
         } else {
-            return ResponseEntity.ok(new MessageResponse("Password đang sử dụng không đúng"));
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new MessageResponse("Password đang sử dụng không đúng"));
         }
 
     }
@@ -137,11 +155,17 @@ public class UserService {
 
         User newUser = modelMapper.map(userDTO, User.class);
         // Để đảm bảo User không thể tự thay đổi Authority, Enable và Id của mình
-
+        newUser.setId(user.getId());
         newUser.setAuthorities(user.getAuthorities());
         newUser.setEnabled(user.getEnabled());
-        User savedUser = userRepo.save(newUser);
-        return ResponseEntity.ok(savedUser);
+        newUser.setPassword(user.getPassword());
+        try{
+            User savedUser = userRepo.save(newUser);
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(savedUser)).body(savedUser);
 
+        }catch(Exception e){
+          return  ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageResponse(e.toString()));
+        }
+       
     }
 }

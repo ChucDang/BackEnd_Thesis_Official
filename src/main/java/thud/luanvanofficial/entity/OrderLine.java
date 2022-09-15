@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "orderline")
 public class OrderLine {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private byte amount;
     @OneToOne

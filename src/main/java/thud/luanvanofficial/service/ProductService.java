@@ -2,11 +2,15 @@ package thud.luanvanofficial.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +19,7 @@ import thud.luanvanofficial.entity.Product;
 import thud.luanvanofficial.entity.Category;
 import thud.luanvanofficial.entity.Image;
 import thud.luanvanofficial.repository.ProductRepository;
+import thud.luanvanofficial.util.ConsoleColors;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
@@ -47,13 +52,14 @@ public class ProductService {
         return ResponseEntity.ok(productRepository.findAll());
     }
 
-    public ResponseEntity<?> updateProduct(Product product) {
+    public void updateProduct(Product product) {
         try {
             productRepository.save(product);
         } catch (Exception e) {
-            System.out.println("Lỗi " + e.toString());
+            System.out.println( ConsoleColors.GREEN + "file 1111 "+ e.toString() +ConsoleColors.RESET);
+            throw new Error(e.toString());
         }
-        return ResponseEntity.ok("Không lỗi");
+       
     }
 
     public ResponseEntity<?> createProduct(Product product) {
@@ -72,6 +78,7 @@ public class ProductService {
         Product newProduct = new Product();
         try{
             ObjectMapper objectMapper = new ObjectMapper();
+           
             newProductDTO = objectMapper.readValue(_txtProduct, ProductDTO.class);
             ModelMapper modelMapper = new ModelMapper();
             newProduct = modelMapper.map(newProductDTO, Product.class);

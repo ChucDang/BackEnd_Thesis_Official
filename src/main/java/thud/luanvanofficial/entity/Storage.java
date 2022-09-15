@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "storages")
 public class Storage {
     @Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String code;
     private String storage;

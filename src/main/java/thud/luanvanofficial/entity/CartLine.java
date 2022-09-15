@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "cartline")
 public class CartLine {
 	@Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private byte amount;
     @OneToOne

@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "Orders")
 public class Order extends Auditable {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String deliveryName;
     private String deliveryAddress;

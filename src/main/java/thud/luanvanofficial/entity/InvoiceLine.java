@@ -4,7 +4,7 @@ import javax.persistence.*;
 @Table(name = "invoiceline")
 public class InvoiceLine {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private byte amount;
     @OneToOne

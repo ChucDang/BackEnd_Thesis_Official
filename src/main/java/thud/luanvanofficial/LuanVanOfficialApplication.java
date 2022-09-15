@@ -21,61 +21,61 @@ public class LuanVanOfficialApplication {
         SpringApplication.run(LuanVanOfficialApplication.class, args);
     }
     // Thêm User, do password phải được mã hóa, nên không thể thêm qua file .sql được
-    @Bean
-    public CommandLineRunner dataLoader(
-            CustomPasswordEncoder passwordEncoder,
-            UserRepository userRepository, AuthorityRepository authorityRepository
-    ) { // user repo for ease of testing with a built-in user
-        return args -> {
-            Authority admin= new Authority(Role_Enum.ROLE_ADMIN.toString());
-            Authority customer= new Authority(Role_Enum.ROLE_CUSTOMER.toString());
-            Authority staff= new Authority(Role_Enum.ROLE_STAFF.toString());
-            authorityRepository.save(admin);
-            authorityRepository.save(customer);
-            authorityRepository.save(staff);
-            User user = new User();
-            user.setId(1L);
-            user.setFullname("Đặng Văn Chức");
-            user.setUsername("admin");
-            user.setPhone("0868285890");
-            user.setEmail("Violympic1998@gmail.com");
-            user.setGender(true);
-            user.setEnabled(true);
-            user.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
-            Set<Authority> set = new HashSet<>();
-            set.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_ADMIN.toString()));
-            user.setAuthorities(set);
-            user.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
-            userRepository.save(user);
-            User customer1 = new User();
-            customer1.setId(2L);
-            customer1.setFullname("Khách Hàng 1");
-            customer1.setUsername("customer");
-            customer1.setPhone("0868285890");
-            customer1.setGender(true);
-            customer1.setEnabled(true);
-            customer1.setEmail("Chucb1706677@student.ctu.edu.vn");
-            customer1.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
-            Set<Authority> roles = new HashSet<>();
-            roles.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_CUSTOMER.toString()));
-            customer1.setAuthorities(roles);
-            customer1.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
-            userRepository.save(customer1);
+    // @Bean
+    // public CommandLineRunner dataLoader(
+    //         CustomPasswordEncoder passwordEncoder,
+    //         UserRepository userRepository, AuthorityRepository authorityRepository
+    // ) { // user repo for ease of testing with a built-in user
+    //     return args -> {
+    //         Authority admin= new Authority(Role_Enum.ROLE_ADMIN.toString());
+    //         Authority customer= new Authority(Role_Enum.ROLE_CUSTOMER.toString());
+    //         Authority staff= new Authority(Role_Enum.ROLE_STAFF.toString());
+    //         authorityRepository.save(admin);
+    //         authorityRepository.save(customer);
+    //         authorityRepository.save(staff);
+    //         User user = new User();
+    //         user.setId(1L);
+    //         user.setFullname("Đặng Văn Chức");
+    //         user.setUsername("admin");
+    //         user.setPhone("0868285890");
+    //         user.setEmail("Violympic1998@gmail.com");
+    //         user.setGender(true);
+    //         user.setEnabled(true);
+    //         user.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
+    //         Set<Authority> set = new HashSet<>();
+    //         set.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_ADMIN.toString()));
+    //         user.setAuthorities(set);
+    //         user.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
+    //         userRepository.save(user);
+    //         User customer1 = new User();
+    //         customer1.setId(2L);
+    //         customer1.setFullname("Khách Hàng 1");
+    //         customer1.setUsername("customer");
+    //         customer1.setPhone("0868285890");
+    //         customer1.setGender(true);
+    //         customer1.setEnabled(true);
+    //         customer1.setEmail("Chucb1706677@student.ctu.edu.vn");
+    //         customer1.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
+    //         Set<Authority> roles = new HashSet<>();
+    //         roles.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_CUSTOMER.toString()));
+    //         customer1.setAuthorities(roles);
+    //         customer1.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
+    //         userRepository.save(customer1);
 
-            User _staff = new User();
-            _staff.setId(2L);
-            _staff.setFullname("Nhân Viên");
-            _staff.setUsername("staff");
-            _staff.setPhone("0868285890");
-            _staff.setGender(false);
-            _staff.setEmail("Chucb1706677@student.ctu.edu.vn");
-            _staff.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
-            _staff.setEnabled(true);
-            Set<Authority> roles1 = new HashSet<>();
-            roles1.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_STAFF.toString()));
-            _staff.setAuthorities(roles1);
-            _staff.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
-            userRepository.save(_staff);
-        };
-    }
+    //         User _staff = new User();
+    //         _staff.setId(2L);
+    //         _staff.setFullname("Nhân Viên");
+    //         _staff.setUsername("staff");
+    //         _staff.setPhone("0868285890");
+    //         _staff.setGender(false);
+    //         _staff.setEmail("Chucb1706677@student.ctu.edu.vn");
+    //         _staff.setAddress("Xã Định Hòa, Huyện Lai Vung, Đồng Tháp");
+    //         _staff.setEnabled(true);
+    //         Set<Authority> roles1 = new HashSet<>();
+    //         roles1.add(authorityRepository.getAuthorityByAuthority(Role_Enum.ROLE_STAFF.toString()));
+    //         _staff.setAuthorities(roles1);
+    //         _staff.setPassword(passwordEncoder.getPasswordEncoder().encode("Alpha2398"));
+    //         userRepository.save(_staff);
+    //     };
+    // }
 }

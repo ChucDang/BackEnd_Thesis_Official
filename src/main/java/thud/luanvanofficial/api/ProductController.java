@@ -78,8 +78,10 @@ public class ProductController {
                 Image storedImage = imageService.store(file);
                 Image image = imageService.getById(storedImage.getId());
                 newProduct.setImage(image);
+              
                 productService.updateProduct(newProduct);
                 imageService.deleteById(idImage);
+         
                 
             }else{
 
@@ -94,7 +96,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
         } catch (Exception e) {
             message = "Không thể thêm Product này ";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse(message));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse("Không thể thêm Product này"));
         }
 
     }

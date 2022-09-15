@@ -2,6 +2,7 @@ package thud.luanvanofficial.entity;
 import thud.luanvanofficial.service.Auditable;
 
 import javax.persistence.*;
+
 import java.sql.Date;
 
 
@@ -9,9 +10,10 @@ import java.sql.Date;
 @Entity
 
 @Table(name = "products")
+
 public class Product extends Auditable {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Brand brand;
@@ -34,13 +36,18 @@ public class Product extends Auditable {
 
     private String weight;
     private String size;
+	@Column(columnDefinition = "text")
     private String camera;
     private String selfie;
 
     private String origin;
+	@Column(columnDefinition = "text")
     private String graphic;
+	@Column(columnDefinition = "text")
     private String material;
+	@Column(columnDefinition = "text")
     private String video;
+	@Column(columnDefinition = "text")
     private String feature;
     private String os;
     private int slot;

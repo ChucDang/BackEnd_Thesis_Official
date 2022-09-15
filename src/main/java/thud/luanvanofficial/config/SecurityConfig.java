@@ -82,10 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Private enpoint
                 .antMatchers("/cart/addCart").hasAuthority(Role_Enum.ROLE_CUSTOMER.toString())
-                .antMatchers("/stock/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_CUSTOMER.toString())
+                .antMatchers("/stock/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_STAFF.toString())
                 .antMatchers("/admin/**").hasAuthority(Role_Enum.ROLE_ADMIN.toString())
-                .antMatchers("/sales/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_CUSTOMER.toString())
-                .antMatchers("/gifts/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_CUSTOMER.toString())
+                .antMatchers("/sales/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_STAFF.toString())
+                .antMatchers("/gifts/**").hasAnyAuthority(Role_Enum.ROLE_ADMIN.toString(), Role_Enum.ROLE_STAFF.toString())
 
                 .anyRequest().authenticated();
 

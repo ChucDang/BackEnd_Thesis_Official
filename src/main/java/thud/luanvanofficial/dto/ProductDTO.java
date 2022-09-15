@@ -3,6 +3,9 @@ package thud.luanvanofficial.dto;
 import thud.luanvanofficial.entity.*;
 
 import java.sql.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ProductDTO {
     private Long id;
     private Brand brand;
@@ -40,17 +43,18 @@ public class ProductDTO {
 	private Image image;
 	private Sale sale;
 	private Gift gift;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public Brand getBrand() {
 		return brand;
 	}
 	public void setBrand(Brand brand) {
 		this.brand = brand;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public float getRate() {
 		return rate;
